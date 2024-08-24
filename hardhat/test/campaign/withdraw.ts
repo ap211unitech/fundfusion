@@ -10,7 +10,6 @@ const CATEGORY = "Test Category";
 const DESCRIPTION = "Test Description";
 const IMAGE = "https://test-image.jpg";
 const TARGET_AMOUNT = tokens(10);
-const CURRENT_TIMESTAMP = Math.floor(new Date().getTime() / 1000);
 
 describe("Campaign Contract", function () {
   let contract: Campaign & {
@@ -20,6 +19,7 @@ describe("Campaign Contract", function () {
 
   beforeEach(async () => {
     [deployer] = await ethers.getSigners();
+    const CURRENT_TIMESTAMP = Math.floor(new Date().getTime() / 1000);
     const campaignContract = await ethers.getContractFactory("Campaign");
     contract = await campaignContract.deploy(
       TITLE,
@@ -50,5 +50,68 @@ describe("Campaign Contract", function () {
       const tx = contract.withdraw();
       await expect(tx).to.be.rejectedWith("Target amount not met !!");
     });
+  });
+});
+
+describe("Campaign Contract", function () {
+  let tx: ContractTransactionResponse;
+  let contract: Campaign & {
+    deploymentTransaction(): ContractTransactionResponse;
+  };
+  let deployer: { address: any };
+
+  let balanceBefore: bigint;
+
+  beforeEach(async () => {
+    [deployer] = await ethers.getSigners();
+    const CURRENT_TIMESTAMP = Math.floor(new Date().getTime() / 1000);
+    const campaignContract = await ethers.getContractFactory("Campaign");
+    contract = await campaignContract.deploy(
+      TITLE,
+      CATEGORY,
+      DESCRIPTION,
+      IMAGE,
+      TARGET_AMOUNT,
+      CURRENT_TIMESTAMP + 20
+    );
+
+    // Donate some amount
+    tx = await contract
+      .connect((await ethers.getSigners()).at(2))
+      .donate({ value: tokens(4) });
+    await tx.wait();
+
+    tx = await contract
+      .connect((await ethers.getSigners()).at(3))
+      .donate({ value: tokens(10) });
+    await tx.wait();
+
+    // Get Deployer balance before
+    balanceBefore = await ethers.provider.getBalance(deployer.address);
+
+    await sleep(25);
+    // Withdraw
+    tx = await contract.withdraw();
+    await tx.wait();
+  });
+
+  it("Updates the owner balance", async () => {
+    const balanceAfter = await ethers.provider.getBalance(deployer.address);
+    expect(balanceAfter).to.be.greaterThan(balanceBefore);
+  });
+
+  it("Updates the contract balance", async () => {
+    const contractAddress = await contract.getAddress();
+    const result = await ethers.provider.getBalance(contractAddress);
+    expect(result).to.equal(0);
+  });
+
+  it("Updates the fundWithdrawanByOwner variable", async () => {
+    const result = await contract.fundWithdrawanByOwner();
+    expect(result).to.equal(true);
+  });
+
+  it("Emit FundWithdrawanByOwner event", async () => {
+    expect(tx).to.emit(contract, "FundWithdrawanByOwner");
   });
 });
