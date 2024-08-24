@@ -1,9 +1,9 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
 
-import { tokens } from "../utils";
+import { tokens } from "../../utils";
 import { ContractRunner, ContractTransactionResponse } from "ethers";
-import { Campaign } from "../typechain-types";
+import { Campaign } from "../../typechain-types";
 
 const TITLE = "Test Campaign";
 const CATEGORY = "Test Category";
@@ -29,55 +29,6 @@ describe("Campaign Contract", function () {
       TARGET_AMOUNT,
       TARGET_TIMESTAMP
     );
-  });
-
-  describe("Deployment Fail", () => {
-    it("Deployment should fail", async () => {
-      const campaignContract = await ethers.getContractFactory("Campaign");
-      const contract = campaignContract.deploy(
-        TITLE,
-        CATEGORY,
-        DESCRIPTION,
-        IMAGE,
-        TARGET_AMOUNT,
-        TARGET_TIMESTAMP - 10000
-      );
-      await expect(contract).to.be.rejectedWith(
-        "Target timestamp must be greater than current time !!'"
-      );
-    });
-  });
-
-  describe("Deployment", () => {
-    it("Owner should be same as Deployer", async () => {
-      const contractOwner = await contract.owner();
-      expect(contractOwner).to.equal(deployer.address);
-    });
-
-    it("Should have a title", async () => {
-      const title = await contract.title();
-      expect(title).to.equal(TITLE);
-    });
-
-    it("Should have a category", async () => {
-      const category = await contract.category();
-      expect(category).to.equal(CATEGORY);
-    });
-
-    it("Should have a description", async () => {
-      const description = await contract.description();
-      expect(description).to.equal(DESCRIPTION);
-    });
-
-    it("Should have target amount", async () => {
-      const targetAmount = await contract.targetAmount();
-      expect(targetAmount).to.equal(TARGET_AMOUNT);
-    });
-
-    it("Should have target date", async () => {
-      const targetDate = await contract.targetTimestamp();
-      expect(targetDate).to.equal(TARGET_TIMESTAMP);
-    });
   });
 
   describe("Donate to Campaign", () => {
