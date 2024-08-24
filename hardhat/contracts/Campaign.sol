@@ -12,7 +12,7 @@ contract Campaign {
     bool public fundWithdrawanByOwner;
     bool public fundRefundedToContributors;
 
-    mapping(address => uint256) public donaters;
+    mapping(address => uint256) public contributors;
 
     event FundDonated(
         address indexed campaign,
@@ -67,12 +67,15 @@ contract Campaign {
 
         // Check if total recieved amount is less than targetAmount
         require(
-            address(this).balance < targetAmount,
+            address(this).balance <= targetAmount,
             "Target amount already met !!"
         );
 
+        // Check if sender is not same as owner
+        require(owner != msg.sender, "Owner can not donate !!");
+
         uint256 amount = msg.value;
-        donaters[msg.sender] += amount;
+        contributors[msg.sender] += amount;
 
         emit FundDonated(address(this), msg.sender, amount, block.timestamp);
     }
