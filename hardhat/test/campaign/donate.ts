@@ -41,7 +41,7 @@ describe("Campaign Contract", function () {
     describe("Contributors donate", () => {
       const AMOUNT_1 = tokens(4);
       const AMOUNT_2 = tokens(5);
-      const AMOUNT_NEW = tokens(0.5);
+      const AMOUNT_NEW = tokens(2.5);
 
       let CONTRIBUTOR_1: { address: any }, CONTRIBUTOR_2: { address: any };
       let tx: ContractTransactionResponse;
@@ -71,10 +71,12 @@ describe("Campaign Contract", function () {
         expect(amount_2).to.equal(AMOUNT_2);
       });
 
-      it("Should update contract balance", async () => {
+      it("Should update contract balance & raisedAmount", async () => {
         const contractAddress = await contract.getAddress();
         const balance = await ethers.provider.getBalance(contractAddress);
+        const raisedAmount = await contract.raisedAmount();
         expect(balance).to.equal(AMOUNT_1 + AMOUNT_2);
+        expect(raisedAmount).to.equal(AMOUNT_1 + AMOUNT_2);
       });
 
       it("Should emit FundDonated event", async () => {
@@ -94,10 +96,12 @@ describe("Campaign Contract", function () {
           expect(amount).to.equal(AMOUNT_1 + AMOUNT_NEW);
         });
 
-        it("Should update contract balance after new transaction", async () => {
+        it("Should update contract balance & raisedAmount after new transaction", async () => {
           const contractAddress = await contract.getAddress();
           const balance = await ethers.provider.getBalance(contractAddress);
+          const raisedAmount = await contract.raisedAmount();
           expect(balance).to.equal(AMOUNT_1 + AMOUNT_2 + AMOUNT_NEW);
+          expect(raisedAmount).to.equal(AMOUNT_1 + AMOUNT_2 + AMOUNT_NEW);
         });
       });
     });
