@@ -10,13 +10,25 @@ contract Campaign {
     uint256 public targetTimestamp;
     address public owner;
     bool public fundWithdrawanByOwner;
-    bool public fundRefundedToContributors;
+    CAMPAIGN_STATUS public status;
+
+    enum CAMPAIGN_STATUS {
+        ACTIVE,
+        INACTIVE
+    }
 
     mapping(address => uint256) public contributors;
 
     event FundDonated(
         address indexed campaign,
-        address indexed donar,
+        address indexed contributor,
+        uint256 amount,
+        uint256 timestamp
+    );
+
+    event FundWithdrawanByOwner(
+        address indexed campaign,
+        address indexed owner,
         uint256 amount,
         uint256 timestamp
     );
@@ -42,8 +54,13 @@ contract Campaign {
         targetAmount = _targetAmount;
         targetTimestamp = _targetTimestamp;
         owner = msg.sender;
+        status = CAMPAIGN_STATUS.ACTIVE;
         fundWithdrawanByOwner = false;
-        fundRefundedToContributors = false;
+    }
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Only owner allowed !!");
+        _;
     }
 
     function donate() public payable {
@@ -59,10 +76,10 @@ contract Campaign {
             "Can not donate to this campaign as funds are already withdrawan by owner !!"
         );
 
-        // Check if funds are refunded to contributors
+        // Check if campaign is active
         require(
-            !fundRefundedToContributors,
-            "Can not donate to this campaign as funds are already refunded to contributors !!"
+            status == CAMPAIGN_STATUS.ACTIVE,
+            "Can not donate to inactive campaign !!"
         );
 
         // Check if total recieved amount is less than targetAmount
@@ -78,5 +95,40 @@ contract Campaign {
         contributors[msg.sender] += amount;
 
         emit FundDonated(address(this), msg.sender, amount, block.timestamp);
+    }
+
+    function withdraw() public onlyOwner {
+        // Check if deadline passed
+        require(
+            targetTimestamp < block.timestamp,
+            "Can not withdraw Funds from active campaigns !!"
+        );
+
+        // Check if campaign is still active
+        require(
+            status == CAMPAIGN_STATUS.INACTIVE,
+            "Can not withdraw from active campaign !!"
+        );
+
+        // Check if contract received targetAmount
+        require(
+            address(this).balance >= targetAmount,
+            "Target amount not met !!"
+        );
+
+        (bool callSuccess, ) = payable(msg.sender).call{
+            value: address(this).balance
+        }("");
+        require(callSuccess, "Withdraw failed !!");
+
+        fundWithdrawanByOwner = true;
+        status = CAMPAIGN_STATUS.INACTIVE;
+
+        emit FundWithdrawanByOwner(
+            address(this),
+            msg.sender,
+            address(this).balance,
+            block.timestamp
+        );
     }
 }
