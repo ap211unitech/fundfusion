@@ -60,15 +60,20 @@ describe("Campaign Contract", function () {
 
   describe("Delete Campaign", () => {
     let beforeStatus: bigint;
+    let tx: ContractTransactionResponse;
     beforeEach(async () => {
       beforeStatus = await contract.status();
-      const tx = await contract.deleteCampaign();
+      tx = await contract.deleteCampaign();
       await tx.wait();
     });
 
     it("Should change status", async () => {
       expect(beforeStatus).to.equal(0);
       expect(await contract.status()).to.equal(1);
+    });
+
+    it("Should emit CampaignDeleted event", async () => {
+      expect(tx).to.emit(contract, "CampaignDeleted");
     });
   });
 });

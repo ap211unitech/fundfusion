@@ -34,6 +34,23 @@ contract Campaign {
         uint256 timestamp
     );
 
+    event CampaignEdited(
+        address indexed campaign,
+        address indexed owner,
+        string title,
+        string category,
+        string description,
+        string image,
+        uint256 targetAmount,
+        uint256 targetTimestamp
+    );
+
+    event CampaignDeleted(
+        address indexed campaign,
+        address indexed owner,
+        CAMPAIGN_STATUS status
+    );
+
     constructor(
         string memory _title,
         string memory _category,
@@ -148,6 +165,17 @@ contract Campaign {
         description = _description;
         image = _image;
         targetAmount = _targetAmount;
+
+        emit CampaignEdited(
+            address(this),
+            msg.sender,
+            title,
+            category,
+            description,
+            image,
+            targetAmount,
+            targetTimestamp
+        );
     }
 
     function deleteCampaign() public onlyOwner {
@@ -164,5 +192,7 @@ contract Campaign {
         );
 
         status = CAMPAIGN_STATUS.DELETED;
+
+        emit CampaignDeleted(address(this), msg.sender, status);
     }
 }

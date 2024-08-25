@@ -83,8 +83,9 @@ describe("Campaign Contract", function () {
   });
 
   describe("Edit Campaign", () => {
+    let tx: ContractTransactionResponse;
     beforeEach(async () => {
-      const tx = await contract.editCampaign(
+      tx = await contract.editCampaign(
         EDIT_TITLE,
         EDIT_CATEGORY,
         EDIT_DESCRIPTION,
@@ -112,6 +113,10 @@ describe("Campaign Contract", function () {
 
     it("Should update target amount", async () => {
       expect(await contract.targetAmount()).to.equal(EDIT_TARGET_AMOUNT);
+    });
+
+    it("Should emit CampaignEdited event", async () => {
+      expect(tx).to.emit(contract, "CampaignEdited");
     });
   });
 });
