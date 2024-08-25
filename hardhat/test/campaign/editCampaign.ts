@@ -51,7 +51,7 @@ describe("Campaign Contract", function () {
       await expect(tx).to.be.rejectedWith("Only owner allowed !!");
     });
 
-    it("Should not edit campaign if deleted already", async () => {
+    it("Should not edit campaign if it is not active", async () => {
       let tx = contract.deleteCampaign();
       await (await tx).wait();
 
@@ -63,7 +63,7 @@ describe("Campaign Contract", function () {
         EDIT_TARGET_AMOUNT
       );
       await expect(tx).to.be.rejectedWith(
-        "Can not edit the metadata as Campaign is no more active !!"
+        "Only active campaigns can be edited !!"
       );
     });
 

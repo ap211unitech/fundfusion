@@ -134,7 +134,7 @@ contract Campaign {
         // Campaign should be active
         require(
             status == CAMPAIGN_STATUS.ACTIVE,
-            "Can not edit the metadata as Campaign is no more active"
+            "Only active campaigns can be edited !!"
         );
 
         // Check if contract is within deadline
@@ -143,16 +143,26 @@ contract Campaign {
             "Campaign is no longer valid. Deadline passed now !!"
         );
 
-        // Check if funds are not withdrawan already
-        require(
-            !fundWithdrawanByOwner,
-            "Can not donate to this campaign as funds are already withdrawan by owner !!"
-        );
-
         title = _title;
         category = _category;
         description = _description;
         image = _image;
         targetAmount = _targetAmount;
+    }
+
+    function deleteCampaign() public onlyOwner {
+        // Campaign should be active
+        require(
+            status == CAMPAIGN_STATUS.ACTIVE,
+            "Only active campaigns can be deleted !!"
+        );
+
+        // Check if contract is within deadline
+        require(
+            targetTimestamp >= block.timestamp,
+            "Campaign is no longer valid. Deadline passed now !!"
+        );
+
+        status = CAMPAIGN_STATUS.DELETED;
     }
 }
