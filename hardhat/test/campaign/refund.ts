@@ -106,9 +106,11 @@ describe("Campaign Contract", function () {
   });
 
   describe("Refund process", () => {
+    let tx: ContractTransactionResponse;
     it("Should change contract balance", async () => {
       await sleep(20);
-      await contract.connect(donator).getRefund();
+      tx = await contract.connect(donator).getRefund();
+      await tx.wait();
 
       const newContractBalance = await ethers.provider.getBalance(
         await contract.getAddress()
@@ -128,6 +130,10 @@ describe("Campaign Contract", function () {
       expect(contributorMappingBefore - newContributorBalance).to.equal(
         DONATE_AMOUNT
       );
+    });
+
+    it("Should emit RefundClaimed event", async () => {
+      expect(tx).to.emit(contract, "RefundClaimed");
     });
   });
 });
