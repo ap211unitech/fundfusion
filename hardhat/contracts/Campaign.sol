@@ -123,4 +123,36 @@ contract Campaign {
             block.timestamp
         );
     }
+
+    function editCampaign(
+        string memory _title,
+        string memory _category,
+        string memory _description,
+        string memory _image,
+        uint256 _targetAmount
+    ) public onlyOwner {
+        // Campaign should be active
+        require(
+            status == CAMPAIGN_STATUS.ACTIVE,
+            "Can not edit the metadata as Campaign is no more active"
+        );
+
+        // Check if contract is within deadline
+        require(
+            targetTimestamp >= block.timestamp,
+            "Campaign is no longer valid. Deadline passed now !!"
+        );
+
+        // Check if funds are not withdrawan already
+        require(
+            !fundWithdrawanByOwner,
+            "Can not donate to this campaign as funds are already withdrawan by owner !!"
+        );
+
+        title = _title;
+        category = _category;
+        description = _description;
+        image = _image;
+        targetAmount = _targetAmount;
+    }
 }
