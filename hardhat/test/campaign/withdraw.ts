@@ -114,4 +114,10 @@ describe("Campaign Contract", function () {
   it("Emit FundWithdrawanByOwner event", async () => {
     expect(tx).to.emit(contract, "FundWithdrawanByOwner");
   });
+
+  it("Should throw error if try to withdraw again", async () => {
+    await expect(contract.withdraw()).to.be.rejectedWith(
+      "Can not withdraw from this campaign as funds are already withdrawan !!"
+    );
+  });
 });

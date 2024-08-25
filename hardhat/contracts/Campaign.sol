@@ -127,16 +127,16 @@ contract Campaign {
             "Can not withdraw Funds from active campaigns !!"
         );
 
-        // Check if contract received targetAmount
-        require(
-            address(this).balance >= targetAmount,
-            "Target amount not met !!"
-        );
-
         // Check if funds are not withdrawan already
         require(
             !fundWithdrawanByOwner,
             "Can not withdraw from this campaign as funds are already withdrawan !!"
+        );
+
+        // Check if contract received targetAmount
+        require(
+            address(this).balance >= targetAmount,
+            "Target amount not met !!"
         );
 
         (bool callSuccess, ) = payable(msg.sender).call{
