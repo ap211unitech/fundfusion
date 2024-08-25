@@ -98,12 +98,6 @@ contract Campaign {
             "Campaign is no longer valid. Deadline passed now !!"
         );
 
-        // Check if funds are not withdrawan already
-        require(
-            !fundWithdrawanByOwner,
-            "Can not donate to this campaign as funds are already withdrawan by owner !!"
-        );
-
         // Check if campaign is active
         require(
             status == CAMPAIGN_STATUS.ACTIVE,
@@ -137,6 +131,12 @@ contract Campaign {
         require(
             address(this).balance >= targetAmount,
             "Target amount not met !!"
+        );
+
+        // Check if funds are not withdrawan already
+        require(
+            !fundWithdrawanByOwner,
+            "Can not withdraw from this campaign as funds are already withdrawan !!"
         );
 
         (bool callSuccess, ) = payable(msg.sender).call{
