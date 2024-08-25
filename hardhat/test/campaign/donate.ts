@@ -74,7 +74,7 @@ describe("Campaign Contract", function () {
       it("Should update contract balance & raisedAmount", async () => {
         const contractAddress = await contract.getAddress();
         const balance = await ethers.provider.getBalance(contractAddress);
-        const raisedAmount = await contract.raisedAmount();
+        const raisedAmount = await contract.totalRaisedAmount();
         expect(balance).to.equal(AMOUNT_1 + AMOUNT_2);
         expect(raisedAmount).to.equal(AMOUNT_1 + AMOUNT_2);
       });
@@ -99,7 +99,7 @@ describe("Campaign Contract", function () {
         it("Should update contract balance & raisedAmount after new transaction", async () => {
           const contractAddress = await contract.getAddress();
           const balance = await ethers.provider.getBalance(contractAddress);
-          const raisedAmount = await contract.raisedAmount();
+          const raisedAmount = await contract.totalRaisedAmount();
           expect(balance).to.equal(AMOUNT_1 + AMOUNT_2 + AMOUNT_NEW);
           expect(raisedAmount).to.equal(AMOUNT_1 + AMOUNT_2 + AMOUNT_NEW);
         });

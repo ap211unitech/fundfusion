@@ -11,7 +11,7 @@ contract Campaign {
     address public owner;
     bool public fundWithdrawanByOwner;
     CAMPAIGN_STATUS public status;
-    uint256 public raisedAmount;
+    uint256 public totalRaisedAmount;
 
     enum CAMPAIGN_STATUS {
         ACTIVE,
@@ -83,7 +83,7 @@ contract Campaign {
         owner = msg.sender;
         status = CAMPAIGN_STATUS.ACTIVE;
         fundWithdrawanByOwner = false;
-        raisedAmount = 0;
+        totalRaisedAmount = 0;
     }
 
     modifier onlyOwner() {
@@ -110,15 +110,18 @@ contract Campaign {
             "Can not donate to inactive campaign !!"
         );
 
-        // Check if total raisedAmount is less than targetAmount
-        require(raisedAmount < targetAmount, "Target amount already met !!");
+        // Check if total totalRaisedAmount is less than targetAmount
+        require(
+            totalRaisedAmount < targetAmount,
+            "Target amount already met !!"
+        );
 
         // Check if sender is not same as owner
         require(owner != msg.sender, "Owner can not donate !!");
 
         uint256 amount = msg.value;
         contributors[msg.sender] += amount;
-        raisedAmount += amount;
+        totalRaisedAmount += amount;
 
         emit FundDonated(address(this), msg.sender, amount, block.timestamp);
     }
@@ -215,7 +218,7 @@ contract Campaign {
         // Check if deadline passed & targetAmount not met
         require(
             block.timestamp > targetTimestamp &&
-                address(this).balance < targetAmount,
+                totalRaisedAmount < targetAmount,
             "You are not eligible to get refund !!"
         );
 
