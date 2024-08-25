@@ -212,26 +212,20 @@ contract Campaign {
     }
 
     function getRefund() public {
-        // Check if deadline is passed & targetAmount not met
+        // Check if deadline passed & targetAmount not met
         require(
-            targetTimestamp < block.timestamp &&
+            block.timestamp > targetTimestamp &&
                 address(this).balance < targetAmount,
             "You are not eligible to get refund !!"
         );
 
-        // Campaign should be active
-        require(
-            status == CAMPAIGN_STATUS.ACTIVE,
-            "Refund can be processed from active campaigns only !!"
-        );
+        uint256 amount = contributors[msg.sender];
 
         // Check if sender donated some amount
         require(
-            contributors[msg.sender] > 0,
-            "You haven't donated to this campaign !!"
+            amount > 0,
+            "Either you have claimed your refund or you haven't donated to this campaign !!"
         );
-
-        uint256 amount = contributors[msg.sender];
 
         (bool callSuccess, ) = payable(msg.sender).call{value: amount}("");
         require(callSuccess, "Refund process failed !!");
