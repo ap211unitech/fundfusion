@@ -5,6 +5,7 @@ import "./Campaign.sol";
 
 contract FundFusion {
     mapping(address => address[]) deployedCampaigns;
+    address[] allDeployedCampaigns;
 
     event NewCampaignCreated(
         address indexed creator,
@@ -28,14 +29,21 @@ contract FundFusion {
             _targetAmount,
             _targetTimestamp
         );
-        deployedCampaigns[msg.sender].push(address(campaign));
 
-        emit NewCampaignCreated(msg.sender, address(campaign), block.timestamp);
+        address campaignAddress = address(campaign);
+        deployedCampaigns[msg.sender].push(campaignAddress);
+        allDeployedCampaigns.push(campaignAddress);
+
+        emit NewCampaignCreated(msg.sender, campaignAddress, block.timestamp);
+    }
+
+    function getAllDeployedCampaigns() public view returns (address[] memory) {
+        return allDeployedCampaigns;
     }
 
     function getDeployedCampaigns(
-        address creator
+        address campaignCreator
     ) public view returns (address[] memory) {
-        return deployedCampaigns[creator];
+        return deployedCampaigns[campaignCreator];
     }
 }

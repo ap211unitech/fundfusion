@@ -38,8 +38,13 @@ describe("FundFusion Contract", () => {
       await tx.wait();
     });
 
-    it("Should create new campaign", async () => {
+    it("Should update mapping", async () => {
       const campaigns = await contract.getDeployedCampaigns(deployer.address);
+      expect(campaigns.length).to.equal(1);
+    });
+
+    it("Should update allDeployedCampaigns array", async () => {
+      const campaigns = await contract.getAllDeployedCampaigns();
       expect(campaigns.length).to.equal(1);
     });
 
