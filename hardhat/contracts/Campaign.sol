@@ -197,6 +197,8 @@ contract Campaign {
         );
 
         title = _title;
+
+        // TODO: Check if category exists
         category = _category;
         description = _description;
         image = _image;

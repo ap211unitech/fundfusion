@@ -7,6 +7,12 @@ contract FundFusion {
     mapping(address => address[]) deployedCampaigns;
     address[] allDeployedCampaigns;
 
+    address public owner;
+
+    constructor() {
+        owner = msg.sender;
+    }
+
     event NewCampaignCreated(
         address indexed creator,
         address indexed campaign,
