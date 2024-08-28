@@ -1,11 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import "./FundFusion.sol";
-
 contract Category {
-    FundFusion fundFusion;
-
     address public owner;
     string[] public categories;
 
@@ -13,12 +9,16 @@ contract Category {
     event EditCategory(address owner, uint256 categoryId, string name);
 
     constructor() {
-        owner = fundFusion.owner();
+        owner = msg.sender;
     }
 
     modifier onlyOwner() {
         require(owner == msg.sender, "Only owner allowed !!");
         _;
+    }
+
+    function getCategories() public view returns (string[] memory) {
+        return categories;
     }
 
     function createCategory(string memory _category) public onlyOwner {
