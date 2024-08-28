@@ -78,5 +78,16 @@ describe("Campaign Contract", function () {
       const targetDate = await contract.targetTimestamp();
       expect(targetDate).to.equal(TARGET_TIMESTAMP);
     });
+
+    it("Should get metadata", async () => {
+      const metadata = await contract.getMetadata();
+      expect(metadata[0]).to.equal(TITLE);
+      expect(metadata[1]).to.equal(CATEGORY);
+      expect(metadata[2]).to.equal(DESCRIPTION);
+      expect(metadata[3]).to.equal(IMAGE);
+      expect(metadata[4]).to.equal(TARGET_AMOUNT);
+      expect(metadata[5]).to.equal(TARGET_TIMESTAMP);
+      expect(metadata[6]).to.equal("ACTIVE");
+    });
   });
 });

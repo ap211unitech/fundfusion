@@ -91,6 +91,30 @@ contract Campaign {
         _;
     }
 
+    function getMetadata()
+        public
+        view
+        returns (
+            string memory,
+            string memory,
+            string memory,
+            string memory,
+            uint256,
+            uint256,
+            string memory
+        )
+    {
+        return (
+            title,
+            category,
+            description,
+            image,
+            targetAmount,
+            targetTimestamp,
+            status == CAMPAIGN_STATUS.ACTIVE ? "ACTIVE" : "DELETED"
+        );
+    }
+
     function donate() public payable {
         // Check if contract is within deadline
         require(
