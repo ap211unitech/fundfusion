@@ -72,7 +72,7 @@ describe("Campaign Contract", function () {
     });
 
     it("Should not edit camaign as deadline passed", async () => {
-      await sleep(60);
+      await sleep(50);
       const tx = contract.editCampaign(
         EDIT_TITLE,
         EDIT_CATEGORY,
