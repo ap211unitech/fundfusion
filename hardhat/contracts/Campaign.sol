@@ -1,7 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
+import "./Category.sol";
+
 contract Campaign {
+    Category categoryContract;
+
     string public title;
     string public category;
     string public description;
@@ -60,20 +64,40 @@ contract Campaign {
         uint256 timestamp
     );
 
+    function checkIfCategoryExists(
+        string memory _category
+    ) internal view returns (bool) {
+        string[] memory categories = categoryContract.getCategories();
+
+        for (uint256 i = 0; i < categories.length; i++) {
+            if (
+                keccak256(bytes(categories[i])) == keccak256(bytes(_category))
+            ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     constructor(
         string memory _title,
         string memory _category,
         string memory _description,
         string memory _image,
         uint256 _targetAmount,
-        uint256 _targetTimestamp
+        uint256 _targetTimestamp,
+        address _categoryContractAddress
     ) {
         require(
             _targetTimestamp > block.timestamp,
             "Target timestamp must be greater than current time !!"
         );
 
-        // TODO: Check if category exists in Category Contract
+        categoryContract = Category(_categoryContractAddress);
+
+        // Check if category exists
+        require(checkIfCategoryExists(_category), "Category doesn't exists !!");
+
         title = _title;
         category = _category;
         description = _description;
@@ -196,9 +220,10 @@ contract Campaign {
             "Campaign is no longer valid. Deadline passed now !!"
         );
 
-        title = _title;
+        // Check if category exists
+        require(checkIfCategoryExists(_category), "Category doesn't exists !!");
 
-        // TODO: Check if category exists
+        title = _title;
         category = _category;
         description = _description;
         image = _image;

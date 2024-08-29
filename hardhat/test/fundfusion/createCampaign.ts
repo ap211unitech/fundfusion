@@ -27,13 +27,19 @@ describe("FundFusion Contract", () => {
   describe("Create new campaign", () => {
     let tx: ContractTransactionResponse;
     beforeEach(async () => {
+      let categoryContract = await ethers.getContractFactory("Category");
+      let deployedCategoryContract = await categoryContract.deploy();
+
+      await (await deployedCategoryContract.createCategory(CATEGORY)).wait();
+
       tx = await contract.createCampaign(
         TITLE,
         CATEGORY,
         DESCRIPTION,
         IMAGE,
         TARGET_AMOUNT,
-        TARGET_TIMESTAMP
+        TARGET_TIMESTAMP,
+        await deployedCategoryContract.getAddress()
       );
       await tx.wait();
     });

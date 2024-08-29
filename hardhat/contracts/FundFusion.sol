@@ -25,7 +25,8 @@ contract FundFusion {
         string memory _description,
         string memory _image,
         uint256 _targetAmount,
-        uint256 _targetTimestamp
+        uint256 _targetTimestamp,
+        address _categoryContractAddress
     ) public {
         Campaign campaign = new Campaign(
             _title,
@@ -33,7 +34,8 @@ contract FundFusion {
             _description,
             _image,
             _targetAmount,
-            _targetTimestamp
+            _targetTimestamp,
+            _categoryContractAddress
         );
 
         address campaignAddress = address(campaign);

@@ -20,6 +20,13 @@ describe("Campaign Contract", function () {
 
   beforeEach(async () => {
     [deployer] = await ethers.getSigners();
+
+    let categoryContract = await ethers.getContractFactory("Category");
+    let deployedCategoryContract = await categoryContract.deploy();
+
+    const tx = await deployedCategoryContract.createCategory(CATEGORY);
+    await tx.wait();
+
     const campaignContract = await ethers.getContractFactory("Campaign");
     contract = await campaignContract.deploy(
       TITLE,
@@ -27,12 +34,16 @@ describe("Campaign Contract", function () {
       DESCRIPTION,
       IMAGE,
       TARGET_AMOUNT,
-      TARGET_TIMESTAMP
+      TARGET_TIMESTAMP,
+      await deployedCategoryContract.getAddress()
     );
   });
 
   describe("Deployment Fail", () => {
-    it("Deployment should fail", async () => {
+    it("Timestamp less than current time", async () => {
+      let categoryContract = await ethers.getContractFactory("Category");
+      let deployedCategoryContract = await categoryContract.deploy();
+
       const campaignContract = await ethers.getContractFactory("Campaign");
       const contract = campaignContract.deploy(
         TITLE,
@@ -40,11 +51,29 @@ describe("Campaign Contract", function () {
         DESCRIPTION,
         IMAGE,
         TARGET_AMOUNT,
-        TARGET_TIMESTAMP - 10000
+        TARGET_TIMESTAMP - 10000,
+        await deployedCategoryContract.getAddress()
       );
       await expect(contract).to.be.rejectedWith(
         "Target timestamp must be greater than current time !!'"
       );
+    });
+
+    it("Timestamp less than current time", async () => {
+      let categoryContract = await ethers.getContractFactory("Category");
+      let deployedCategoryContract = await categoryContract.deploy();
+
+      const campaignContract = await ethers.getContractFactory("Campaign");
+      const contract = campaignContract.deploy(
+        TITLE,
+        CATEGORY,
+        DESCRIPTION,
+        IMAGE,
+        TARGET_AMOUNT,
+        TARGET_TIMESTAMP,
+        await deployedCategoryContract.getAddress()
+      );
+      await expect(contract).to.be.rejectedWith("Category doesn't exists !!'");
     });
   });
 
