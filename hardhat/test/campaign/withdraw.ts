@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
 
-import { sleep, tokens } from "../../utils";
+import { categoryContractHandler, sleep, tokens } from "../../utils";
 import { ContractTransactionResponse } from "ethers";
 import { Campaign } from "../../typechain-types";
 
@@ -19,6 +19,9 @@ describe("Campaign Contract", function () {
 
   beforeEach(async () => {
     [deployer] = await ethers.getSigners();
+
+    const categoryContractAddress = await categoryContractHandler(true);
+
     const CURRENT_TIMESTAMP = Math.floor(new Date().getTime() / 1000);
     const campaignContract = await ethers.getContractFactory("Campaign");
     contract = await campaignContract.deploy(
@@ -27,7 +30,8 @@ describe("Campaign Contract", function () {
       DESCRIPTION,
       IMAGE,
       TARGET_AMOUNT,
-      CURRENT_TIMESTAMP + 5
+      CURRENT_TIMESTAMP + 10,
+      categoryContractAddress
     );
 
     // Donate some amount
@@ -46,7 +50,7 @@ describe("Campaign Contract", function () {
     });
 
     it("Should not withdraw if target amount not met", async () => {
-      await sleep(5);
+      await sleep(30);
       const tx = contract.withdraw();
       await expect(tx).to.be.rejectedWith("Target amount not met !!");
     });
@@ -64,6 +68,8 @@ describe("Campaign Contract", function () {
 
   beforeEach(async () => {
     [deployer] = await ethers.getSigners();
+    const categoryContractAddress = await categoryContractHandler(true);
+
     const CURRENT_TIMESTAMP = Math.floor(new Date().getTime() / 1000);
     const campaignContract = await ethers.getContractFactory("Campaign");
     contract = await campaignContract.deploy(
@@ -72,7 +78,8 @@ describe("Campaign Contract", function () {
       DESCRIPTION,
       IMAGE,
       TARGET_AMOUNT,
-      CURRENT_TIMESTAMP + 20
+      CURRENT_TIMESTAMP + 30,
+      categoryContractAddress
     );
 
     // Donate some amount
@@ -89,7 +96,7 @@ describe("Campaign Contract", function () {
     // Get Deployer balance before
     balanceBefore = await ethers.provider.getBalance(deployer.address);
 
-    await sleep(25);
+    await sleep(30);
     // Withdraw
     tx = await contract.withdraw();
     await tx.wait();

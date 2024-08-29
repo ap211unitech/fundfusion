@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
 
-import { tokens } from "../../utils";
+import { categoryContractHandler, tokens } from "../../utils";
 import { ContractRunner, ContractTransactionResponse } from "ethers";
 import { Campaign } from "../../typechain-types";
 
@@ -20,6 +20,9 @@ describe("Campaign Contract", function () {
 
   beforeEach(async () => {
     [deployer] = await ethers.getSigners();
+
+    const categoryContractAddress = await categoryContractHandler(true);
+
     const campaignContract = await ethers.getContractFactory("Campaign");
     contract = await campaignContract.deploy(
       TITLE,
@@ -27,7 +30,8 @@ describe("Campaign Contract", function () {
       DESCRIPTION,
       IMAGE,
       TARGET_AMOUNT,
-      TARGET_TIMESTAMP
+      TARGET_TIMESTAMP,
+      categoryContractAddress
     );
   });
 

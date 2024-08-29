@@ -13,7 +13,9 @@ export const categoryContractHandler = async (create?: boolean) => {
 
   if (create) {
     const CATEGORY = "Test Category";
+    const EDIT_CATEGORY = "Edited Test Category";
     await (await deployedCategoryContract.createCategory(CATEGORY)).wait();
+    await (await deployedCategoryContract.createCategory(EDIT_CATEGORY)).wait();
   }
 
   return await deployedCategoryContract.getAddress();

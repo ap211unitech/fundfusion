@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
 
-import { sleep, tokens } from "../../utils";
+import { categoryContractHandler, sleep, tokens } from "../../utils";
 import { ContractRunner, ContractTransactionResponse } from "ethers";
 import { Campaign } from "../../typechain-types";
 import { HardhatEthersSigner } from "@nomicfoundation/hardhat-ethers/signers";
@@ -22,6 +22,8 @@ describe("Campaign Contract", function () {
   let donator: ContractRunner | HardhatEthersSigner | null | undefined;
 
   beforeEach(async () => {
+    const categoryContractAddress = await categoryContractHandler(true);
+
     const campaignContract = await ethers.getContractFactory("Campaign");
     const TARGET_TIMESTAMP = Math.floor(new Date().getTime() / 1000) + 20;
     contract = await campaignContract.deploy(
@@ -30,7 +32,8 @@ describe("Campaign Contract", function () {
       DESCRIPTION,
       IMAGE,
       TARGET_AMOUNT,
-      TARGET_TIMESTAMP
+      TARGET_TIMESTAMP,
+      categoryContractAddress
     );
 
     donator = (await ethers.getSigners()).at(2);
@@ -79,15 +82,18 @@ describe("Campaign Contract", function () {
   let contractBalanceBefore: bigint;
 
   beforeEach(async () => {
+    const categoryContractAddress = await categoryContractHandler(true);
+
     const campaignContract = await ethers.getContractFactory("Campaign");
-    const TARGET_TIMESTAMP = Math.floor(new Date().getTime() / 1000) + 20;
+    const TARGET_TIMESTAMP = Math.floor(new Date().getTime() / 1000) + 30;
     contract = await campaignContract.deploy(
       TITLE,
       CATEGORY,
       DESCRIPTION,
       IMAGE,
       TARGET_AMOUNT,
-      TARGET_TIMESTAMP
+      TARGET_TIMESTAMP,
+      categoryContractAddress
     );
 
     donator = (await ethers.getSigners()).at(2);
@@ -108,7 +114,7 @@ describe("Campaign Contract", function () {
   describe("Refund process", () => {
     let tx: ContractTransactionResponse;
     it("Should change contract balance", async () => {
-      await sleep(20);
+      await sleep(30);
       tx = await contract.connect(donator).getRefund();
       await tx.wait();
 
