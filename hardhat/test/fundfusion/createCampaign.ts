@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
 
-import { tokens } from "../../utils";
+import { categoryContractHandler, tokens } from "../../utils";
 import { ContractTransactionResponse } from "ethers";
 import { FundFusion } from "../../typechain-types";
 
@@ -27,11 +27,7 @@ describe("FundFusion Contract", () => {
   describe("Create new campaign", () => {
     let tx: ContractTransactionResponse;
     beforeEach(async () => {
-      let categoryContract = await ethers.getContractFactory("Category");
-      let deployedCategoryContract = await categoryContract.deploy();
-
-      await (await deployedCategoryContract.createCategory(CATEGORY)).wait();
-
+      const categoryContractAddress = await categoryContractHandler(true);
       tx = await contract.createCampaign(
         TITLE,
         CATEGORY,
@@ -39,7 +35,7 @@ describe("FundFusion Contract", () => {
         IMAGE,
         TARGET_AMOUNT,
         TARGET_TIMESTAMP,
-        await deployedCategoryContract.getAddress()
+        categoryContractAddress
       );
       await tx.wait();
     });

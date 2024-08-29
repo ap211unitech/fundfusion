@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
 
-import { tokens } from "../../utils";
+import { categoryContractHandler, tokens } from "../../utils";
 import { ContractTransactionResponse } from "ethers";
 import { Campaign } from "../../typechain-types";
 
@@ -21,11 +21,7 @@ describe("Campaign Contract", function () {
   beforeEach(async () => {
     [deployer] = await ethers.getSigners();
 
-    let categoryContract = await ethers.getContractFactory("Category");
-    let deployedCategoryContract = await categoryContract.deploy();
-
-    const tx = await deployedCategoryContract.createCategory(CATEGORY);
-    await tx.wait();
+    const categoryContractAddress = await categoryContractHandler(true);
 
     const campaignContract = await ethers.getContractFactory("Campaign");
     contract = await campaignContract.deploy(
@@ -35,14 +31,13 @@ describe("Campaign Contract", function () {
       IMAGE,
       TARGET_AMOUNT,
       TARGET_TIMESTAMP,
-      await deployedCategoryContract.getAddress()
+      categoryContractAddress
     );
   });
 
   describe("Deployment Fail", () => {
     it("Timestamp less than current time", async () => {
-      let categoryContract = await ethers.getContractFactory("Category");
-      let deployedCategoryContract = await categoryContract.deploy();
+      const categoryContractAddress = await categoryContractHandler(false);
 
       const campaignContract = await ethers.getContractFactory("Campaign");
       const contract = campaignContract.deploy(
@@ -52,16 +47,15 @@ describe("Campaign Contract", function () {
         IMAGE,
         TARGET_AMOUNT,
         TARGET_TIMESTAMP - 10000,
-        await deployedCategoryContract.getAddress()
+        categoryContractAddress
       );
       await expect(contract).to.be.rejectedWith(
         "Target timestamp must be greater than current time !!'"
       );
     });
 
-    it("Timestamp less than current time", async () => {
-      let categoryContract = await ethers.getContractFactory("Category");
-      let deployedCategoryContract = await categoryContract.deploy();
+    it("Category doesn't exists", async () => {
+      const categoryContractAddress = await categoryContractHandler(false);
 
       const campaignContract = await ethers.getContractFactory("Campaign");
       const contract = campaignContract.deploy(
@@ -71,7 +65,7 @@ describe("Campaign Contract", function () {
         IMAGE,
         TARGET_AMOUNT,
         TARGET_TIMESTAMP,
-        await deployedCategoryContract.getAddress()
+        categoryContractAddress
       );
       await expect(contract).to.be.rejectedWith("Category doesn't exists !!'");
     });
