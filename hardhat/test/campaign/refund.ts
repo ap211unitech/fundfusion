@@ -85,7 +85,7 @@ describe("Campaign Contract", function () {
     const categoryContractAddress = await categoryContractHandler(true);
 
     const campaignContract = await ethers.getContractFactory("Campaign");
-    const TARGET_TIMESTAMP = Math.floor(new Date().getTime() / 1000) + 30;
+    const TARGET_TIMESTAMP = Math.floor(new Date().getTime() / 1000) + 60;
     contract = await campaignContract.deploy(
       TITLE,
       CATEGORY,
@@ -114,7 +114,7 @@ describe("Campaign Contract", function () {
   describe("Refund process", () => {
     let tx: ContractTransactionResponse;
     it("Should change contract balance", async () => {
-      await sleep(30);
+      await sleep(50);
       tx = await contract.connect(donator).getRefund();
       await tx.wait();
 
@@ -127,7 +127,7 @@ describe("Campaign Contract", function () {
     });
 
     it("Should change donator balance", async () => {
-      await sleep(20);
+      await sleep(50);
       await contract.connect(donator).getRefund();
 
       const newContributorBalance = await ethers.provider.getBalance(
