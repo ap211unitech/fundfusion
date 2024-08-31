@@ -23,7 +23,7 @@ describe("Campaign Contract", function () {
     const categoryContractAddress = await categoryContractHandler(true);
 
     const campaignContract = await ethers.getContractFactory("Campaign");
-    const TARGET_TIMESTAMP = Math.floor(new Date().getTime() / 1000) + 20;
+    const TARGET_TIMESTAMP = Math.floor(new Date().getTime() / 1000) + 60;
     contract = await campaignContract.deploy(
       TITLE,
       CATEGORY,
@@ -54,7 +54,7 @@ describe("Campaign Contract", function () {
     });
 
     it("Should not delete if deadline passed", async () => {
-      await sleep(25);
+      await sleep(50);
       let tx = contract.deleteCampaign();
       await expect(tx).to.be.rejectedWith(
         "Campaign is no longer valid. Deadline passed now !!"

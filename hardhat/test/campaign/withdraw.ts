@@ -22,7 +22,7 @@ describe("Campaign Contract", function () {
 
     const categoryContractAddress = await categoryContractHandler(true);
 
-    const CURRENT_TIMESTAMP = Math.floor(new Date().getTime() / 1000);
+    const CURRENT_TIMESTAMP = Math.floor(new Date().getTime() / 1000) + 10;
     const campaignContract = await ethers.getContractFactory("Campaign");
     contract = await campaignContract.deploy(
       TITLE,
@@ -30,7 +30,7 @@ describe("Campaign Contract", function () {
       DESCRIPTION,
       IMAGE,
       TARGET_AMOUNT,
-      CURRENT_TIMESTAMP + 10,
+      CURRENT_TIMESTAMP,
       categoryContractAddress
     );
 
@@ -70,7 +70,7 @@ describe("Campaign Contract", function () {
     [deployer] = await ethers.getSigners();
     const categoryContractAddress = await categoryContractHandler(true);
 
-    const CURRENT_TIMESTAMP = Math.floor(new Date().getTime() / 1000);
+    const CURRENT_TIMESTAMP = Math.floor(new Date().getTime() / 1000) + 60;
     const campaignContract = await ethers.getContractFactory("Campaign");
     contract = await campaignContract.deploy(
       TITLE,
@@ -78,7 +78,7 @@ describe("Campaign Contract", function () {
       DESCRIPTION,
       IMAGE,
       TARGET_AMOUNT,
-      CURRENT_TIMESTAMP + 30,
+      CURRENT_TIMESTAMP,
       categoryContractAddress
     );
 
@@ -96,7 +96,7 @@ describe("Campaign Contract", function () {
     // Get Deployer balance before
     balanceBefore = await ethers.provider.getBalance(deployer.address);
 
-    await sleep(30);
+    await sleep(60);
     // Withdraw
     tx = await contract.withdraw();
     await tx.wait();
