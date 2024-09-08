@@ -1,4 +1,4 @@
-import { Clock3 } from "lucide-react";
+import { Clock3, Users } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -15,6 +15,7 @@ const campaign = {
     "https://i.kickstarter.com/assets/046/155/467/569a3806003cd69d311dc2fb9b225a10_original.png?anim=false&fit=cover&gravity=auto&height=576&origin=ugc&q=92&width=1024&sig=r0BNKAM8fwQ5EJVdGTeZ5NWYcIts6rYMdtY3tnWWXkY%3D",
   targetAmount: 10,
   targetTimestamp: Math.floor(new Date().getTime() / 1000) + 4 * 90000,
+  contributors: 23,
 };
 
 export const Campaign = () => {
@@ -31,10 +32,16 @@ export const Campaign = () => {
           {campaign.category}
         </Badge>
         <h2 className="text-lg group-hover:text-primary">{campaign.title}</h2>
-        <p className="flex items-center gap-2 text-muted-foreground text-sm">
-          <Clock3 className="w-4 h-4" />
-          {daysLeft(campaign.targetTimestamp)} days left
-        </p>
+        <div className="flex items-center justify-between text-muted-foreground text-sm">
+          <p className="flex items-center gap-2">
+            <Clock3 className="w-4 h-4" />
+            {daysLeft(campaign.targetTimestamp)} days left
+          </p>
+          <p className="flex items-center gap-2">
+            <Users className="w-4 h-4" />
+            {campaign.contributors} contributors
+          </p>
+        </div>
       </div>
     </Link>
   );
