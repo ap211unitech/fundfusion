@@ -24,10 +24,10 @@ export const Campaign = () => {
       href={`/campaign?id=${campaign.address}`}
       className="flex flex-col border rounded-md cursor-pointer group overflow-hidden shadow-md"
     >
-      <div className="relative h-[280px] bg-primary">
+      <div className="relative h-[280px]">
         <Image alt={campaign.title} src={campaign.image} layout="fill" />
       </div>
-      <div className="p-4 space-y-2">
+      <div className="p-4 space-y-3">
         <Badge className="rounded-full font-medium mb-1">
           {campaign.category}
         </Badge>

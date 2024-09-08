@@ -11,11 +11,13 @@ const font = Unbounded({
 
 export const Logo = () => {
   return (
-    <Link href="/" className="flex items-center gap-1">
-      <Ethereum className="[&_path]:fill-primary w-10 h-10" />
+    <Link href="/" className="flex items-center gap-1 space-x-1">
+      <div className="border rounded-full bg-primary w-10 h-10 p-0.5">
+        <Ethereum className="[&_path]:fill-primary-foreground w-full h-full" />
+      </div>
       <h3
         className={classNames(
-          "hidden text-2xl tracking-wide font-light sm:inline-block",
+          "hidden text-2xl tracking-wide font-light sm:inline-block text-primary",
           font.className
         )}
       >
