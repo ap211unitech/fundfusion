@@ -18,20 +18,20 @@ const categories = ["Art", "Comic", "Technology", "Gaming"];
 export const Header = () => {
   return (
     <div className="border-b py-6">
-      <div className="flex justify-between items-center container mx-auto">
+      <div className="flex justify-between items-center xl:container px-2 sm:px-4 xl:px-10 mx-auto">
         <div className="flex items-center gap-1">
           <Link href="/" className="flex items-center gap-1">
             <Ethereum className="[&_path]:fill-primary w-10 h-10" />
             <h3
               className={classNames(
-                "text-2xl tracking-wide font-light",
+                "hidden text-2xl tracking-wide font-light sm:inline-block",
                 font.className
               )}
             >
               FundFusion
             </h3>
           </Link>
-          <div className="flex gap-8 ml-8">
+          <div className="hidden lg:flex gap-8 ml-8">
             {categories.map((c) => {
               return (
                 <Link
