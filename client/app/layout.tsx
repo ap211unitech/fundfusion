@@ -26,7 +26,7 @@ export default function RootLayout({
       <body className={font.className}>
         <Provider>
           <Header />
-          {children}
+          <div className="min-h-[70vh]">{children}</div>
           <Footer />
         </Provider>
       </body>
