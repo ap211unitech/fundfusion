@@ -1,6 +1,6 @@
 import { SVGProps } from "react";
 
-export const Ethereum = (props: SVGProps<SVGSVGElement>) => (
+export const Logo = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     xmlSpace="preserve"
