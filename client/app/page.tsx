@@ -1,3 +1,5 @@
+import { Landing } from "@/components/landing";
+
 export default function Page() {
-  return <h1>Fund Fusion</h1>;
+  return <Landing />;
 }
