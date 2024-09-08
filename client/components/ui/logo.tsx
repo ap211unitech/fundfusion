@@ -1,0 +1,26 @@
+import Link from "next/link";
+import classNames from "classnames";
+import { Unbounded } from "next/font/google";
+
+import { Ethereum } from "@/icons";
+
+const font = Unbounded({
+  subsets: ["cyrillic-ext"],
+  weight: ["200", "300", "400"],
+});
+
+export const Logo = () => {
+  return (
+    <Link href="/" className="flex items-center gap-1">
+      <Ethereum className="[&_path]:fill-primary w-10 h-10" />
+      <h3
+        className={classNames(
+          "hidden text-2xl tracking-wide font-light sm:inline-block",
+          font.className
+        )}
+      >
+        FundFusion
+      </h3>
+    </Link>
+  );
+};

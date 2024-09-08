@@ -1,17 +1,8 @@
-import { Unbounded } from "next/font/google";
-import classNames from "classnames";
 import Link from "next/link";
-
-import { Button } from "../button";
 
 import { Theme } from "./theme";
 
-import { Ethereum } from "@/icons";
-
-const font = Unbounded({
-  subsets: ["cyrillic-ext"],
-  weight: ["200", "300", "400"],
-});
+import { Button, Logo } from "@/components/ui";
 
 const categories = ["Art", "Comic", "Technology", "Gaming"];
 
@@ -20,17 +11,7 @@ export const Header = () => {
     <div className="border-b py-6">
       <div className="flex justify-between items-center xl:container px-2 sm:px-4 xl:px-10 mx-auto">
         <div className="flex items-center gap-1">
-          <Link href="/" className="flex items-center gap-1">
-            <Ethereum className="[&_path]:fill-primary w-10 h-10" />
-            <h3
-              className={classNames(
-                "hidden text-2xl tracking-wide font-light sm:inline-block",
-                font.className
-              )}
-            >
-              FundFusion
-            </h3>
-          </Link>
+          <Logo />
           <div className="hidden lg:flex gap-8 ml-8">
             {categories.map((c) => {
               return (
