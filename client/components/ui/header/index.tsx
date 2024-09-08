@@ -9,7 +9,7 @@ const categories = ["Art", "Comic", "Technology", "Gaming"];
 export const Header = () => {
   return (
     <div className="border-b py-6">
-      <div className="flex justify-between items-center xl:container px-2 sm:px-4 xl:px-10 mx-auto">
+      <div className="flex justify-between items-center xl:container px-4 xl:px-10 mx-auto">
         <div className="flex items-center gap-1">
           <Logo />
           <div className="hidden lg:flex gap-8 ml-8">

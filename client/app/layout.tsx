@@ -26,7 +26,9 @@ export default function RootLayout({
       <body className={font.className}>
         <Provider>
           <Header />
-          <div className="min-h-[70vh]">{children}</div>
+          <div className="min-h-[70vh] xl:container px-4 sm:px-10 mx-auto">
+            {children}
+          </div>
           <Footer />
         </Provider>
       </body>

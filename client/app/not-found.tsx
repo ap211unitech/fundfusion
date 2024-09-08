@@ -10,7 +10,7 @@ const font = Unbounded({
 
 const NotFound = () => {
   return (
-    <div className="mx-auto container px-4 sm:px-10 flex flex-col md:flex-row items-center md:items-start justify-center gap-16 py-10">
+    <div className="flex flex-col md:flex-row items-center md:items-start justify-center md:gap-16 py-10">
       <div>
         <TriangleAlert className="w-[18rem] h-[18rem] xl:w-[25rem] xl:h-[25rem] stroke-primary" />
       </div>
@@ -23,9 +23,11 @@ const NotFound = () => {
         >
           404
         </h1>
-        <h2 className="text-4xl text-primary">Oops! Page Not Found</h2>
+        <h2 className="text-2xl sm:text-4xl text-primary">
+          Oops! Page Not Found
+        </h2>
         <div className="space-y-4 flex flex-col items-center md:items-start">
-          <div>
+          <div className="text-center md:text-left">
             It looks like the page you&apos;re trying to reach doesn&apos;t
             exist or has been moved.
           </div>
