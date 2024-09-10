@@ -1,7 +1,6 @@
 import { ethers } from "ethers";
 
-import { CATEGORY_CONTRACT } from "@/constants";
-import { categoryabi } from "@/constants/abi/category";
+import { CATEGORY_CONTRACT, categoryabi } from "@/constants";
 import { getProvider } from "@/lib/utils";
 
 export const getAllCategories = async () => {
