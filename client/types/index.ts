@@ -15,4 +15,5 @@ export type Campaign = CampaignMetadata & {
   address: string;
   fundWithdrawanByOwner: boolean;
   totalRaisedAmount: number;
+  contributors: number;
 };
