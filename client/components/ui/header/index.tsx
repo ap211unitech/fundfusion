@@ -1,22 +1,9 @@
-import { ethers } from "ethers";
 import Link from "next/link";
 
 import { Theme } from "./theme";
 
-import { getProvider } from "@/lib/utils";
 import { Button, Logo } from "@/components/ui";
-import { CATEGORY_CONTRACT } from "@/constants";
-import { categoryabi } from "@/constants/abi/category";
-
-const getAllCategories = async () => {
-  const provider = getProvider();
-  const contract = new ethers.Contract(
-    CATEGORY_CONTRACT,
-    categoryabi,
-    provider
-  );
-  return (await contract.getCategories()) as string[];
-};
+import { getAllCategories } from "@/fetchers";
 
 export const Header = async () => {
   const categories = await getAllCategories();
