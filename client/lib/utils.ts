@@ -1,3 +1,4 @@
+import { ethers } from "ethers";
 import moment from "moment";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -10,4 +11,9 @@ export const daysLeft = (timestamp: number) => {
   const eventdate = moment(timestamp * 1000);
   const todaysdate = moment();
   return eventdate.diff(todaysdate, "days");
+};
+
+export const getProvider = () => {
+  const provider = new ethers.JsonRpcProvider("http://localhost:8545");
+  return provider;
 };
