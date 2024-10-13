@@ -10,10 +10,10 @@ export const Header = async () => {
 
   return (
     <div className="border-b py-6">
-      <div className="flex justify-between items-center xl:container px-4 xl:px-10 mx-auto">
+      <div className="mx-auto flex items-center justify-between px-4 xl:container xl:px-10">
         <div className="flex items-center gap-1">
           <Logo />
-          <div className="hidden lg:flex gap-8 ml-8">
+          <div className="ml-8 hidden gap-8 lg:flex">
             {categories.map((c) => {
               return (
                 <Link

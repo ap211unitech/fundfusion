@@ -10,25 +10,25 @@ export const Campaign = ({ campaign }: { campaign: CampaignType }) => {
   return (
     <Link
       href={`/campaign?id=${campaign.address}`}
-      className="flex flex-col border rounded-md cursor-pointer group overflow-hidden shadow-md"
+      className="group flex cursor-pointer flex-col overflow-hidden rounded-md border shadow-md"
     >
       <div className="relative h-[280px]">
         <Image alt={campaign.title} src={campaign.image} layout="fill" />
       </div>
-      <div className="p-4 space-y-3">
-        <Badge className="rounded-full font-medium mb-1">
+      <div className="space-y-3 p-4">
+        <Badge className="mb-1 rounded-full font-medium">
           {campaign.category}
         </Badge>
-        <h2 className="text-lg group-hover:text-primary line-clamp-2">
+        <h2 className="line-clamp-2 text-lg group-hover:text-primary">
           {campaign.title}
         </h2>
-        <div className="flex items-center justify-between text-muted-foreground text-sm">
+        <div className="flex items-center justify-between text-sm text-muted-foreground">
           <p className="flex items-center gap-2">
-            <Clock3 className="w-4 h-4" />
+            <Clock3 className="h-4 w-4" />
             {daysLeft(campaign.targetTimestamp)} days left
           </p>
           <p className="flex items-center gap-2">
-            <Users className="w-4 h-4" />
+            <Users className="h-4 w-4" />
             {campaign.contributors || 0} contributors
           </p>
         </div>

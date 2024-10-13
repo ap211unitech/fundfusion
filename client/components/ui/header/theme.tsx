@@ -18,8 +18,8 @@ export const Theme = () => {
         else setTheme("dark");
       }}
     >
-      <Sun className="w-5 h-5 hidden dark:block" />
-      <Moon className="w-5 h-5 block dark:hidden" />
+      <Sun className="hidden h-5 w-5 dark:block" />
+      <Moon className="block h-5 w-5 dark:hidden" />
     </Button>
   );
 };

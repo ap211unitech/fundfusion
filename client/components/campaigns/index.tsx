@@ -20,11 +20,11 @@ export const Campaigns = async ({
 
   return (
     <div className="space-y-10 py-12">
-      <h1 className="text-2xl font-medium flex items-center gap-2 text-primary">
+      <h1 className="flex items-center gap-2 text-2xl font-medium text-primary">
         <Telescope /> Discover Campaigns in {category}
       </h1>
       {campaignsForCategory.length > 0 ? (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {campaignsForCategory.map((campaign) => {
             return <Campaign campaign={campaign} key={campaign.address} />;
           })}

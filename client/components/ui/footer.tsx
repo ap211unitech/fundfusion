@@ -5,13 +5,13 @@ import { Logo } from "./logo";
 
 export const Footer = () => {
   return (
-    <div className="bg-accent dark:bg-black min-h-[14rem]">
-      <div className="xl:container px-4 sm:p-10 mx-auto flex items-center justify-between">
+    <div className="min-h-[14rem] bg-accent dark:bg-black">
+      <div className="mx-auto flex items-center justify-between px-4 xl:container sm:p-10">
         <div className="flex flex-col gap-3">
           <Logo />
-          <p className="flex items-center opacity-50 ml-2">
+          <p className="ml-2 flex items-center opacity-50">
             {new Date().getFullYear()}
-            <Copyright className="w-4 h-4 mx-1" /> FundFusion. All rights
+            <Copyright className="mx-1 h-4 w-4" /> FundFusion. All rights
             reserved.
           </p>
         </div>

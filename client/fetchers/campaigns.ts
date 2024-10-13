@@ -9,7 +9,7 @@ export const getAllDeployedCampaigns = async (): Promise<Campaign[]> => {
   const fundfusionContract = new ethers.Contract(
     FUNDFUSION_CONTRACT,
     fundfusionabi,
-    provider
+    provider,
   );
   const campaigns =
     (await fundfusionContract.getAllDeployedCampaigns()) as string[];
@@ -18,11 +18,11 @@ export const getAllDeployedCampaigns = async (): Promise<Campaign[]> => {
     const campaignContract = new ethers.Contract(
       campaignAddress,
       campaignabi,
-      provider
+      provider,
     );
 
     const totalRaisedAmount = +ethers.formatEther(
-      await provider.getBalance(campaignAddress)
+      await provider.getBalance(campaignAddress),
     );
     const fundWithdrawanByOwner =
       (await campaignContract.fundWithdrawanByOwner()) as boolean;

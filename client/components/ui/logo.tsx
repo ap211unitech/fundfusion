@@ -12,13 +12,13 @@ const font = Unbounded({
 export const Logo = () => {
   return (
     <Link href="/" className="flex items-center gap-1 space-x-1">
-      <div className="border rounded-full bg-primary w-10 h-10 p-0.5">
-        <LogoIcon className="[&_path]:fill-primary-foreground w-full h-full" />
+      <div className="h-10 w-10 rounded-full border bg-primary p-0.5">
+        <LogoIcon className="h-full w-full [&_path]:fill-primary-foreground" />
       </div>
       <h3
         className={classNames(
-          "hidden text-2xl tracking-wide font-light sm:inline-block text-primary",
-          font.className
+          "hidden text-2xl font-light tracking-wide text-primary sm:inline-block",
+          font.className,
         )}
       >
         FundFusion

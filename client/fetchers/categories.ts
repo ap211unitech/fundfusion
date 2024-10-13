@@ -8,7 +8,7 @@ export const getAllCategories = async () => {
   const contract = new ethers.Contract(
     CATEGORY_CONTRACT,
     categoryabi,
-    provider
+    provider,
   );
   return (await contract.getCategories()) as string[];
 };
