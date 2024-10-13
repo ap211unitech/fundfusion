@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 
 import { ThemeProvider } from "./themeProvider";
+import { WalletConnectProvider } from "./walletConnect";
 
 export const Provider = ({ children }: { children: ReactNode }) => {
   return (
@@ -10,7 +11,7 @@ export const Provider = ({ children }: { children: ReactNode }) => {
       enableSystem
       disableTransitionOnChange
     >
-      {children}
+      <WalletConnectProvider>{children}</WalletConnectProvider>
     </ThemeProvider>
   );
 };
