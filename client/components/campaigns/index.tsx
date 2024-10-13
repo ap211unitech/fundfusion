@@ -23,11 +23,15 @@ export const Campaigns = async ({
       <h1 className="text-2xl font-medium flex items-center gap-2 text-primary">
         <Telescope /> Discover Campaigns in {category}
       </h1>
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {campaignsForCategory.map((campaign) => {
-          return <Campaign campaign={campaign} key={campaign.address} />;
-        })}
-      </div>
+      {campaignsForCategory.length > 0 ? (
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {campaignsForCategory.map((campaign) => {
+            return <Campaign campaign={campaign} key={campaign.address} />;
+          })}
+        </div>
+      ) : (
+        <h2>No active campaigns in this category</h2>
+      )}
     </div>
   );
 };
