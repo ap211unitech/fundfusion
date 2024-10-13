@@ -13,7 +13,12 @@ export const Campaign = ({ campaign }: { campaign: CampaignType }) => {
       className="group flex cursor-pointer flex-col overflow-hidden rounded-md border shadow-md"
     >
       <div className="relative h-[280px]">
-        <Image alt={campaign.title} src={campaign.image} layout="fill" />
+        <Image
+          fill
+          alt={campaign.title}
+          src={campaign.image}
+          style={{ objectFit: "cover" }}
+        />
       </div>
       <div className="space-y-3 p-4">
         <Badge className="mb-1 rounded-full font-medium">
