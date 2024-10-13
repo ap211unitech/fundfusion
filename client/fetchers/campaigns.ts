@@ -54,3 +54,8 @@ export const getAllDeployedCampaigns = async (): Promise<Campaign[]> => {
 
   return Promise.all(response);
 };
+
+export const getCampaignsForCategory = async (category: string) => {
+  const allDeployedCampaigns = await getAllDeployedCampaigns();
+  return allDeployedCampaigns.filter((c) => c.category === category);
+};
