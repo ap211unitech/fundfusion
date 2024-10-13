@@ -1,6 +1,6 @@
 import { Copyright } from "lucide-react";
 
-import { Theme } from "./header/theme";
+import { Theme } from "./theme";
 import { Logo } from "./logo";
 
 export const Footer = () => {

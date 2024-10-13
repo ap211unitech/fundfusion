@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { Theme } from "./theme";
+import { Theme } from "../theme";
 
 import { Button, Logo } from "@/components/ui";
 import { getAllCategories } from "@/fetchers";
