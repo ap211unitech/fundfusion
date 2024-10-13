@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { Theme } from "../theme";
 
-import { Button, Logo } from "@/components/ui";
+import { ConnectWallet, Logo } from "@/components/ui";
 import { getAllCategories } from "@/fetchers";
 
 export const Header = async () => {
@@ -29,7 +29,7 @@ export const Header = async () => {
         </div>
         <div className="flex items-center gap-4">
           <Theme />
-          <Button>Connect Wallet</Button>
+          <ConnectWallet />
         </div>
       </div>
     </div>
