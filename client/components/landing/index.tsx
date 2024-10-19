@@ -1,7 +1,7 @@
 import { getAllDeployedCampaigns } from "@/fetchers";
+import { Telescope } from "lucide-react";
 
 import { Campaign } from "./campaign";
-import { Telescope } from "lucide-react";
 
 export const Landing = async () => {
   const campaigns = await getAllDeployedCampaigns();
