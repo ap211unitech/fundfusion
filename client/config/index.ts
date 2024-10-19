@@ -4,6 +4,7 @@ import { AppKitNetwork, hardhat, sepolia } from "@reown/appkit/networks";
 
 export const CONFIG = {
   REOWN_PROJECT_ID: process.env.NEXT_PUBLIC_REOWN_PROJECT_ID as string,
+  IN_PRODUCTION: process.env.NODE_ENV === "production",
 };
 
 /******************************* WalletConnect Modal config *******************************/
@@ -12,10 +13,8 @@ const projectId = CONFIG.REOWN_PROJECT_ID;
 if (!projectId) {
   throw new Error("Reown Project ID is not defined");
 }
-const SUPPORTED_NETWORKS: [AppKitNetwork, ...AppKitNetwork[]] = [
-  hardhat,
-  sepolia,
-];
+const SUPPORTED_NETWORKS: [AppKitNetwork, ...AppKitNetwork[]] =
+  CONFIG.IN_PRODUCTION ? [sepolia] : [hardhat];
 
 //Set up the Wagmi Adapter (Config)
 const WAGMI_ADAPTER = new WagmiAdapter({
