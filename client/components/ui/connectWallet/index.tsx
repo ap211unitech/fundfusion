@@ -62,7 +62,7 @@ export const ConnectWallet = () => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="[&_a]:cursor-pointer">
-            <DropdownMenuItem onClick={() => open()}>
+            <DropdownMenuItem onClick={() => open()} className="cursor-pointer">
               {walletInfo?.icon && walletInfo.name ? (
                 <Image
                   src={walletInfo?.icon}
