@@ -73,7 +73,7 @@ export const ConnectWallet = () => {
               ) : (
                 <CircleHelp className="h-4 w-4 stroke-primary" />
               )}
-              Wallet Info
+              My Wallet Info
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <Link href="/createCampaign">
