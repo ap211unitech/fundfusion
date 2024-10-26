@@ -46,52 +46,52 @@ Make sure you have the following installed:
 
 1. Clone the repository:
 
-    ```bash
-    git clone https://github.com/ap211unitech/fundfusion.git
-    cd fundfusion
-    ```
+   ```bash
+   git clone https://github.com/ap211unitech/fundfusion.git
+   cd fundfusion
+   ```
 
 2. Install the dependencies:
 
-    ```bash
-    cd client && yarn install
-    ```
-    
-    ```bash
-    cd hardhat && yarn install
-    ```
+   ```bash
+   cd client && yarn install
+   ```
+
+   ```bash
+   cd hardhat && yarn install
+   ```
 
 3. Compile the smart contracts:
 
-    ```bash
-    cd hardhat && yarn hardhat compile
-    ```
+   ```bash
+   cd hardhat && yarn hardhat compile
+   ```
 
 4. Deploy the smart contract:
 
-    ```bash
-    npx hardhat vars set ETHERSCAN_API_KEY 
-    ```
+   ```bash
+   npx hardhat vars set ETHERSCAN_API_KEY
+   ```
 
-    ```bash
-    npx hardhat vars set ALCHEMY_KEY 
-    ```
+   ```bash
+   npx hardhat vars set ALCHEMY_KEY
+   ```
 
-    ```bash
-    npx hardhat vars set SEPOLIA_ACCOUNT_PRIVATE_KEY 
-    ```
+   ```bash
+   npx hardhat vars set SEPOLIA_ACCOUNT_PRIVATE_KEY
+   ```
 
-    ```bash
-    cd hardhat && yarn hardhat run ./scripts/deploy.js --network sepolia
-    ```
+   ```bash
+   cd hardhat && yarn hardhat run ./scripts/deploy.js --network sepolia
+   ```
 
 5. Start the build server:
 
-    ```bash
-    cd client
-    yarn build
-    yarn start
-    ```
+   ```bash
+   cd client
+   yarn build
+   yarn start
+   ```
 
 6. Open your browser and navigate to `http://localhost:3000`.
 
@@ -118,10 +118,13 @@ Contributions are welcome! Please fork the repository and submit a pull request.
 5. Open a pull request
 
 ## See Live
+
 https://fundfusion.vercel.app/
 
 ## Reach me out
+
 porwalarjun95@gmail.com
 
 ## Connect with me
+
 https://www.linkedin.com/in/arjun-porwal-9198b71a3/
