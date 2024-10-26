@@ -8,9 +8,23 @@ import {
 } from "@reown/appkit/react";
 import Image from "next/image";
 import { useMemo } from "react";
-import { ChevronDown, CircleHelp, Loader2 } from "lucide-react";
+import Link from "next/link";
+import {
+  ChevronDown,
+  CircleHelp,
+  Coins,
+  Loader2,
+  Plus,
+  StickyNote,
+} from "lucide-react";
 
-import { Button } from "@/components/ui";
+import {
+  Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui";
 import { trimAccount } from "@/lib/utils";
 
 export const ConnectWallet = () => {
@@ -25,28 +39,63 @@ export const ConnectWallet = () => {
 
   if (isConnected && !!address) {
     return (
-      <Button
-        variant="outline"
-        className="flex items-center gap-2"
-        onClick={() => open()}
-      >
-        <div>
-          {walletInfo?.icon && walletInfo.name ? (
-            <Image
-              src={walletInfo?.icon}
-              alt={walletInfo?.name}
-              width={22}
-              height={22}
-            />
-          ) : (
-            <CircleHelp className="h-5 w-5 stroke-primary" />
-          )}
-        </div>
-        <div className="flex items-center gap-1">
-          <p>{trimAccount(address)}</p>
-          <ChevronDown className="h-4 w-4" />
-        </div>
-      </Button>
+      <>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" className="flex items-center gap-2">
+              <div>
+                {walletInfo?.icon && walletInfo.name ? (
+                  <Image
+                    src={walletInfo?.icon}
+                    alt={walletInfo?.name}
+                    width={22}
+                    height={22}
+                  />
+                ) : (
+                  <CircleHelp className="h-5 w-5 stroke-primary" />
+                )}
+              </div>
+              <div className="flex items-center gap-1">
+                <p>{trimAccount(address)}</p>
+                <ChevronDown className="h-4 w-4" />
+              </div>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="[&_a]:cursor-pointer">
+            <DropdownMenuItem onClick={() => open()}>
+              {walletInfo?.icon && walletInfo.name ? (
+                <Image
+                  src={walletInfo?.icon}
+                  alt={walletInfo?.name}
+                  width={16}
+                  height={16}
+                />
+              ) : (
+                <CircleHelp className="h-4 w-4 stroke-primary" />
+              )}
+              Wallet Info
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href="/createCampaign">
+                <Plus className="h-4 w-4 stroke-primary stroke-[2.5px]" />
+                Create Campaign
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href="/myCampaigns">
+                <StickyNote className="h-4 w-4 stroke-primary stroke-[2.5px]" />
+                My Campaigns
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href="/myDonations">
+                <Coins className="h-4 w-4 stroke-primary stroke-[2.5px]" />
+                My Donations
+              </Link>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </>
     );
   }
 
