@@ -48,8 +48,8 @@ export const ConnectWallet = () => {
                   <Image
                     src={walletInfo?.icon}
                     alt={walletInfo?.name}
-                    width={22}
-                    height={22}
+                    width={18}
+                    height={18}
                   />
                 ) : (
                   <CircleHelp className="h-5 w-5 stroke-primary" />

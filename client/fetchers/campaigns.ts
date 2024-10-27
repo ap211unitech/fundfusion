@@ -1,13 +1,14 @@
 import { ethers } from "ethers";
 
-import { campaignabi, FUNDFUSION_CONTRACT, fundfusionabi } from "@/constants";
+import { campaignabi, fundfusionabi } from "@/constants";
 import { getProvider } from "@/lib/utils";
 import { Campaign, CampaignMetadata } from "@/types";
+import { CONFIG } from "@/config";
 
 export const getAllDeployedCampaigns = async (): Promise<Campaign[]> => {
   const provider = getProvider();
   const fundfusionContract = new ethers.Contract(
-    FUNDFUSION_CONTRACT,
+    CONFIG.FUNDFUSION_CONTRACT,
     fundfusionabi,
     provider,
   );

@@ -1,12 +1,25 @@
 import { ethers } from "ethers";
 
-import { CATEGORY_CONTRACT, categoryabi } from "@/constants";
+import { categoryabi } from "@/constants";
 import { getProvider } from "@/lib/utils";
+import { CONFIG } from "@/config";
 
+// Check if an address can perform action related to Category contract
+export const isCategoryAdmin = async (accountAddress: string) => {
+  const provider = getProvider();
+  const contract = new ethers.Contract(
+    CONFIG.CATEGORY_CONTRACT,
+    categoryabi,
+    provider,
+  );
+  return (await contract.owner()).toString() === accountAddress;
+};
+
+// Get all categories from Category contract
 export const getAllCategories = async () => {
   const provider = getProvider();
   const contract = new ethers.Contract(
-    CATEGORY_CONTRACT,
+    CONFIG.CATEGORY_CONTRACT,
     categoryabi,
     provider,
   );
