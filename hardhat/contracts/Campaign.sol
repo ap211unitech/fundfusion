@@ -80,6 +80,7 @@ contract Campaign {
     }
 
     constructor(
+        address _owner,
         string memory _title,
         string memory _category,
         string memory _description,
@@ -104,7 +105,7 @@ contract Campaign {
         image = _image;
         targetAmount = _targetAmount;
         targetTimestamp = _targetTimestamp;
-        owner = msg.sender;
+        owner = _owner;
         status = CAMPAIGN_STATUS.ACTIVE;
         fundWithdrawanByOwner = false;
         totalRaisedAmount = 0;

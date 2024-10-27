@@ -29,6 +29,7 @@ contract FundFusion {
         address _categoryContractAddress
     ) public {
         Campaign campaign = new Campaign(
+            msg.sender,
             _title,
             _category,
             _description,

@@ -5,6 +5,8 @@ import { SearchParams } from "@/types";
 import { getCampaignData } from "@/fetchers";
 import { Badge } from "@/components/ui";
 
+import { Actions } from "./actions";
+
 export const Campaign = async ({
   searchParams,
 }: {
@@ -28,10 +30,13 @@ export const Campaign = async ({
           style={{ objectFit: "cover" }}
         />
       </div>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-4">
         <h1 className="text-2xl text-primary">{campaign.title}</h1>
         <Badge className="w-fit rounded-full">{campaign.category}</Badge>
-        <p className="text-justify opacity-40">{campaign.description}</p>
+        <p className="text-justify text-sm opacity-40">
+          {campaign.description}
+        </p>
+        <Actions campaign={campaign} />
       </div>
     </div>
   );
