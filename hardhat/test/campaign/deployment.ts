@@ -25,6 +25,7 @@ describe("Campaign Contract", function () {
 
     const campaignContract = await ethers.getContractFactory("Campaign");
     contract = await campaignContract.deploy(
+      deployer.address,
       TITLE,
       CATEGORY,
       DESCRIPTION,
@@ -41,6 +42,7 @@ describe("Campaign Contract", function () {
 
       const campaignContract = await ethers.getContractFactory("Campaign");
       const contract = campaignContract.deploy(
+        deployer.address,
         TITLE,
         CATEGORY,
         DESCRIPTION,
@@ -59,6 +61,7 @@ describe("Campaign Contract", function () {
 
       const campaignContract = await ethers.getContractFactory("Campaign");
       const contract = campaignContract.deploy(
+        deployer.address,
         TITLE,
         CATEGORY,
         DESCRIPTION,

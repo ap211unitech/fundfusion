@@ -25,6 +25,7 @@ describe("Campaign Contract", function () {
 
     const campaignContract = await ethers.getContractFactory("Campaign");
     contract = await campaignContract.deploy(
+      deployer.address,
       TITLE,
       CATEGORY,
       DESCRIPTION,

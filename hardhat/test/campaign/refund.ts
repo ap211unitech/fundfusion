@@ -21,12 +21,17 @@ describe("Campaign Contract", function () {
 
   let donator: ContractRunner | HardhatEthersSigner | null | undefined;
 
+  let deployer: { address: any };
+
   beforeEach(async () => {
+    [deployer] = await ethers.getSigners();
+
     const categoryContractAddress = await categoryContractHandler(true);
 
     const campaignContract = await ethers.getContractFactory("Campaign");
     const TARGET_TIMESTAMP = Math.floor(new Date().getTime() / 1000) + 20;
     contract = await campaignContract.deploy(
+      deployer.address,
       TITLE,
       CATEGORY,
       DESCRIPTION,
@@ -81,12 +86,17 @@ describe("Campaign Contract", function () {
   let contributorMappingBefore: bigint;
   let contractBalanceBefore: bigint;
 
+  let deployer: { address: any };
+
   beforeEach(async () => {
+    [deployer] = await ethers.getSigners();
+
     const categoryContractAddress = await categoryContractHandler(true);
 
     const campaignContract = await ethers.getContractFactory("Campaign");
     const TARGET_TIMESTAMP = Math.floor(new Date().getTime() / 1000) + 60;
     contract = await campaignContract.deploy(
+      deployer.address,
       TITLE,
       CATEGORY,
       DESCRIPTION,

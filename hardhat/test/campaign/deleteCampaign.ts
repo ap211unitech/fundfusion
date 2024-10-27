@@ -25,6 +25,7 @@ describe("Campaign Contract", function () {
     const campaignContract = await ethers.getContractFactory("Campaign");
     const TARGET_TIMESTAMP = Math.floor(new Date().getTime() / 1000) + 60;
     contract = await campaignContract.deploy(
+      (await ethers.getSigners()).at(0)?.address as string,
       TITLE,
       CATEGORY,
       DESCRIPTION,

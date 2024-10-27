@@ -25,6 +25,7 @@ describe("Campaign Contract", function () {
     const CURRENT_TIMESTAMP = Math.floor(new Date().getTime() / 1000) + 10;
     const campaignContract = await ethers.getContractFactory("Campaign");
     contract = await campaignContract.deploy(
+      deployer.address,
       TITLE,
       CATEGORY,
       DESCRIPTION,
@@ -73,6 +74,7 @@ describe("Campaign Contract", function () {
     const CURRENT_TIMESTAMP = Math.floor(new Date().getTime() / 1000) + 60;
     const campaignContract = await ethers.getContractFactory("Campaign");
     contract = await campaignContract.deploy(
+      deployer.address,
       TITLE,
       CATEGORY,
       DESCRIPTION,
