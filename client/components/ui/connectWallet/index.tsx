@@ -14,6 +14,7 @@ import {
   CircleHelp,
   Coins,
   Loader2,
+  Logs,
   Plus,
   StickyNote,
 } from "lucide-react";
@@ -26,12 +27,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui";
 import { trimAccount } from "@/lib/utils";
+import { useCategoryAdmin } from "@/hooks";
 
 export const ConnectWallet = () => {
   const { address, isConnected } = useAppKitAccount();
   const { walletInfo } = useWalletInfo();
   const { loading } = useAppKitState();
   const { open } = useAppKit();
+
+  const { data: isCategoryAdmin } = useCategoryAdmin();
 
   const connecting = useMemo(() => {
     return loading;
@@ -75,6 +79,14 @@ export const ConnectWallet = () => {
               )}
               My Wallet Info
             </DropdownMenuItem>
+            {isCategoryAdmin && (
+              <DropdownMenuItem asChild>
+                <Link href="/manageCategories">
+                  <Logs className="h-4 w-4 stroke-primary stroke-[2.5px]" />
+                  Manage categories
+                </Link>
+              </DropdownMenuItem>
+            )}
             <DropdownMenuItem asChild>
               <Link href="/createCampaign">
                 <Plus className="h-4 w-4 stroke-primary stroke-[2.5px]" />
