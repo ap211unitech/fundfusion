@@ -44,7 +44,7 @@ export const ManageCategories = async () => {
                     {category}
                   </div>
                   <div className="grid w-40 place-items-center">
-                    <EditCategory />
+                    <EditCategory category={category} />
                   </div>
                 </div>
               );
