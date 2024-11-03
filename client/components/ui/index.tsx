@@ -6,6 +6,7 @@ export * from "./input";
 export * from "./theme";
 export * from "./button";
 export * from "./badge";
+export * from "./sonner";
 export * from "./footer";
 export * from "./header";
 export * from "./dialog";

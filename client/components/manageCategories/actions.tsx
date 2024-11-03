@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Edit, Plus } from "lucide-react";
+import { Edit, Loader2, Plus } from "lucide-react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 
@@ -20,6 +20,7 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui";
+import { useAddCategory } from "@/hooks";
 
 const formSchema = z.object({
   category: z.string().nonempty("Required"),
@@ -33,8 +34,10 @@ export const CreateCategory = () => {
     },
   });
 
-  const onSubmit = ({ category }: z.infer<typeof formSchema>) => {
-    console.log(category);
+  const { mutateAsync: onAddCategory, isPending } = useAddCategory();
+
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    await onAddCategory({ ...values, cb: () => form.reset() });
   };
 
   return (
@@ -70,7 +73,23 @@ export const CreateCategory = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit">Create</Button>
+            <Button
+              type="submit"
+              disabled={isPending}
+              className="flex items-center gap-1"
+            >
+              {isPending ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Creating...
+                </>
+              ) : (
+                <>
+                  <Plus className="h-4 w-4" />
+                  Create
+                </>
+              )}
+            </Button>
           </form>
         </Form>
       </DialogContent>
