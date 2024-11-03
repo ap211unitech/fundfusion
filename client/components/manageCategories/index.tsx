@@ -13,15 +13,17 @@ export const ManageCategories = async () => {
         <Logs /> Manage all categories
       </h1>
       <div className="grid grid-cols-2 gap-6">
-        <div className="space-y-4 p-4">
-          <h2 className="flex items-center gap-2 text-xl font-medium text-primary">
-            <Plus /> Create new category
-          </h2>
-          <p className="opacity-50">
-            When you create a new category, it will be added directly to the
-            smart contract. Users will then be able to select this category when
-            they set up their campaign.
-          </p>
+        <div className="space-y-6 p-4">
+          <div className="space-y-2">
+            <h2 className="flex items-center gap-2 text-xl font-medium text-primary">
+              <Plus /> Create new category
+            </h2>
+            <p className="opacity-50">
+              When you create a new category, it will be added directly to the
+              smart contract. Users will then be able to select this category
+              when they set up their campaign.
+            </p>
+          </div>
           <CreateCategory />
         </div>
         <div className="space-y-4 p-4">

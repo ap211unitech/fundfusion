@@ -1,11 +1,12 @@
-import { Button } from "@/components/ui";
 import { Edit, Plus } from "lucide-react";
+
+import { Button } from "@/components/ui";
 
 export const CreateCategory = () => {
   return (
     <Button className="flex items-center gap-1">
       <Plus className="h-4 w-4" />
-      Create
+      Create Category
     </Button>
   );
 };
