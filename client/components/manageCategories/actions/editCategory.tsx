@@ -26,7 +26,13 @@ const formSchema = z.object({
   category: z.string().nonempty("Required"),
 });
 
-export const EditCategory = ({ category }: { category: string }) => {
+export const EditCategory = ({
+  category,
+  categoryId,
+}: {
+  category: string;
+  categoryId: number;
+}) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: { category },
@@ -34,8 +40,8 @@ export const EditCategory = ({ category }: { category: string }) => {
 
   const { mutateAsync: onEditCategory, isPending } = useEditCategory();
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    await onEditCategory({ ...values, cb: () => form.reset() });
+  const onSubmit = async ({ category }: z.infer<typeof formSchema>) => {
+    await onEditCategory({ categoryId, category, cb: () => form.reset() });
   };
 
   return (
