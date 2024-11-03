@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Edit, Loader2, Plus } from "lucide-react";
+import { Loader2, Plus } from "lucide-react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 
@@ -94,13 +94,5 @@ export const CreateCategory = () => {
         </Form>
       </DialogContent>
     </Dialog>
-  );
-};
-
-export const EditCategory = () => {
-  return (
-    <Button size="sm" className="flex items-center gap-1">
-      <Edit className="h-4 w-4" /> Edit
-    </Button>
   );
 };
