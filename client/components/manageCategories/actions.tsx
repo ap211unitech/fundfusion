@@ -50,8 +50,8 @@ export const CreateCategory = () => {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-primary">
-            <Plus className="h-4 w-4" />
+          <DialogTitle className="flex items-center gap-2 text-xl font-medium text-primary">
+            <Plus className="h-4 w-4 stroke-[3px]" />
             Create new category
           </DialogTitle>
           <DialogDescription>
