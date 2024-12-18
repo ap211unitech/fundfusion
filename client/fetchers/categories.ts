@@ -12,7 +12,10 @@ export const isCategoryAdmin = async (accountAddress: string) => {
     categoryabi,
     provider,
   );
-  return (await contract.owner()).toString() === accountAddress;
+  return (
+    ((await contract.owner()) as string).toString().toLowerCase() ===
+    accountAddress.toLowerCase()
+  );
 };
 
 // Get all categories from Category contract

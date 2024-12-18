@@ -8,24 +8,31 @@ import {
   ThemeMode,
   useAppKitTheme,
 } from "@reown/appkit/react";
-import { cookieToInitialState, WagmiProvider, type Config } from "wagmi";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { EthersAdapter } from "@reown/appkit-adapter-ethers";
+import { AppKitNetwork, hardhat, sepolia } from "@reown/appkit/networks";
 
-import { CONFIG, CONNECT_WALLET_CONFIGS } from "@/config";
+import { CONFIG } from "@/config";
+
+/******************************* WalletConnect modal config *******************************/
+
+if (!CONFIG.REOWN_PROJECT_ID) {
+  throw new Error("Reown Project ID is not defined");
+}
+const SUPPORTED_NETWORKS: [AppKitNetwork, ...AppKitNetwork[]] =
+  CONFIG.IN_PRODUCTION ? [sepolia] : [hardhat];
 
 const metadata: Metadata = {
   name: "FundFusion",
   description: "Decentralized Crowdfunding Application",
-  url: "*",
-  icons: [],
+  url: "http://localhost:3000", // origin must match your domain & subdomain
+  icons: ["http://localhost:3000"],
 };
 
 createAppKit({
-  adapters: [CONNECT_WALLET_CONFIGS.WAGMI_ADAPTER],
+  adapters: [new EthersAdapter()],
   metadata,
-  networks: CONNECT_WALLET_CONFIGS.SUPPORTED_NETWORKS,
+  networks: SUPPORTED_NETWORKS,
   projectId: CONFIG.REOWN_PROJECT_ID,
-  enableInjected: false,
   features: {
     email: false,
     socials: false,
@@ -36,14 +43,10 @@ createAppKit({
   },
 });
 
-const queryClient = new QueryClient();
-
 export const WalletConnectProvider = ({
   children,
-  cookies,
 }: {
   children: ReactNode;
-  cookies: string | null;
 }) => {
   const { theme } = useTheme();
   const { setThemeMode, setThemeVariables } = useAppKitTheme();
@@ -56,17 +59,5 @@ export const WalletConnectProvider = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [theme]);
 
-  const initialState = cookieToInitialState(
-    CONNECT_WALLET_CONFIGS.WAGMI_ADAPTER.wagmiConfig as Config,
-    cookies,
-  );
-
-  return (
-    <WagmiProvider
-      config={CONNECT_WALLET_CONFIGS.WAGMI_ADAPTER.wagmiConfig as Config}
-      initialState={initialState}
-    >
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-    </WagmiProvider>
-  );
+  return <>{children};</>;
 };

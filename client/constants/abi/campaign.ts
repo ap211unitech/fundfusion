@@ -2,6 +2,11 @@ export const campaignabi = [
   {
     inputs: [
       {
+        internalType: "address",
+        name: "_owner",
+        type: "address",
+      },
+      {
         internalType: "string",
         name: "_title",
         type: "string",

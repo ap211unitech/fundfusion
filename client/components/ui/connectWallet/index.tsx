@@ -30,7 +30,7 @@ import { trimAccount } from "@/lib/utils";
 import { useCategoryAdmin } from "@/hooks";
 
 export const ConnectWallet = () => {
-  const { address, isConnected } = useAppKitAccount();
+  const { address } = useAppKitAccount();
   const { walletInfo } = useWalletInfo();
   const { loading } = useAppKitState();
   const { open } = useAppKit();
@@ -41,7 +41,7 @@ export const ConnectWallet = () => {
     return loading;
   }, [loading]);
 
-  if (isConnected && !!address) {
+  if (!!address && !!walletInfo) {
     return (
       <>
         <DropdownMenu>
