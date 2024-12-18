@@ -12,7 +12,7 @@ export const ManageCategories = async () => {
       <h1 className="flex items-center gap-2 text-2xl font-medium text-primary">
         <Logs /> Manage all categories
       </h1>
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid gap-6 lg:grid-cols-2">
         <div className="space-y-6 p-4">
           <div className="space-y-2">
             <h2 className="flex items-center gap-2 text-xl font-medium text-primary">

@@ -1,27 +1,35 @@
+import { BrowserProvider, Contract, Eip1193Provider } from "ethers";
+import { useAppKitProvider } from "@reown/appkit/react";
 import { useMutation } from "@tanstack/react-query";
-import { ethers } from "ethers";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import { CONFIG } from "@/config";
-import { getProvider } from "@/lib/utils";
 import { categoryabi } from "@/constants";
 
 type Props = { category: string; cb?: () => void };
 
 export const useAddCategory = () => {
+  const router = useRouter();
+  const { walletProvider } = useAppKitProvider("eip155");
+
   return useMutation({
     mutationFn: async ({ category, cb }: Props) => {
-      const provider = getProvider();
-      const contract = new ethers.Contract(
+      const ethersProvider = new BrowserProvider(
+        walletProvider as Eip1193Provider,
+      );
+      const signer = await ethersProvider.getSigner();
+
+      const categoryContract = new Contract(
         CONFIG.CATEGORY_CONTRACT,
         categoryabi,
-        provider,
+        signer,
       );
 
-      // TODO: Complete it
-      const signer = await provider.getSigner();
-      const tx = await contract.createCategory(category);
+      const tx = await categoryContract.createCategory(category);
       await tx.wait();
+
+      router.refresh();
 
       cb?.();
     },

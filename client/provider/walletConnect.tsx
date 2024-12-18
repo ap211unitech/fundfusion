@@ -59,5 +59,5 @@ export const WalletConnectProvider = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [theme]);
 
-  return <>{children};</>;
+  return <>{children}</>;
 };

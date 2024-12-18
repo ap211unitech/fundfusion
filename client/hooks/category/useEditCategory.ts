@@ -1,11 +1,11 @@
+import { BrowserProvider, Contract, Eip1193Provider } from "ethers";
 import { useAppKitProvider } from "@reown/appkit/react";
 import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import { CONFIG } from "@/config";
 import { categoryabi } from "@/constants";
-import { BrowserProvider, Contract, Eip1193Provider } from "ethers";
-import { useRouter } from "next/navigation";
 
 type Props = { category: string; categoryId: number; cb?: () => void };
 

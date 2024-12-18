@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, Plus } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 import z from "zod";
 
 import {
@@ -27,6 +28,8 @@ const formSchema = z.object({
 });
 
 export const CreateCategory = () => {
+  const [open, setOpen] = useState(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -37,11 +40,17 @@ export const CreateCategory = () => {
   const { mutateAsync: onAddCategory, isPending } = useAddCategory();
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    await onAddCategory({ ...values, cb: () => form.reset() });
+    await onAddCategory({
+      ...values,
+      cb: () => {
+        form.reset();
+        setOpen(false);
+      },
+    });
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="flex items-center gap-1">
           <Plus className="h-4 w-4" />
