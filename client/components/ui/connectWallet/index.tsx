@@ -2,9 +2,8 @@
 
 import {
   useAppKit,
-  useAppKitAccount,
-  useAppKitState,
   useWalletInfo,
+  useAppKitAccount,
 } from "@reown/appkit/react";
 import Image from "next/image";
 import { useMemo } from "react";
@@ -30,16 +29,15 @@ import { trimAccount } from "@/lib/utils";
 import { useCategoryAdmin } from "@/hooks";
 
 export const ConnectWallet = () => {
-  const { address } = useAppKitAccount();
+  const { address, status } = useAppKitAccount();
   const { walletInfo } = useWalletInfo();
-  const { loading } = useAppKitState();
   const { open } = useAppKit();
 
   const { data: isCategoryAdmin } = useCategoryAdmin();
 
   const connecting = useMemo(() => {
-    return loading;
-  }, [loading]);
+    return status === "connecting";
+  }, [status]);
 
   if (!!address && !!walletInfo) {
     return (
