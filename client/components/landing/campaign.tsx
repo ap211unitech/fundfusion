@@ -10,7 +10,7 @@ export const Campaign = ({ campaign }: { campaign: CampaignType }) => {
   return (
     <Link
       href={`/campaign?id=${campaign.address}`}
-      className="group flex cursor-pointer flex-col overflow-hidden rounded-md border shadow-md"
+      className="group flex cursor-pointer flex-col overflow-hidden rounded-md border shadow-lg transition-all hover:-translate-y-2 hover:border-primary"
     >
       <div className="relative h-[280px]">
         <Image

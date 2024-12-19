@@ -22,12 +22,13 @@ export const Campaign = async ({
 
   return (
     <div className="mx-auto grid max-w-[80%] grid-cols-2 gap-10 py-12">
-      <div className="relative h-[500px] overflow-hidden rounded-md">
+      <div className="relative h-[400px] overflow-hidden rounded-md">
         <Image
           fill
           src={campaign.image}
           alt={campaign.title}
           style={{ objectFit: "cover" }}
+          className="transition-all duration-300 hover:scale-95"
         />
       </div>
       <div className="flex flex-col gap-4">
