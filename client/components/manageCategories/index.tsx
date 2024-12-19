@@ -24,7 +24,7 @@ export const ManageCategories = async () => {
               when they set up their campaign.
             </p>
           </div>
-          <CreateCategory />
+          <CreateCategory allCategories={categories} />
         </div>
         <div className="space-y-4 p-4">
           <h2 className="flex items-center gap-2 text-xl font-medium text-primary">

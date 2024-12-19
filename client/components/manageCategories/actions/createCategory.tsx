@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, Plus } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { toast } from "sonner";
 import z from "zod";
 
 import {
@@ -27,7 +28,11 @@ const formSchema = z.object({
   category: z.string().nonempty("Required"),
 });
 
-export const CreateCategory = () => {
+export const CreateCategory = ({
+  allCategories,
+}: {
+  allCategories: string[];
+}) => {
   const [open, setOpen] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -40,6 +45,14 @@ export const CreateCategory = () => {
   const { mutateAsync: onAddCategory, isPending } = useAddCategory();
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    if (
+      allCategories
+        .map((c) => c.toLowerCase())
+        .find((c) => c === values.category.toLowerCase())
+    ) {
+      return toast.error("Category already exists!");
+    }
+
     await onAddCategory({
       ...values,
       cb: () => {
