@@ -9,7 +9,7 @@ const font = Unbounded({
   weight: ["200", "300", "400"],
 });
 
-export const Logo = () => {
+export const Logo = ({ withName = true }: { withName?: boolean }) => {
   return (
     <Link href="/" className="flex items-center gap-1 space-x-1">
       <div className="h-10 w-10 rounded-full border bg-primary p-0.5">
@@ -19,6 +19,7 @@ export const Logo = () => {
         className={classNames(
           "hidden text-2xl font-light tracking-wide text-primary sm:inline-block",
           font.className,
+          !withName && "!hidden",
         )}
       >
         FundFusion

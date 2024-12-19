@@ -1,9 +1,7 @@
 import Link from "next/link";
 
-import { Theme } from "../theme";
-
-import { ConnectWallet, Logo } from "@/components/ui";
 import { getAllCategories } from "@/fetchers";
+import { ConnectWallet, Logo, Theme } from "@/components/ui";
 
 export const Header = async () => {
   const categories = await getAllCategories();
