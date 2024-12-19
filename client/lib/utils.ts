@@ -8,12 +8,12 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const daysLeft = (timestamp: number) => {
-  const eventdate = moment(timestamp * 1000);
+  const eventdate = moment(timestamp);
   const todaysdate = moment();
   return eventdate.diff(todaysdate, "days");
 };
 
-export const trimAccount = (account: string, chars: number = 8): string => {
+export const trimString = (account: string, chars: number = 8): string => {
   const keepChars = chars / 2;
   if (keepChars > account.length / 2) {
     return account;

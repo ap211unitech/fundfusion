@@ -13,7 +13,7 @@ export const Actions = ({ campaign }: { campaign: Campaign }) => {
   const isDonatable = useMemo(
     () =>
       campaign.status === "ACTIVE" &&
-      campaign.targetTimestamp > new Date().getTime() / 1000,
+      campaign.targetTimestamp > new Date().getTime(),
     [campaign.status, campaign.targetTimestamp],
   );
 
@@ -21,7 +21,7 @@ export const Actions = ({ campaign }: { campaign: Campaign }) => {
     () =>
       campaign.owner === address &&
       campaign.status === "ACTIVE" &&
-      campaign.targetTimestamp > new Date().getTime() / 1000,
+      campaign.targetTimestamp > new Date().getTime(),
     [campaign.owner, campaign.status, campaign.targetTimestamp, address],
   );
 
@@ -29,7 +29,7 @@ export const Actions = ({ campaign }: { campaign: Campaign }) => {
     () =>
       campaign.owner === address &&
       campaign.status === "ACTIVE" &&
-      campaign.targetTimestamp > new Date().getTime() / 1000,
+      campaign.targetTimestamp > new Date().getTime(),
     [campaign.owner, campaign.status, campaign.targetTimestamp, address],
   );
 

@@ -25,7 +25,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui";
-import { trimAccount } from "@/lib/utils";
+import { trimString } from "@/lib/utils";
 import { useCategoryAdmin } from "@/hooks";
 
 export const ConnectWallet = () => {
@@ -58,7 +58,7 @@ export const ConnectWallet = () => {
                 )}
               </div>
               <div className="flex items-center gap-1">
-                <p>{trimAccount(address)}</p>
+                <p>{trimString(address)}</p>
                 <ChevronDown className="h-4 w-4" />
               </div>
             </Button>

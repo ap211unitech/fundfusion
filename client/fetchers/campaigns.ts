@@ -39,7 +39,7 @@ export const getAllDeployedCampaigns = async (): Promise<Campaign[]> => {
       description: metadata[2],
       image: metadata[3],
       targetAmount: +ethers.formatEther(metadata[4]),
-      targetTimestamp: Number(metadata[5]),
+      targetTimestamp: Number(metadata[5]) * 1000,
       status: metadata[6],
     };
 
@@ -91,7 +91,7 @@ export const getCampaignData = async (
       description: metadata[2],
       image: metadata[3],
       targetAmount: +ethers.formatEther(metadata[4]),
-      targetTimestamp: Number(metadata[5]),
+      targetTimestamp: Number(metadata[5]) * 1000,
       status: metadata[6],
     };
 
