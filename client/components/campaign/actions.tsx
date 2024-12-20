@@ -19,7 +19,7 @@ export const Actions = ({ campaign }: { campaign: Campaign }) => {
 
   const isEditable = useMemo(
     () =>
-      campaign.owner === address &&
+      campaign.owner === address?.toLowerCase() &&
       campaign.status === "ACTIVE" &&
       campaign.targetTimestamp > new Date().getTime(),
     [campaign.owner, campaign.status, campaign.targetTimestamp, address],

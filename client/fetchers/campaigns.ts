@@ -27,7 +27,7 @@ export const getAllDeployedCampaigns = async (): Promise<Campaign[]> => {
     );
     const fundWithdrawanByOwner =
       (await campaignContract.fundWithdrawanByOwner()) as boolean;
-    const owner = (await campaignContract.owner()) as string;
+    const owner = ((await campaignContract.owner()) as string).toLowerCase();
 
     // TODO: Recheck it
     const contributors = await campaignContract.queryFilter("FundDonated");
@@ -77,9 +77,11 @@ export const getCampaignData = async (
     const totalRaisedAmount = +ethers.formatEther(
       await provider.getBalance(campaignContractAddress),
     );
+
     const fundWithdrawanByOwner =
       (await campaignContract.fundWithdrawanByOwner()) as boolean;
-    const owner = (await campaignContract.owner()) as string;
+
+    const owner = ((await campaignContract.owner()) as string).toLowerCase();
 
     // TODO: Recheck it
     const contributors = await campaignContract.queryFilter("FundDonated");
