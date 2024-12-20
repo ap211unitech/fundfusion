@@ -1,9 +1,10 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2, Plus } from "lucide-react";
+import { CalendarIcon, Loader2, Plus } from "lucide-react";
 import { useForm } from "react-hook-form";
 import classNames from "classnames";
+import { format } from "date-fns";
 import z from "zod";
 
 import {
@@ -11,6 +12,8 @@ import {
   Input,
   Button,
   Select,
+  Popover,
+  Calendar,
   FormItem,
   Textarea,
   FormLabel,
@@ -21,6 +24,8 @@ import {
   FormMessage,
   SelectTrigger,
   SelectContent,
+  PopoverTrigger,
+  PopoverContent,
 } from "@/components/ui";
 
 const formSchema = z.object({
@@ -28,6 +33,9 @@ const formSchema = z.object({
   category: z.string().nonempty("Required"),
   description: z.string().nonempty("Required"),
   targetAmount: z.string().nonempty("Required"),
+  targetTimestamp: z.date({
+    required_error: "Required",
+  }),
   image:
     typeof window === "undefined"
       ? z.any()
@@ -56,7 +64,7 @@ export const CreateCampaignForm = ({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-4 md:grid-cols-2 md:gap-10">
           <div className="space-y-4">
             <FormField
               control={form.control}
@@ -65,7 +73,11 @@ export const CreateCampaignForm = ({
                 <FormItem>
                   <FormLabel>Title</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input
+                      {...field}
+                      className="placeholder:opacity-50"
+                      placeholder="Duis aute irure dolor in reprehenderit"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -123,7 +135,9 @@ export const CreateCampaignForm = ({
                 </FormItem>
               )}
             />
+          </div>
 
+          <div className="space-y-5 md:space-y-6">
             <FormField
               control={form.control}
               name="targetAmount"
@@ -131,15 +145,59 @@ export const CreateCampaignForm = ({
                 <FormItem>
                   <FormLabel>Target amount</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input
+                      {...field}
+                      placeholder="0.0"
+                      className="placeholder:opacity-50"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-          </div>
 
-          <div className="h-full">
+            <FormField
+              control={form.control}
+              name="targetTimestamp"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>Target timestamp</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant={"outline"}
+                          className={classNames(
+                            "!mt-3 w-full pl-3 text-left font-normal",
+                            !field.value
+                              ? "text-muted-foreground"
+                              : "opacity-80",
+                          )}
+                        >
+                          {field.value ? (
+                            format(field.value, "PPP")
+                          ) : (
+                            <span>Pick a date</span>
+                          )}
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={field.onChange}
+                        disabled={(date) => date < new Date()}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <FormField
               control={form.control}
               name="image"
