@@ -1,5 +1,12 @@
+import { CreateCampaign } from "@/components/createCampaign";
+import { ProtectedRoute } from "@/components/ui";
+
 const Page = () => {
-  return <div>Create campaign</div>;
+  return (
+    <ProtectedRoute>
+      <CreateCampaign />
+    </ProtectedRoute>
+  );
 };
 
 export default Page;
