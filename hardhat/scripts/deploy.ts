@@ -34,15 +34,20 @@ const main = async () => {
       targetAmount,
       targetTimestamp,
     } = campaigns[i];
-    const tx = await contract.createCampaign(
-      title,
-      category,
-      description,
-      image,
-      targetAmount,
-      targetTimestamp,
-      categoryContractAddress
-    );
+
+    let signer = (await ethers.getSigners()).at(i);
+
+    const tx = await contract
+      .connect(signer)
+      .createCampaign(
+        title,
+        category,
+        description,
+        image,
+        targetAmount,
+        targetTimestamp,
+        categoryContractAddress
+      );
     await tx.wait();
     // await new Promise((resolve) => setTimeout(resolve, 2000));
   }
