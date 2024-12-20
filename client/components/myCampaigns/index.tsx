@@ -6,11 +6,14 @@ import { Loading } from "@/components/ui";
 import { useMyCampaigns } from "@/hooks";
 
 import { Campaign } from "./campaign";
+import { NoCampaignsFound } from "./noCampaignsFound";
 
 export const MyCampaigns = () => {
   const { data: campaigns, isPending } = useMyCampaigns();
 
   if (isPending) return <Loading />;
+
+  if (!campaigns?.length) return <NoCampaignsFound />;
 
   return (
     <div className="space-y-10 py-12">
