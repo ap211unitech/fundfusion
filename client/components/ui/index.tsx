@@ -11,6 +11,6 @@ export * from "./footer";
 export * from "./header";
 export * from "./dialog";
 export * from "./loading";
-export * from "./checkAdmin";
+export * from "./protectedRoute";
 export * from "./dropdown-menu";
 export * from "./connectWallet";

@@ -2,15 +2,15 @@
 
 import { Telescope } from "lucide-react";
 
-import { useMyCampaigns } from "@/hooks";
 import { Loading } from "@/components/ui";
+import { useMyCampaigns } from "@/hooks";
 
 import { Campaign } from "./campaign";
 
 export const MyCampaigns = () => {
-  const { data: campaigns, isLoading } = useMyCampaigns();
+  const { data: campaigns, isPending } = useMyCampaigns();
 
-  if (isLoading) return <Loading />;
+  if (isPending) return <Loading />;
 
   return (
     <div className="space-y-10 py-12">

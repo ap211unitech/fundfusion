@@ -45,7 +45,6 @@ createAppKit({
 
 /******************************* ************************* *******************************/
 
-
 export const WalletConnectProvider = ({
   children,
 }: {

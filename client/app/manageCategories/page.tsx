@@ -1,11 +1,11 @@
 import { ManageCategories } from "@/components/manageCategories";
-import { CheckAdmin } from "@/components/ui";
+import { ProtectedRoute } from "@/components/ui";
 
 const Page = () => {
   return (
-    <CheckAdmin>
+    <ProtectedRoute>
       <ManageCategories />
-    </CheckAdmin>
+    </ProtectedRoute>
   );
 };
 
