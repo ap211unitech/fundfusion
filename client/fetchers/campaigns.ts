@@ -109,3 +109,57 @@ export const getCampaignData = async (
     return {} as Campaign;
   }
 };
+
+export const getDeployedCampaignsForUser = async (
+  address: string,
+): Promise<Campaign[]> => {
+  const provider = getProvider();
+  const fundfusionContract = new ethers.Contract(
+    CONFIG.FUNDFUSION_CONTRACT,
+    fundfusionabi,
+    provider,
+  );
+  const campaigns = (await fundfusionContract.getDeployedCampaigns(
+    address,
+  )) as string[];
+
+  const response = campaigns.map(async (campaignAddress): Promise<Campaign> => {
+    const campaignContract = new ethers.Contract(
+      campaignAddress,
+      campaignabi,
+      provider,
+    );
+
+    const totalRaisedAmount = +ethers.formatEther(
+      await provider.getBalance(campaignAddress),
+    );
+    const fundWithdrawanByOwner =
+      (await campaignContract.fundWithdrawanByOwner()) as boolean;
+    const owner = ((await campaignContract.owner()) as string).toLowerCase();
+
+    // TODO: Recheck it
+    const contributors = await campaignContract.queryFilter("FundDonated");
+
+    const metadata = await campaignContract.getMetadata();
+    const formattedMetaData: CampaignMetadata = {
+      title: metadata[0],
+      category: metadata[1],
+      description: metadata[2],
+      image: metadata[3],
+      targetAmount: +ethers.formatEther(metadata[4]),
+      targetTimestamp: Number(metadata[5]) * 1000,
+      status: metadata[6],
+    };
+
+    return {
+      address: campaignAddress,
+      owner,
+      fundWithdrawanByOwner,
+      totalRaisedAmount,
+      contributors: contributors.length,
+      ...formattedMetaData,
+    };
+  });
+
+  return Promise.all(response);
+};
