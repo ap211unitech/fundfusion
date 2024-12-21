@@ -1,5 +1,6 @@
 import { PinataSDK } from "pinata-web3";
 
+import { IpfsResponse } from "@/types";
 import { CONFIG } from "@/config";
 
 export async function GET() {
@@ -21,5 +22,5 @@ export async function POST(req: Request) {
   return Response.json({
     status: 200,
     ...data,
-  });
+  } as IpfsResponse);
 }

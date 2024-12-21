@@ -5,6 +5,7 @@ import { CalendarIcon, Loader2, Plus } from "lucide-react";
 import { useForm } from "react-hook-form";
 import classNames from "classnames";
 import { format } from "date-fns";
+import { useMemo } from "react";
 import z from "zod";
 
 import {
@@ -27,6 +28,7 @@ import {
   PopoverTrigger,
   PopoverContent,
 } from "@/components/ui";
+import { useCreateCampaign, useIpfs } from "@/hooks";
 
 const formSchema = z.object({
   title: z.string().nonempty("Required"),
@@ -36,10 +38,7 @@ const formSchema = z.object({
   targetTimestamp: z.date({
     required_error: "Required",
   }),
-  image:
-    typeof window === "undefined"
-      ? z.any()
-      : z.instanceof(FileList).refine((file) => file?.length == 1, "Required"),
+  image: z.any(),
 });
 
 export const CreateCampaignForm = ({
@@ -47,6 +46,16 @@ export const CreateCampaignForm = ({
 }: {
   categories: string[];
 }) => {
+  const { mutateAsync: onCreateCampaign, isPending: isCreatingCampaign } =
+    useCreateCampaign();
+  const { mutateAsync: onUploadToIpfs, isPending: isUploadingToIpfs } =
+    useIpfs();
+
+  const isPending = useMemo(
+    () => isCreatingCampaign || isUploadingToIpfs,
+    [isCreatingCampaign, isUploadingToIpfs],
+  );
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -57,9 +66,27 @@ export const CreateCampaignForm = ({
     },
   });
 
-  const onSubmit = () => {};
+  const onSubmit = async ({
+    title,
+    category,
+    description,
+    image,
+    targetAmount,
+    targetTimestamp,
+  }: z.infer<typeof formSchema>) => {
+    const { IpfsHash, status } = await onUploadToIpfs({ file: image });
 
-  const isPending = false;
+    if (status !== 200) return;
+
+    await onCreateCampaign({
+      title,
+      category,
+      description,
+      image: IpfsHash,
+      targetAmount,
+      targetTimestamp,
+    });
+  };
 
   return (
     <Form {...form}>
@@ -147,6 +174,7 @@ export const CreateCampaignForm = ({
                   <FormControl>
                     <Input
                       {...field}
+                      type="number"
                       placeholder="0.0"
                       className="placeholder:opacity-50"
                     />

@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 
 import { campaignabi, fundfusionabi } from "@/constants";
-import { getProvider } from "@/lib/utils";
+import { getIpfsUrl, getProvider } from "@/lib/utils";
 import { Campaign, CampaignMetadata } from "@/types";
 import { CONFIG } from "@/config";
 
@@ -33,11 +33,12 @@ export const getAllDeployedCampaigns = async (): Promise<Campaign[]> => {
     const contributors = await campaignContract.queryFilter("FundDonated");
 
     const metadata = await campaignContract.getMetadata();
+
     const formattedMetaData: CampaignMetadata = {
       title: metadata[0],
       category: metadata[1],
       description: metadata[2],
-      image: metadata[3],
+      image: getIpfsUrl(metadata[3]),
       targetAmount: +ethers.formatEther(metadata[4]),
       targetTimestamp: Number(metadata[5]) * 1000,
       status: metadata[6],
@@ -87,11 +88,12 @@ export const getCampaignData = async (
     const contributors = await campaignContract.queryFilter("FundDonated");
 
     const metadata = await campaignContract.getMetadata();
+
     const formattedMetaData: CampaignMetadata = {
       title: metadata[0],
       category: metadata[1],
       description: metadata[2],
-      image: metadata[3],
+      image: getIpfsUrl(metadata[3]),
       targetAmount: +ethers.formatEther(metadata[4]),
       targetTimestamp: Number(metadata[5]) * 1000,
       status: metadata[6],
@@ -141,11 +143,12 @@ export const getDeployedCampaignsForUser = async (
     const contributors = await campaignContract.queryFilter("FundDonated");
 
     const metadata = await campaignContract.getMetadata();
+
     const formattedMetaData: CampaignMetadata = {
       title: metadata[0],
       category: metadata[1],
       description: metadata[2],
-      image: metadata[3],
+      image: getIpfsUrl(metadata[3]),
       targetAmount: +ethers.formatEther(metadata[4]),
       targetTimestamp: Number(metadata[5]) * 1000,
       status: metadata[6],

@@ -1,7 +1,9 @@
-import { ethers } from "ethers";
-import moment from "moment";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { ethers } from "ethers";
+import moment from "moment";
+
+import { CONFIG } from "@/config";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -25,3 +27,6 @@ export const getProvider = () => {
   const provider = new ethers.JsonRpcProvider("http://localhost:8545");
   return provider;
 };
+
+export const getIpfsUrl = (ipfsHash: string) =>
+  `https://${CONFIG.IPFS_PROVIDER.GATEWAY}/ipfs/${ipfsHash}`;

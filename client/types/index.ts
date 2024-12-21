@@ -22,3 +22,10 @@ export type Campaign = CampaignMetadata & {
   totalRaisedAmount: number;
   contributors: number;
 };
+
+export type IpfsResponse = {
+  status: number;
+  IpfsHash: string;
+  PinSize: number;
+  Timestamp: string;
+};
