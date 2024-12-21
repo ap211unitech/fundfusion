@@ -1,14 +1,18 @@
 "use client";
 
-import { useMemo } from "react";
-import { Edit, Heart, Trash2 } from "lucide-react";
+import { Edit, Heart, Loader2, Trash2 } from "lucide-react";
 import { useAppKitAccount } from "@reown/appkit/react";
+import { useMemo } from "react";
 
 import { Campaign, CampaignStatus } from "@/types";
+import { useDeleteCampaign } from "@/hooks";
 import { Button } from "@/components/ui";
 
 export const Actions = ({ campaign }: { campaign: Campaign }) => {
   const { address } = useAppKitAccount();
+
+  const { mutateAsync: onDeleteCampaign, isPending: isDeletingCampaign } =
+    useDeleteCampaign();
 
   const isDonatable = useMemo(
     () =>
@@ -48,9 +52,25 @@ export const Actions = ({ campaign }: { campaign: Campaign }) => {
         </Button>
       )}
       {isDeletable && (
-        <Button className="flex items-center gap-2" variant="destructive">
-          <Trash2 className="h-4 w-4" />
-          Delete Campaign
+        <Button
+          variant="destructive"
+          disabled={isDeletingCampaign}
+          className="flex items-center gap-2"
+          onClick={() =>
+            onDeleteCampaign({ campaignAddress: campaign.address })
+          }
+        >
+          {isDeletingCampaign ? (
+            <>
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Deleting...
+            </>
+          ) : (
+            <>
+              <Trash2 className="h-4 w-4" />
+              Delete Campaign
+            </>
+          )}
         </Button>
       )}
     </div>
