@@ -7,8 +7,13 @@ export type CampaignMetadata = {
   image: string;
   targetAmount: number;
   targetTimestamp: number;
-  status: string;
+  status: CampaignStatus;
 };
+
+export enum CampaignStatus {
+  ACTIVE = "ACTIVE",
+  DELETED = "DELETED",
+}
 
 export type Campaign = CampaignMetadata & {
   owner: string;

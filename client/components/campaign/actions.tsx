@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { Edit, Heart, Trash2 } from "lucide-react";
 import { useAppKitAccount } from "@reown/appkit/react";
 
-import { Campaign } from "@/types";
+import { Campaign, CampaignStatus } from "@/types";
 import { Button } from "@/components/ui";
 
 export const Actions = ({ campaign }: { campaign: Campaign }) => {
@@ -12,7 +12,7 @@ export const Actions = ({ campaign }: { campaign: Campaign }) => {
 
   const isDonatable = useMemo(
     () =>
-      campaign.status === "ACTIVE" &&
+      campaign.status === CampaignStatus.ACTIVE &&
       campaign.targetTimestamp > new Date().getTime(),
     [campaign.status, campaign.targetTimestamp],
   );
@@ -20,7 +20,7 @@ export const Actions = ({ campaign }: { campaign: Campaign }) => {
   const isEditable = useMemo(
     () =>
       campaign.owner === address?.toLowerCase() &&
-      campaign.status === "ACTIVE" &&
+      campaign.status === CampaignStatus.ACTIVE &&
       campaign.targetTimestamp > new Date().getTime(),
     [campaign.owner, campaign.status, campaign.targetTimestamp, address],
   );
@@ -28,7 +28,7 @@ export const Actions = ({ campaign }: { campaign: Campaign }) => {
   const isDeletable = useMemo(
     () =>
       campaign.owner === address &&
-      campaign.status === "ACTIVE" &&
+      campaign.status === CampaignStatus.ACTIVE &&
       campaign.targetTimestamp > new Date().getTime(),
     [campaign.owner, campaign.status, campaign.targetTimestamp, address],
   );
