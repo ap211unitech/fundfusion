@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Badge } from "@/components/ui";
-import { daysLeft } from "@/lib/utils";
+import { durationLeft } from "@/lib/utils";
 import { Campaign as CampaignType } from "@/types";
 
 export const Campaign = ({ campaign }: { campaign: CampaignType }) => {
@@ -30,7 +30,7 @@ export const Campaign = ({ campaign }: { campaign: CampaignType }) => {
         <div className="flex items-center justify-between text-sm text-muted-foreground">
           <p className="flex items-center gap-2">
             <Clock3 className="h-4 w-4" />
-            {daysLeft(campaign.targetTimestamp)} days left
+            {durationLeft(campaign.targetTimestamp)}
           </p>
           <p className="flex items-center gap-2">
             <Users className="h-4 w-4" />

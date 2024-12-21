@@ -9,12 +9,6 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const daysLeft = (timestamp: number) => {
-  const eventdate = moment(timestamp);
-  const todaysdate = moment();
-  return eventdate.diff(todaysdate, "days");
-};
-
 export const trimString = (account: string, chars: number = 8): string => {
   const keepChars = chars / 2;
   if (keepChars > account.length / 2) {
@@ -30,3 +24,15 @@ export const getProvider = () => {
 
 export const getIpfsUrl = (ipfsHash: string) =>
   `https://${CONFIG.IPFS_PROVIDER.GATEWAY}/ipfs/${ipfsHash}`;
+
+export const durationLeft = (endDate: number) => {
+  const now = moment(new Date());
+  const leftTime = moment.duration(moment(endDate).diff(now));
+
+  if (leftTime.years() > 0) return `${leftTime.years()} years left`;
+  if (leftTime.months() > 0) return `${leftTime.months()} months left`;
+  if (leftTime.days() > 0) return `${leftTime.days()} days left`;
+  if (leftTime.hours() > 0) return `${leftTime.hours()} hours left`;
+  if (leftTime.minutes() > 0) return `${leftTime.minutes()} minutes left`;
+  return `${leftTime.seconds()} seconds left`;
+};
