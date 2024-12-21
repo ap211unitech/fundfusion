@@ -5,7 +5,6 @@ import {
   useWalletInfo,
   useAppKitAccount,
 } from "@reown/appkit/react";
-import Image from "next/image";
 import { useMemo } from "react";
 import Link from "next/link";
 import {
@@ -21,9 +20,10 @@ import {
 import {
   Button,
   DropdownMenu,
-  DropdownMenuContent,
+  ImageComponent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuContent,
 } from "@/components/ui";
 import { trimString } from "@/lib/utils";
 import { useCategoryAdmin } from "@/hooks";
@@ -47,7 +47,7 @@ export const ConnectWallet = () => {
             <Button variant="outline" className="flex items-center gap-2">
               <div>
                 {walletInfo?.icon && walletInfo.name ? (
-                  <Image
+                  <ImageComponent
                     src={walletInfo?.icon}
                     alt={walletInfo?.name}
                     width={18}
@@ -66,7 +66,7 @@ export const ConnectWallet = () => {
           <DropdownMenuContent className="[&_a]:cursor-pointer">
             <DropdownMenuItem onClick={() => open()} className="cursor-pointer">
               {walletInfo?.icon && walletInfo.name ? (
-                <Image
+                <ImageComponent
                   src={walletInfo?.icon}
                   alt={walletInfo?.name}
                   width={16}
