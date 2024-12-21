@@ -1,10 +1,9 @@
 import { Clock3, Users } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
-import { Badge } from "@/components/ui";
-import { durationLeft } from "@/lib/utils";
+import { Badge, ImageComponent } from "@/components/ui";
 import { Campaign as CampaignType } from "@/types";
+import { durationLeft } from "@/lib/utils";
 
 export const Campaign = ({ campaign }: { campaign: CampaignType }) => {
   return (
@@ -13,12 +12,7 @@ export const Campaign = ({ campaign }: { campaign: CampaignType }) => {
       className="group flex cursor-pointer flex-col overflow-hidden rounded-xl border-2 shadow-lg transition-all hover:-translate-y-2 hover:border-primary"
     >
       <div className="relative h-[280px]">
-        <Image
-          fill
-          alt={campaign.title}
-          src={campaign.image}
-          style={{ objectFit: "cover" }}
-        />
+        <ImageComponent fill alt={campaign.title} src={campaign.image} />
       </div>
       <div className="space-y-3 p-4">
         <Badge className="mb-1 rounded-full font-medium">

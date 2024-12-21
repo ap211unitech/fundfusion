@@ -1,13 +1,12 @@
 import { MoveUpRight } from "lucide-react";
 import { redirect } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
 import moment from "moment";
 
-import { SearchParams } from "@/types";
-import { Badge } from "@/components/ui";
-import { trimString } from "@/lib/utils";
+import { Badge, ImageComponent } from "@/components/ui";
 import { getCampaignData } from "@/fetchers";
+import { trimString } from "@/lib/utils";
+import { SearchParams } from "@/types";
 
 import { Actions } from "./actions";
 
@@ -30,11 +29,10 @@ export const Campaign = async ({
     <div className="mx-auto grid max-w-[80%] grid-cols-2 gap-10 py-12">
       <div className="flex flex-col gap-6">
         <div className="relative h-[400px] overflow-hidden">
-          <Image
+          <ImageComponent
             fill
             src={campaign.image}
             alt={campaign.title}
-            style={{ objectFit: "cover" }}
             className="rounded-xl transition-all duration-300 hover:scale-95"
           />
         </div>

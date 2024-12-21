@@ -15,6 +15,7 @@ export * from "./loading";
 export * from "./popover";
 export * from "./textarea";
 export * from "./calendar";
-export * from "./protectedRoute";
 export * from "./dropdown-menu";
 export * from "./connectWallet";
+export * from "./protectedRoute";
+export * from "./imageComponent";
