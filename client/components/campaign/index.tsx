@@ -1,12 +1,17 @@
-import { MoveUpRight } from "lucide-react";
+import { Info, MoveUpRight, TriangleAlert } from "lucide-react";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import moment from "moment";
 
-import { Badge, ImageComponent } from "@/components/ui";
+import {
+  Badge,
+  Alert,
+  ImageComponent,
+  AlertDescription,
+} from "@/components/ui";
 import { getCampaignData } from "@/fetchers";
-import { trimString } from "@/lib/utils";
-import { SearchParams } from "@/types";
+import { CampaignStatus, SearchParams } from "@/types";
+import { getIpfsHashFromUrl, trimString } from "@/lib/utils";
 
 import { Actions } from "./actions";
 
@@ -24,6 +29,11 @@ export const Campaign = async ({
   if (!campaign?.address) return redirect("/");
 
   console.log(campaign);
+
+  const isCampaignActive =
+    !campaign.fundWithdrawanByOwner &&
+    campaign.status === CampaignStatus.ACTIVE &&
+    campaign.targetTimestamp > new Date().getTime();
 
   return (
     <div className="mx-auto grid max-w-[80%] grid-cols-2 gap-10 py-12">
@@ -66,7 +76,7 @@ export const Campaign = async ({
               className="flex items-center gap-1 hover:text-primary"
             >
               <MoveUpRight className="h-4 w-4" />
-              {trimString(campaign.image, 20)}
+              {trimString(getIpfsHashFromUrl(campaign.image), 14)}
             </Link>
           </div>
         </div>
@@ -74,10 +84,31 @@ export const Campaign = async ({
       <div className="flex flex-col gap-4">
         <h1 className="text-2xl text-primary">{campaign.title}</h1>
         <Badge className="w-fit rounded-full">{campaign.category}</Badge>
-        <p className="text-justify text-sm opacity-40">
+        <p className="text-justify text-sm text-muted-foreground">
           {campaign.description}
         </p>
-        <Actions campaign={campaign} />
+        {campaign.fundWithdrawanByOwner && (
+          <Alert variant="warning" className="flex items-center">
+            <div>
+              <TriangleAlert className="mr-2 h-4 w-4" />
+            </div>
+            <AlertDescription>
+              The owner has already withdrawn the collected amount.
+            </AlertDescription>
+          </Alert>
+        )}
+        {isCampaignActive ? (
+          <Actions isCampaignActive={isCampaignActive} campaign={campaign} />
+        ) : (
+          <Alert variant="destructive" className="flex items-center">
+            <div>
+              <Info className="mr-2 h-4 w-4" />
+            </div>
+            <AlertDescription>
+              This campaign is no more active.
+            </AlertDescription>
+          </Alert>
+        )}
       </div>
     </div>
   );

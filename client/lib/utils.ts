@@ -9,12 +9,14 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const trimString = (account: string, chars: number = 8): string => {
+export const trimString = (account?: string, chars: number = 8): string => {
+  if (!account) return "";
+
   const keepChars = chars / 2;
   if (keepChars > account.length / 2) {
     return account;
   }
-  return account.slice(0, keepChars) + "..." + account.slice(-keepChars);
+  return account.slice(0, keepChars) + "...." + account.slice(-keepChars);
 };
 
 export const getProvider = () => {
@@ -24,6 +26,8 @@ export const getProvider = () => {
 
 export const getIpfsUrl = (ipfsHash: string) =>
   `https://${CONFIG.IPFS_PROVIDER.GATEWAY}/ipfs/${ipfsHash}`;
+
+export const getIpfsHashFromUrl = (url: string) => url.split("/ipfs/").at(1);
 
 export const durationLeft = (endDate: number) => {
   const now = moment(new Date());

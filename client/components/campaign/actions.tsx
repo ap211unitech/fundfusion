@@ -4,37 +4,35 @@ import { Edit, Heart, Loader2, Trash2 } from "lucide-react";
 import { useAppKitAccount } from "@reown/appkit/react";
 import { useMemo } from "react";
 
-import { Campaign, CampaignStatus } from "@/types";
 import { useDeleteCampaign } from "@/hooks";
 import { Button } from "@/components/ui";
+import { Campaign } from "@/types";
 
-export const Actions = ({ campaign }: { campaign: Campaign }) => {
+type Props = {
+  campaign: Campaign;
+  isCampaignActive: boolean;
+};
+
+export const Actions = ({ campaign, isCampaignActive }: Props) => {
   const { address } = useAppKitAccount();
 
   const { mutateAsync: onDeleteCampaign, isPending: isDeletingCampaign } =
     useDeleteCampaign();
 
-  const isDonatable = useMemo(
-    () =>
-      campaign.status === CampaignStatus.ACTIVE &&
-      campaign.targetTimestamp > new Date().getTime(),
-    [campaign.status, campaign.targetTimestamp],
-  );
+  const isDonatable = useMemo(() => isCampaignActive, [isCampaignActive]);
 
   const isEditable = useMemo(
     () =>
-      campaign.owner === address?.toLowerCase() &&
-      campaign.status === CampaignStatus.ACTIVE &&
-      campaign.targetTimestamp > new Date().getTime(),
-    [campaign.owner, campaign.status, campaign.targetTimestamp, address],
+      campaign.owner.toLowerCase() === address?.toLowerCase() &&
+      isCampaignActive,
+    [address, campaign.owner, isCampaignActive],
   );
 
   const isDeletable = useMemo(
     () =>
-      campaign.owner === address &&
-      campaign.status === CampaignStatus.ACTIVE &&
-      campaign.targetTimestamp > new Date().getTime(),
-    [campaign.owner, campaign.status, campaign.targetTimestamp, address],
+      campaign.owner.toLowerCase() === address?.toLowerCase() &&
+      isCampaignActive,
+    [address, campaign.owner, isCampaignActive],
   );
 
   return (

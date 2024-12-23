@@ -2,6 +2,7 @@ export * from "./logo";
 export * from "./card";
 export * from "./form";
 export * from "./label";
+export * from "./alert";
 export * from "./input";
 export * from "./theme";
 export * from "./button";
