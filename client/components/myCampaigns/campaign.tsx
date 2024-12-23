@@ -28,7 +28,7 @@ export const Campaign = ({ campaign }: { campaign: CampaignType }) => {
           </p>
           <p className="flex items-center gap-2">
             <Users className="h-4 w-4" />
-            {campaign.contributors || 0} contributors
+            {campaign.contributors.size || 0} contributors
           </p>
         </div>
       </div>

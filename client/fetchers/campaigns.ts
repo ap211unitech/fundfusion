@@ -16,42 +16,7 @@ export const getAllDeployedCampaigns = async (): Promise<Campaign[]> => {
     (await fundfusionContract.getAllDeployedCampaigns()) as string[];
 
   const response = campaigns.map(async (campaignAddress): Promise<Campaign> => {
-    const campaignContract = new ethers.Contract(
-      campaignAddress,
-      campaignabi,
-      provider,
-    );
-
-    const totalRaisedAmount = +ethers.formatEther(
-      await provider.getBalance(campaignAddress),
-    );
-    const fundWithdrawanByOwner =
-      (await campaignContract.fundWithdrawanByOwner()) as boolean;
-    const owner = ((await campaignContract.owner()) as string).toLowerCase();
-
-    // TODO: Recheck it
-    const contributors = await campaignContract.queryFilter("FundDonated");
-
-    const metadata = await campaignContract.getMetadata();
-
-    const formattedMetaData: CampaignMetadata = {
-      title: metadata[0],
-      category: metadata[1],
-      description: metadata[2],
-      image: getIpfsUrl(metadata[3]),
-      targetAmount: +ethers.formatEther(metadata[4]),
-      targetTimestamp: Number(metadata[5]) * 1000,
-      status: metadata[6],
-    };
-
-    return {
-      address: campaignAddress,
-      owner,
-      fundWithdrawanByOwner,
-      totalRaisedAmount,
-      contributors: contributors.length,
-      ...formattedMetaData,
-    };
+    return await getCampaignData(campaignAddress);
   });
 
   return Promise.all(response);
@@ -84,8 +49,25 @@ export const getCampaignData = async (
 
     const owner = ((await campaignContract.owner()) as string).toLowerCase();
 
-    // TODO: Recheck it
-    const contributors = await campaignContract.queryFilter("FundDonated");
+    const contributorEvents = await campaignContract.queryFilter("FundDonated");
+
+    const contributors = new Map<string, number>();
+
+    contributorEvents.forEach((c) => {
+      const [donatorAddress, donatedAmount] = [
+        // @ts-ignore
+        c.args.at(1) as string,
+        // @ts-ignore
+        +ethers.formatUnits(c.args.at(2) || 0),
+      ];
+
+      if (!!donatorAddress) {
+        contributors.set(
+          donatorAddress,
+          (contributors.get(donatorAddress) || 0) + donatedAmount,
+        );
+      }
+    });
 
     const metadata = await campaignContract.getMetadata();
 
@@ -104,7 +86,7 @@ export const getCampaignData = async (
       owner,
       fundWithdrawanByOwner,
       totalRaisedAmount,
-      contributors: contributors.length,
+      contributors,
       ...formattedMetaData,
     };
   } catch (_) {
@@ -126,42 +108,7 @@ export const getDeployedCampaignsForUser = async (
   )) as string[];
 
   const response = campaigns.map(async (campaignAddress): Promise<Campaign> => {
-    const campaignContract = new ethers.Contract(
-      campaignAddress,
-      campaignabi,
-      provider,
-    );
-
-    const totalRaisedAmount = +ethers.formatEther(
-      await provider.getBalance(campaignAddress),
-    );
-    const fundWithdrawanByOwner =
-      (await campaignContract.fundWithdrawanByOwner()) as boolean;
-    const owner = ((await campaignContract.owner()) as string).toLowerCase();
-
-    // TODO: Recheck it
-    const contributors = await campaignContract.queryFilter("FundDonated");
-
-    const metadata = await campaignContract.getMetadata();
-
-    const formattedMetaData: CampaignMetadata = {
-      title: metadata[0],
-      category: metadata[1],
-      description: metadata[2],
-      image: getIpfsUrl(metadata[3]),
-      targetAmount: +ethers.formatEther(metadata[4]),
-      targetTimestamp: Number(metadata[5]) * 1000,
-      status: metadata[6],
-    };
-
-    return {
-      address: campaignAddress,
-      owner,
-      fundWithdrawanByOwner,
-      totalRaisedAmount,
-      contributors: contributors.length,
-      ...formattedMetaData,
-    };
+    return await getCampaignData(campaignAddress);
   });
 
   return Promise.all(response);

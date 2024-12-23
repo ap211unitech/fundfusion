@@ -21,6 +21,7 @@ export const Actions = ({ campaign, isCampaignActive }: Props) => {
   const isDonatable = useMemo(
     () =>
       isCampaignActive &&
+      !!address &&
       campaign.owner.toLowerCase() !== address?.toLowerCase(),
     [address, campaign.owner, isCampaignActive],
   );

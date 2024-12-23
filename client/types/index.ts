@@ -20,7 +20,7 @@ export type Campaign = CampaignMetadata & {
   address: string;
   fundWithdrawanByOwner: boolean;
   totalRaisedAmount: number;
-  contributors: number;
+  contributors: Map<string, number>;
 };
 
 export type IpfsResponse = {
