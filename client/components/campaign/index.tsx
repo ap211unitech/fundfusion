@@ -1,4 +1,4 @@
-import { Info, MoveUpRight, TriangleAlert } from "lucide-react";
+import { Coins, Info, MoveUpRight, TriangleAlert, Users } from "lucide-react";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import moment from "moment";
@@ -87,6 +87,24 @@ export const Campaign = async ({
         <p className="text-justify text-sm text-muted-foreground">
           {campaign.description}
         </p>
+
+        <div className="grid grid-cols-2 rounded-xl border border-primary">
+          <div className="border-r border-primary px-5 py-3">
+            <div className="flex items-center gap-1.5 text-lg text-primary">
+              <Users className="h-5 w-5" />
+              Contributors
+            </div>
+            <div>{campaign.contributors}</div>
+          </div>
+          <div className="px-5 py-3">
+            <div className="flex items-center gap-1.5 text-lg text-primary">
+              <Coins className="h-5 w-5" />
+              Total collected amount
+            </div>
+            <div>{campaign.totalRaisedAmount}</div>
+          </div>
+        </div>
+
         {campaign.fundWithdrawanByOwner && (
           <Alert variant="warning" className="flex items-center">
             <div>
