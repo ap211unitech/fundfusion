@@ -113,6 +113,7 @@ export const Campaign = async ({
             </AlertDescription>
           </Alert>
         )}
+
         {isCampaignActive ? (
           <Actions isCampaignActive={isCampaignActive} campaign={campaign} />
         ) : (

@@ -1,18 +1,21 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Heart, Loader2 } from "lucide-react";
+import { Heart, Info, Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { useMemo } from "react";
 import { z } from "zod";
 
 import {
   Form,
   Input,
+  Alert,
   Button,
   FormItem,
   FormField,
-  FormControl,
   FormMessage,
+  FormControl,
+  AlertDescription,
 } from "@/components/ui";
 import { Campaign } from "@/types";
 import { useDonateCampaign } from "@/hooks";
@@ -31,6 +34,11 @@ const formSchema = z.object({
 export const DonateToCampaign = ({ campaign }: { campaign: Campaign }) => {
   const { mutateAsync: onDonateToCampaign, isPending } = useDonateCampaign();
 
+  const isTargetAmountMet = useMemo(
+    () => campaign.totalRaisedAmount >= campaign.targetAmount,
+    [campaign.targetAmount, campaign.totalRaisedAmount],
+  );
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -40,6 +48,19 @@ export const DonateToCampaign = ({ campaign }: { campaign: Campaign }) => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) =>
     await onDonateToCampaign({ campaignAddress: campaign.address, ...values });
+
+  if (isTargetAmountMet) {
+    return (
+      <Alert variant="info" className="flex items-center">
+        <div>
+          <Info className="mr-2 h-4 w-4" />
+        </div>
+        <AlertDescription>
+          This campaign has raised the desired amount of money.
+        </AlertDescription>
+      </Alert>
+    );
+  }
 
   return (
     <Form {...form}>
