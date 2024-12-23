@@ -59,7 +59,6 @@ export const DonateToCampaign = ({ campaign }: { campaign: Campaign }) => {
             </FormItem>
           )}
         />
-
         <Button
           type="submit"
           disabled={isPending}

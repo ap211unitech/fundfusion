@@ -28,8 +28,6 @@ export const Campaign = async ({
   const campaign = await getCampaignData(campaignContractAddress);
   if (!campaign?.address) return redirect("/");
 
-  console.log(campaign);
-
   const isCampaignActive =
     !campaign.fundWithdrawanByOwner &&
     campaign.status === CampaignStatus.ACTIVE &&
@@ -99,9 +97,9 @@ export const Campaign = async ({
           <div className="space-y-1 px-5 py-3">
             <div className="flex items-center gap-1.5 text-lg text-primary">
               <Coins className="h-5 w-5" />
-              Total collected amount
+              Amount raised
             </div>
-            <div>{campaign.totalRaisedAmount}</div>
+            <div>{campaign.totalRaisedAmount} ETH</div>
           </div>
         </div>
 
