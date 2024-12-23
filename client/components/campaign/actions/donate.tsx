@@ -21,6 +21,10 @@ const formSchema = z.object({
   amountToDonate: z
     .string()
     .nonempty("Required")
+    .refine(
+      (a) => (a.split(".").at(1)?.length || 0) <= 4,
+      "Max 4 digits allowed after decimal",
+    )
     .refine((a) => Number(a) > 0, "Amount must be more than 0"),
 });
 
