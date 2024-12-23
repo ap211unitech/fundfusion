@@ -1,12 +1,14 @@
 "use client";
 
-import { Edit, Heart, Loader2, Trash2 } from "lucide-react";
+import { Edit, Loader2, Trash2 } from "lucide-react";
 import { useAppKitAccount } from "@reown/appkit/react";
 import { useMemo } from "react";
 
 import { useDeleteCampaign } from "@/hooks";
 import { Button } from "@/components/ui";
 import { Campaign } from "@/types";
+
+import { DonateToCampaign } from "./donate";
 
 type Props = {
   campaign: Campaign;
@@ -19,7 +21,12 @@ export const Actions = ({ campaign, isCampaignActive }: Props) => {
   const { mutateAsync: onDeleteCampaign, isPending: isDeletingCampaign } =
     useDeleteCampaign();
 
-  const isDonatable = useMemo(() => isCampaignActive, [isCampaignActive]);
+  const isDonatable = useMemo(
+    () =>
+      isCampaignActive &&
+      campaign.owner.toLowerCase() !== address?.toLowerCase(),
+    [address, campaign.owner, isCampaignActive],
+  );
 
   const isEditable = useMemo(
     () =>
@@ -37,12 +44,7 @@ export const Actions = ({ campaign, isCampaignActive }: Props) => {
 
   return (
     <div className="flex items-center gap-3">
-      {isDonatable && (
-        <Button className="flex items-center gap-2">
-          <Heart className="h-4 w-4" />
-          Donate
-        </Button>
-      )}
+      {isDonatable && <DonateToCampaign campaign={campaign} />}
       {isEditable && (
         <Button className="flex items-center gap-2" variant="secondary">
           <Edit className="h-4 w-4" />

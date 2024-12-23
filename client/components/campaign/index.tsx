@@ -89,14 +89,14 @@ export const Campaign = async ({
         </p>
 
         <div className="grid grid-cols-2 rounded-xl border border-primary">
-          <div className="border-r border-primary px-5 py-3">
+          <div className="space-y-1 border-r border-primary px-5 py-3">
             <div className="flex items-center gap-1.5 text-lg text-primary">
               <Users className="h-5 w-5" />
               Contributors
             </div>
             <div>{campaign.contributors}</div>
           </div>
-          <div className="px-5 py-3">
+          <div className="space-y-1 px-5 py-3">
             <div className="flex items-center gap-1.5 text-lg text-primary">
               <Coins className="h-5 w-5" />
               Total collected amount

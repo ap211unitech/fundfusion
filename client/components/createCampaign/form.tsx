@@ -252,7 +252,7 @@ export const CreateCampaignForm = ({
         <Button
           type="submit"
           disabled={isPending}
-          className="flex items-center gap-1"
+          className="flex items-center gap-2"
         >
           {isPending ? (
             <>
@@ -261,7 +261,7 @@ export const CreateCampaignForm = ({
             </>
           ) : (
             <>
-              <Plus className="h-4 w-4" />
+              <Plus className="h-4 w-4 stroke-[2.5px]" />
               Create
             </>
           )}
