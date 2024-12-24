@@ -2,11 +2,10 @@
 
 import { CalendarIcon, Loader2, Plus, TriangleAlert } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useDropzone } from "react-dropzone";
-import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import classNames from "classnames";
 import { format } from "date-fns";
+import { useMemo } from "react";
 import z from "zod";
 
 import {
@@ -24,12 +23,12 @@ import {
   SelectItem,
   SelectValue,
   FormControl,
+  UploadImage,
   FormMessage,
   SelectTrigger,
   SelectContent,
   PopoverTrigger,
   PopoverContent,
-  ImageComponent,
   AlertDescription,
 } from "@/components/ui";
 import { useCreateCampaign, useIpfs } from "@/hooks";
@@ -59,8 +58,6 @@ export const CreateCampaignForm = ({
 }: {
   categories: string[];
 }) => {
-  const [imagePreviewUrl, setImagePreviewUrl] = useState("");
-
   const { mutateAsync: onCreateCampaign, isPending: isCreatingCampaign } =
     useCreateCampaign();
   const { mutateAsync: onUploadToIpfs, isPending: isUploadingToIpfs } =
@@ -79,19 +76,6 @@ export const CreateCampaignForm = ({
       description: "",
       targetAmount: "",
     },
-  });
-
-  const onDrop = (acceptedFiles: File[]) => {
-    setImagePreviewUrl(URL.createObjectURL(acceptedFiles.at(0) as File));
-    form.setValue("image", acceptedFiles, { shouldValidate: true });
-  };
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
-    accept: {
-      "image/*": [],
-    },
-    maxFiles: 1,
   });
 
   const onSubmit = async ({
@@ -262,42 +246,14 @@ export const CreateCampaignForm = ({
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <div
-                      {...getRootProps({
-                        className: `relative overflow-hidden border-2 h-[400px] border-dashed rounded-xl cursor-pointer transition duration-300 ${
-                          isDragActive ? "border-blue-500" : "border-input"
-                        } ${!imagePreviewUrl && "border-primary"}`,
-                      })}
-                      {...field}
-                    >
-                      <input {...getInputProps()} />
-
-                      {!!imagePreviewUrl && (
-                        <div className="absolute inset-0 -z-10 h-full w-full scale-105">
-                          <ImageComponent
-                            src={imagePreviewUrl}
-                            alt="Uploaded image"
-                            fill
-                          />
-                        </div>
-                      )}
-
-                      <div
-                        className={classNames(
-                          "absolute left-[50%] top-[50%] flex max-h-full flex-col items-center gap-1 self-center rounded-lg p-4 text-center",
-                          imagePreviewUrl &&
-                            "bg-muted/90 dark:bg-background/90 dark:text-white",
-                        )}
-                        style={{ transform: "translate(-50%, -50%)" }}
-                      >
-                        <p className="text-lg text-primary">Upload Image</p>
-                        <p className="text-xs">
-                          {isDragActive
-                            ? "Drop the files here ..."
-                            : "Drag and drop images here, or click to select files."}
-                        </p>
-                      </div>
-                    </div>
+                    <UploadImage
+                      formField={field}
+                      onDrop={(acceptedFiles) =>
+                        form.setValue("image", acceptedFiles, {
+                          shouldValidate: true,
+                        })
+                      }
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
