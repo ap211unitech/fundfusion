@@ -36,11 +36,13 @@ const formSchema = z.object({
 });
 
 export const EditCampaignForm = ({
+  cb,
   campaign,
   categories,
 }: {
   campaign: Campaign;
   categories: string[];
+  cb: () => void;
 }) => {
   const { mutateAsync: onEditCampaign, isPending: isEditingCampaign } =
     useEditCampaign();
@@ -59,7 +61,7 @@ export const EditCampaignForm = ({
       category: campaign.category,
       description: campaign.description,
       targetAmount: campaign.targetAmount.toString(),
-      image: getIpfsHashFromUrl(campaign.image),
+      image: campaign.image,
     },
   });
 
@@ -70,9 +72,15 @@ export const EditCampaignForm = ({
     image,
     targetAmount,
   }: z.infer<typeof formSchema>) => {
-    const { IpfsHash, status } = await onUploadToIpfs({ file: image });
+    let IpfsHash: string;
 
-    if (status !== 200) return;
+    if (typeof image === "string") {
+      IpfsHash = getIpfsHashFromUrl(image) as string;
+    } else {
+      const response = await onUploadToIpfs({ file: image });
+      if (response.status !== 200) return;
+      IpfsHash = response.IpfsHash;
+    }
 
     await onEditCampaign({
       campaignAddress: campaign.address,
@@ -81,6 +89,7 @@ export const EditCampaignForm = ({
       description,
       image: IpfsHash,
       targetAmount,
+      cb,
     });
   };
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { Edit } from "lucide-react";
+import { useState } from "react";
 
 import {
   Button,
@@ -21,8 +22,10 @@ export const EditCampaign = ({
   campaign: Campaign;
   categories: string[];
 }) => {
+  const [open, setOpen] = useState(false);
+
   return (
-    <Drawer>
+    <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger>
         <Button className="flex items-center gap-2" variant="secondary">
           <Edit className="h-4 w-4" />
@@ -37,7 +40,11 @@ export const EditCampaign = ({
               Edit Campaign
             </DrawerTitle>
           </DrawerHeader>
-          <EditCampaignForm campaign={campaign} categories={categories} />
+          <EditCampaignForm
+            campaign={campaign}
+            categories={categories}
+            cb={() => setOpen(false)}
+          />
         </div>
       </DrawerContent>
     </Drawer>
