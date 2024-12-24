@@ -11,6 +11,7 @@ export * from "./sonner";
 export * from "./footer";
 export * from "./header";
 export * from "./dialog";
+export * from "./drawer";
 export * from "./select";
 export * from "./loading";
 export * from "./popover";

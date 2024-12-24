@@ -11,7 +11,7 @@ import {
   ImageComponent,
   AlertDescription,
 } from "@/components/ui";
-import { getCampaignData } from "@/fetchers";
+import { getAllCategories, getCampaignData } from "@/fetchers";
 import { CampaignStatus, SearchParams } from "@/types";
 import { getIpfsHashFromUrl, trimString } from "@/lib/utils";
 
@@ -29,6 +29,8 @@ export const Campaign = async ({
 
   const campaign = await getCampaignData(campaignContractAddress);
   if (!campaign?.address) return redirect("/");
+
+  const categories = await getAllCategories();
 
   const isCampaignActive =
     !campaign.fundWithdrawanByOwner &&
@@ -123,7 +125,11 @@ export const Campaign = async ({
         )}
 
         {isCampaignActive ? (
-          <Actions isCampaignActive={isCampaignActive} campaign={campaign} />
+          <Actions
+            campaign={campaign}
+            categories={categories}
+            isCampaignActive={isCampaignActive}
+          />
         ) : (
           <Alert variant="destructive" className="flex items-center">
             <div>

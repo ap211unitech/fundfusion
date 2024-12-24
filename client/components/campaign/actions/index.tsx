@@ -1,21 +1,21 @@
 "use client";
 
 import { useAppKitAccount } from "@reown/appkit/react";
-import { Edit } from "lucide-react";
 import { useMemo } from "react";
 
-import { Button } from "@/components/ui";
 import { Campaign } from "@/types";
 
 import { DonateToCampaign } from "./donate";
 import { DeleteCampaign } from "./delete";
+import { EditCampaign } from "./edit";
 
 type Props = {
   campaign: Campaign;
+  categories: string[];
   isCampaignActive: boolean;
 };
 
-export const Actions = ({ campaign, isCampaignActive }: Props) => {
+export const Actions = ({ categories, campaign, isCampaignActive }: Props) => {
   const { address } = useAppKitAccount();
 
   const isDonatable = useMemo(
@@ -44,10 +44,7 @@ export const Actions = ({ campaign, isCampaignActive }: Props) => {
     <div className="flex items-center gap-3">
       {isDonatable && <DonateToCampaign campaign={campaign} />}
       {isEditable && (
-        <Button className="flex items-center gap-2" variant="secondary">
-          <Edit className="h-4 w-4" />
-          Edit Campaign
-        </Button>
+        <EditCampaign campaign={campaign} categories={categories} />
       )}
       {isDeletable && <DeleteCampaign campaign={campaign} />}
     </div>
