@@ -1,6 +1,6 @@
 "use client";
 
-import { CalendarIcon, Loader2, Plus } from "lucide-react";
+import { CalendarIcon, Loader2, Plus, TriangleAlert } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import classNames from "classnames";
@@ -11,6 +11,7 @@ import z from "zod";
 import {
   Form,
   Input,
+  Alert,
   Button,
   Select,
   Popover,
@@ -27,6 +28,7 @@ import {
   SelectContent,
   PopoverTrigger,
   PopoverContent,
+  AlertDescription,
 } from "@/components/ui";
 import { useCreateCampaign, useIpfs } from "@/hooks";
 
@@ -189,7 +191,7 @@ export const CreateCampaignForm = ({
               name="targetTimestamp"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
-                  <FormLabel>Target timestamp</FormLabel>
+                  <FormLabel>Ending date</FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl>
@@ -248,6 +250,16 @@ export const CreateCampaignForm = ({
             />
           </div>
         </div>
+
+        <Alert variant="warning" className="flex items-center">
+          <div>
+            <TriangleAlert className="mr-2 h-4 w-4" />
+          </div>
+          <AlertDescription>
+            Once the campaign is created, it&apos;s ending date cannot be
+            modified. Please select the ending date carefully.
+          </AlertDescription>
+        </Alert>
 
         <Button
           type="submit"
