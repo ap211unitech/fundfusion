@@ -1,5 +1,6 @@
 import { Coins, Info, MoveUpRight, TriangleAlert, Users } from "lucide-react";
 import { redirect } from "next/navigation";
+import classNames from "classnames";
 import Link from "next/link";
 import moment from "moment";
 
@@ -34,9 +35,15 @@ export const Campaign = async ({
     campaign.targetTimestamp > new Date().getTime();
 
   return (
-    <div className="mx-auto grid max-w-[80%] grid-cols-2 gap-10 py-12">
+    <div
+      className={classNames(
+        "mx-auto grid max-w-[90%] gap-10 py-12",
+        "md:max-w-[80%]",
+        "lg:max-w-[90%] lg:grid-cols-2",
+      )}
+    >
       <div className="flex flex-col gap-6">
-        <div className="relative h-[400px] overflow-hidden">
+        <div className="relative h-[300px] overflow-hidden sm:h-[400px]">
           <ImageComponent
             fill
             src={campaign.image}
@@ -44,7 +51,7 @@ export const Campaign = async ({
             className="rounded-xl transition-all duration-300 hover:scale-95"
           />
         </div>
-        <div className="flex flex-col text-secondary [&>div]:border-b [&>div]:py-2">
+        <div className="flex flex-col text-secondary [&>div]:gap-4 [&>div]:border-b [&>div]:py-2">
           <div className="grid grid-cols-2">
             <span className="text-lg text-primary">Target amount</span>
             {campaign.targetAmount} ETH
@@ -86,8 +93,8 @@ export const Campaign = async ({
           {campaign.description}
         </p>
 
-        <div className="grid grid-cols-2 rounded-xl border border-primary">
-          <div className="space-y-1 border-r border-primary px-5 py-3">
+        <div className="grid rounded-xl border border-primary sm:grid-cols-2">
+          <div className="space-y-1 border-primary px-5 py-3 sm:border-r">
             <div className="flex items-center gap-1.5 text-lg text-primary">
               <Users className="h-5 w-5" />
               Contributors
