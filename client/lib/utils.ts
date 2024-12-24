@@ -4,6 +4,7 @@ import { ethers } from "ethers";
 import moment from "moment";
 
 import { CONFIG } from "@/config";
+import { Campaign, CampaignStatus } from "@/types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -38,5 +39,10 @@ export const durationLeft = (endDate: number) => {
   if (leftTime.days() > 0) return `${leftTime.days()} days left`;
   if (leftTime.hours() > 0) return `${leftTime.hours()} hours left`;
   if (leftTime.minutes() > 0) return `${leftTime.minutes()} minutes left`;
-  return `${leftTime.seconds()} seconds left`;
+  return `${Math.max(0, leftTime.seconds())} seconds left`;
 };
+
+export const checkIfCampaignActive = (campaign: Campaign) =>
+  !campaign.fundWithdrawanByOwner &&
+  campaign.status === CampaignStatus.ACTIVE &&
+  campaign.targetTimestamp > new Date().getTime();

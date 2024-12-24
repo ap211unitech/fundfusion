@@ -12,7 +12,7 @@ export const useMyCampaigns = () => {
     enabled: !!address,
     queryFn: async () => {
       if (!address) return [];
-      return getDeployedCampaignsForUser(address);
+      return await getDeployedCampaignsForUser(address);
     },
   });
 };

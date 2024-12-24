@@ -12,8 +12,12 @@ import {
   AlertDescription,
 } from "@/components/ui";
 import { getAllCategories, getCampaignData } from "@/fetchers";
-import { CampaignStatus, SearchParams } from "@/types";
-import { getIpfsHashFromUrl, trimString } from "@/lib/utils";
+import { SearchParams } from "@/types";
+import {
+  trimString,
+  getIpfsHashFromUrl,
+  checkIfCampaignActive,
+} from "@/lib/utils";
 
 import { Actions } from "./actions";
 
@@ -32,10 +36,7 @@ export const Campaign = async ({
 
   const categories = await getAllCategories();
 
-  const isCampaignActive =
-    !campaign.fundWithdrawanByOwner &&
-    campaign.status === CampaignStatus.ACTIVE &&
-    campaign.targetTimestamp > new Date().getTime();
+  const isCampaignActive = checkIfCampaignActive(campaign);
 
   return (
     <div

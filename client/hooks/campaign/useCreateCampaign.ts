@@ -48,7 +48,7 @@ export const useCreateCampaign = () => {
         description,
         image,
         ethers.parseUnits(targetAmount),
-        targetTimestamp.getTime() / 1000,
+        Math.ceil(targetTimestamp.getTime() / 1000),
         CONFIG.CATEGORY_CONTRACT,
       );
       await tx.wait();

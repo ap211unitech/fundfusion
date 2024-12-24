@@ -1,10 +1,14 @@
-import { getAllDeployedCampaigns } from "@/fetchers";
 import { Telescope } from "lucide-react";
+
+import { checkIfCampaignActive } from "@/lib/utils";
+import { getAllDeployedCampaigns } from "@/fetchers";
 
 import { Campaign } from "./campaign";
 
 export const Landing = async () => {
-  const campaigns = await getAllDeployedCampaigns();
+  const campaigns = (await getAllDeployedCampaigns()).filter((campaign) =>
+    checkIfCampaignActive(campaign),
+  );
 
   return (
     <div className="space-y-10 py-12">

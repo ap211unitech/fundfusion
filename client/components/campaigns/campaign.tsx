@@ -1,9 +1,9 @@
 import { Clock3, Users } from "lucide-react";
 import Link from "next/link";
 
-import { Badge, ImageComponent } from "@/components/ui";
-import { Campaign as CampaignType } from "@/types";
 import { durationLeft } from "@/lib/utils";
+import { Campaign as CampaignType } from "@/types";
+import { Badge, ImageComponent } from "@/components/ui";
 
 export const Campaign = ({ campaign }: { campaign: CampaignType }) => {
   return (
