@@ -28,6 +28,7 @@ export const Actions = ({ categories, campaign, isCampaignActive }: Props) => {
 
   const isEditable = useMemo(
     () =>
+      !!address &&
       campaign.owner.toLowerCase() === address?.toLowerCase() &&
       isCampaignActive,
     [address, campaign.owner, isCampaignActive],
@@ -35,6 +36,7 @@ export const Actions = ({ categories, campaign, isCampaignActive }: Props) => {
 
   const isDeletable = useMemo(
     () =>
+      !!address &&
       campaign.owner.toLowerCase() === address?.toLowerCase() &&
       isCampaignActive,
     [address, campaign.owner, isCampaignActive],

@@ -1,10 +1,9 @@
 "use client";
 
-import { CalendarIcon, Edit, Loader2 } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Edit, Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import classNames from "classnames";
-import { format } from "date-fns";
 import { useMemo } from "react";
 import z from "zod";
 
@@ -13,8 +12,6 @@ import {
   Input,
   Button,
   Select,
-  Popover,
-  Calendar,
   FormItem,
   Textarea,
   FormLabel,
@@ -25,10 +22,9 @@ import {
   FormMessage,
   SelectTrigger,
   SelectContent,
-  PopoverTrigger,
-  PopoverContent,
 } from "@/components/ui";
 import { useEditCampaign, useIpfs } from "@/hooks";
+import { getIpfsHashFromUrl } from "@/lib/utils";
 import { Campaign } from "@/types";
 
 const formSchema = z.object({
@@ -36,9 +32,6 @@ const formSchema = z.object({
   category: z.string().nonempty("Required"),
   description: z.string().nonempty("Required"),
   targetAmount: z.string().nonempty("Required"),
-  targetTimestamp: z.date({
-    required_error: "Required",
-  }),
   image: z.any(),
 });
 
@@ -66,10 +59,30 @@ export const EditCampaignForm = ({
       category: campaign.category,
       description: campaign.description,
       targetAmount: campaign.targetAmount.toString(),
+      image: getIpfsHashFromUrl(campaign.image),
     },
   });
 
-  const onSubmit = () => {};
+  const onSubmit = async ({
+    title,
+    category,
+    description,
+    image,
+    targetAmount,
+  }: z.infer<typeof formSchema>) => {
+    const { IpfsHash, status } = await onUploadToIpfs({ file: image });
+
+    if (status !== 200) return;
+
+    await onEditCampaign({
+      campaignAddress: campaign.address,
+      title,
+      category,
+      description,
+      image: IpfsHash,
+      targetAmount,
+    });
+  };
 
   return (
     <Form {...form}>
@@ -162,48 +175,6 @@ export const EditCampaignForm = ({
                       className="placeholder:opacity-50"
                     />
                   </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="targetTimestamp"
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <FormLabel>Target timestamp</FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant={"outline"}
-                          className={classNames(
-                            "!mt-3 w-full pl-3 text-left font-normal",
-                            !field.value
-                              ? "text-muted-foreground"
-                              : "opacity-80",
-                          )}
-                        >
-                          {field.value ? (
-                            format(field.value, "PPP")
-                          ) : (
-                            <span>Pick a date</span>
-                          )}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={field.value}
-                        onSelect={field.onChange}
-                        disabled={(date) => date < new Date()}
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
                   <FormMessage />
                 </FormItem>
               )}
