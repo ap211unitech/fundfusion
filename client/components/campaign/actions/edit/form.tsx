@@ -20,6 +20,7 @@ import {
   SelectValue,
   FormControl,
   FormMessage,
+  UploadImage,
   SelectTrigger,
   SelectContent,
 } from "@/components/ui";
@@ -95,7 +96,7 @@ export const EditCampaignForm = ({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="mb-20 space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <div className="grid gap-4 md:grid-cols-2 md:gap-10">
           <div className="space-y-4">
             <FormField
@@ -167,9 +168,7 @@ export const EditCampaignForm = ({
                 </FormItem>
               )}
             />
-          </div>
 
-          <div className="space-y-5 md:space-y-6">
             <FormField
               control={form.control}
               name="targetAmount"
@@ -188,20 +187,22 @@ export const EditCampaignForm = ({
                 </FormItem>
               )}
             />
+          </div>
 
+          <div className="!mt-2">
             <FormField
               control={form.control}
               name="image"
-              render={({ field: { value, onChange, ...fieldProps } }) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input
-                      {...fieldProps}
-                      placeholder="Picture"
-                      type="file"
-                      accept="image/*"
-                      onChange={(event) =>
-                        onChange(event.target.files && event.target.files[0])
+                    <UploadImage
+                      formField={field}
+                      initialImagePreviewUrl={form.getValues("image")}
+                      onDrop={(acceptedFiles) =>
+                        form.setValue("image", acceptedFiles, {
+                          shouldValidate: true,
+                        })
                       }
                     />
                   </FormControl>

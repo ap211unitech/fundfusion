@@ -28,22 +28,22 @@ export const EditCampaign = ({
 
   return (
     <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger>
+      <DrawerTrigger asChild>
         <Button className="flex items-center gap-2" variant="secondary">
           <Edit className="h-4 w-4" />
           Edit Campaign
         </Button>
       </DrawerTrigger>
       <DrawerContent>
-        <div className="mx-auto w-full px-4 pt-6 xl:container sm:px-10">
-          <DrawerHeader className="px-0">
+        <div className="mx-auto max-h-[80vh] w-full overflow-auto px-4 pb-10 pt-8 xl:container sm:px-10">
+          <DrawerHeader className="p-0">
             <DrawerTitle className="flex items-center gap-2 text-2xl text-primary">
               <Edit className="h-5 w-5 stroke-[3px]" />
               Edit Campaign
             </DrawerTitle>
           </DrawerHeader>
 
-          <Alert variant="warning" className="mb-4 flex items-center">
+          <Alert variant="warning" className="my-6 flex items-center">
             <div>
               <TriangleAlert className="mr-2 h-4 w-4" />
             </div>

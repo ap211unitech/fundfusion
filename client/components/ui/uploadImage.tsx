@@ -8,11 +8,18 @@ import { ImageComponent } from "./imageComponent";
 
 type Props = {
   formField: object;
+  initialImagePreviewUrl?: string;
   onDrop: (acceptedFiles: File[]) => void;
 };
 
-export const UploadImage = ({ formField, onDrop: onDropCallback }: Props) => {
-  const [imagePreviewUrl, setImagePreviewUrl] = useState("");
+export const UploadImage = ({
+  formField,
+  initialImagePreviewUrl = "",
+  onDrop: onDropCallback,
+}: Props) => {
+  const [imagePreviewUrl, setImagePreviewUrl] = useState(
+    initialImagePreviewUrl,
+  );
 
   const onDrop = (acceptedFiles: File[]) => {
     setImagePreviewUrl(URL.createObjectURL(acceptedFiles.at(0) as File));
