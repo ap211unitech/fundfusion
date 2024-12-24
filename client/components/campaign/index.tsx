@@ -7,6 +7,7 @@ import moment from "moment";
 import {
   Badge,
   Alert,
+  Description,
   ImageComponent,
   AlertDescription,
 } from "@/components/ui";
@@ -89,10 +90,10 @@ export const Campaign = async ({
       <div className="flex flex-col gap-4">
         <h1 className="text-2xl text-primary">{campaign.title}</h1>
         <Badge className="w-fit rounded-full">{campaign.category}</Badge>
-        <p className="text-justify text-sm text-muted-foreground">
-          {campaign.description}
-        </p>
-
+        <Description
+          value={campaign.description}
+          className="text-justify text-sm text-muted-foreground"
+        />
         <div className="grid rounded-xl border border-primary sm:grid-cols-2">
           <div className="space-y-1 border-primary px-5 py-3 sm:border-r">
             <div className="flex items-center gap-1.5 text-lg text-primary">
