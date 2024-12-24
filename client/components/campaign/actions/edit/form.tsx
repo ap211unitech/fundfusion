@@ -33,7 +33,18 @@ const formSchema = z.object({
   category: z.string().nonempty("Required"),
   description: z.string().nonempty("Required"),
   targetAmount: z.string().nonempty("Required"),
-  image: z.any(),
+  image: z
+    .array(
+      z.custom<File | string>(
+        (file) =>
+          typeof file == "string" ||
+          (file instanceof File && file.type.startsWith("image/")),
+        {
+          message: "Only image files are allowed.",
+        },
+      ),
+    )
+    .max(1, "You can only upload 1 image."),
 });
 
 export const EditCampaignForm = ({
@@ -62,7 +73,7 @@ export const EditCampaignForm = ({
       category: campaign.category,
       description: campaign.description,
       targetAmount: campaign.targetAmount.toString(),
-      image: campaign.image,
+      image: [campaign.image],
     },
   });
 
@@ -70,9 +81,11 @@ export const EditCampaignForm = ({
     title,
     category,
     description,
-    image,
+    image: formImage,
     targetAmount,
   }: z.infer<typeof formSchema>) => {
+    const image = formImage[0];
+
     let IpfsHash: string;
 
     if (typeof image === "string") {
@@ -198,7 +211,7 @@ export const EditCampaignForm = ({
                   <FormControl>
                     <UploadImage
                       formField={field}
-                      initialImagePreviewUrl={form.getValues("image")}
+                      initialImagePreviewUrl={campaign.image}
                       onDrop={(acceptedFiles) =>
                         form.setValue("image", acceptedFiles, {
                           shouldValidate: true,
