@@ -53,13 +53,14 @@ export const UploadImage = ({
 
       <div
         className={classNames(
-          "absolute left-[50%] top-[50%] flex max-h-full flex-col items-center gap-1 self-center rounded-lg p-4 text-center",
-          imagePreviewUrl &&
-            "bg-muted/90 dark:bg-background/90 dark:text-white",
+          "absolute left-[50%] top-[50%] flex max-h-full flex-col items-center gap-1 self-center rounded-lg bg-muted/90 p-4 text-center",
+          imagePreviewUrl && "dark:text-white",
         )}
         style={{ transform: "translate(-50%, -50%)" }}
       >
-        <p className="text-lg text-primary">Upload Image</p>
+        <p className="text-lg text-primary">
+          {imagePreviewUrl ? "Change Image" : "Upload Image"}
+        </p>
         <p className="text-xs">
           {isDragActive
             ? "Drop the files here ..."
