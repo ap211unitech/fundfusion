@@ -2,10 +2,11 @@
 
 import { CalendarIcon, Loader2, Plus, TriangleAlert } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useDropzone } from "react-dropzone";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import classNames from "classnames";
 import { format } from "date-fns";
-import { useMemo } from "react";
 import z from "zod";
 
 import {
@@ -28,6 +29,7 @@ import {
   SelectContent,
   PopoverTrigger,
   PopoverContent,
+  ImageComponent,
   AlertDescription,
 } from "@/components/ui";
 import { useCreateCampaign, useIpfs } from "@/hooks";
@@ -40,7 +42,16 @@ const formSchema = z.object({
   targetTimestamp: z.date({
     required_error: "Required",
   }),
-  image: z.any(),
+  image: z
+    .array(
+      z.custom<File>(
+        (file) => file instanceof File && file.type.startsWith("image/"),
+        {
+          message: "Only image files are allowed.",
+        },
+      ),
+    )
+    .max(1, "You can only upload 1 image."),
 });
 
 export const CreateCampaignForm = ({
@@ -48,6 +59,8 @@ export const CreateCampaignForm = ({
 }: {
   categories: string[];
 }) => {
+  const [imagePreviewUrl, setImagePreviewUrl] = useState("");
+
   const { mutateAsync: onCreateCampaign, isPending: isCreatingCampaign } =
     useCreateCampaign();
   const { mutateAsync: onUploadToIpfs, isPending: isUploadingToIpfs } =
@@ -68,6 +81,19 @@ export const CreateCampaignForm = ({
     },
   });
 
+  const onDrop = (acceptedFiles: File[]) => {
+    setImagePreviewUrl(URL.createObjectURL(acceptedFiles.at(0) as File));
+    form.setValue("image", acceptedFiles, { shouldValidate: true });
+  };
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: {
+      "image/*": [],
+    },
+    maxFiles: 1,
+  });
+
   const onSubmit = async ({
     title,
     category,
@@ -76,7 +102,9 @@ export const CreateCampaignForm = ({
     targetAmount,
     targetTimestamp,
   }: z.infer<typeof formSchema>) => {
-    const { IpfsHash, status } = await onUploadToIpfs({ file: image });
+    const { IpfsHash, status } = await onUploadToIpfs({
+      file: image.at(0) as File,
+    });
 
     if (status !== 200) return;
 
@@ -164,9 +192,7 @@ export const CreateCampaignForm = ({
                 </FormItem>
               )}
             />
-          </div>
 
-          <div className="space-y-5 md:space-y-6">
             <FormField
               control={form.control}
               name="targetAmount"
@@ -227,22 +253,51 @@ export const CreateCampaignForm = ({
                 </FormItem>
               )}
             />
+          </div>
 
+          <div className="!mt-2 md:!mt-8">
             <FormField
               control={form.control}
               name="image"
-              render={({ field: { value, onChange, ...fieldProps } }) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input
-                      {...fieldProps}
-                      placeholder="Picture"
-                      type="file"
-                      accept="image/*"
-                      onChange={(event) =>
-                        onChange(event.target.files && event.target.files[0])
-                      }
-                    />
+                    <div
+                      {...getRootProps({
+                        className: `relative overflow-hidden border-2 h-[400px] border-dashed rounded-xl cursor-pointer transition duration-300 ${
+                          isDragActive ? "border-blue-500" : "border-input"
+                        } ${!imagePreviewUrl && "border-primary"}`,
+                      })}
+                      {...field}
+                    >
+                      <input {...getInputProps()} />
+
+                      {!!imagePreviewUrl && (
+                        <div className="absolute inset-0 -z-10 h-full w-full scale-105">
+                          <ImageComponent
+                            src={imagePreviewUrl}
+                            alt="Uploaded image"
+                            fill
+                          />
+                        </div>
+                      )}
+
+                      <div
+                        className={classNames(
+                          "absolute left-[50%] top-[50%] flex max-h-full flex-col items-center gap-1 self-center rounded-lg p-4 text-center",
+                          imagePreviewUrl &&
+                            "bg-muted/90 dark:bg-background/90 dark:text-white",
+                        )}
+                        style={{ transform: "translate(-50%, -50%)" }}
+                      >
+                        <p className="text-lg text-primary">Upload Image</p>
+                        <p className="text-xs">
+                          {isDragActive
+                            ? "Drop the files here ..."
+                            : "Drag and drop images here, or click to select files."}
+                        </p>
+                      </div>
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
