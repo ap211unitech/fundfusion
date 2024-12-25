@@ -63,7 +63,7 @@ export const getCampaignData = async (
 
       if (!!donatorAddress) {
         contributors.set(
-          donatorAddress,
+          donatorAddress.toLowerCase(),
           (contributors.get(donatorAddress) || 0) + donatedAmount,
         );
       }

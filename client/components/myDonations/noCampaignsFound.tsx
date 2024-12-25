@@ -13,7 +13,7 @@ export const NoCampaignsFound = () => {
         </h2>
         <div className="flex flex-col items-center space-y-4 md:items-start">
           <div className="text-center md:text-left">
-            It looks like you havn&apos;t contributed to any campaigns yet.
+            It looks like you haven&apos;t contributed to any campaigns yet.
           </div>
           <div className="flex flex-col gap-3">
             <p>But you don&apos;t worry, you can :</p>
