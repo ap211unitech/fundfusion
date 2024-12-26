@@ -122,7 +122,7 @@ export const Campaign = async ({
               <TriangleAlert className="mr-2 h-4 w-4" />
             </div>
             <AlertDescription>
-              The owner has already withdrawn the collected amount.
+              The owner has withdrawn the collected amount.
             </AlertDescription>
           </Alert>
         )}

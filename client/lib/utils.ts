@@ -60,5 +60,6 @@ export const checkIfOwnerCanWithdraw = (
   ownerAddress: string,
 ) =>
   !checkIfCampaignActive(campaign) &&
+  !campaign.fundWithdrawanByOwner &&
   campaign.owner.toLowerCase() === ownerAddress.toLowerCase() &&
   campaign.totalRaisedAmount >= campaign.targetAmount;
