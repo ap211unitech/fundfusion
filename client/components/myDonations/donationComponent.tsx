@@ -33,7 +33,13 @@ export const DonationComponent = ({
       </h1>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {campaigns?.map((campaign) => {
-          return <Campaign campaign={campaign} key={campaign.address} />;
+          return (
+            <Campaign
+              key={campaign.address}
+              userAddress={address}
+              campaign={campaign}
+            />
+          );
         })}
       </div>
     </div>

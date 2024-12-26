@@ -138,13 +138,7 @@ export const Campaign = async ({
           </Alert>
         )}
 
-        {isCampaignActive ? (
-          <Actions
-            campaign={campaign}
-            categories={categories}
-            isCampaignActive={isCampaignActive}
-          />
-        ) : (
+        {!isCampaignActive && (
           <Alert variant="destructive" className="flex items-center">
             <div>
               <Info className="mr-2 h-4 w-4" />
@@ -154,6 +148,12 @@ export const Campaign = async ({
             </AlertDescription>
           </Alert>
         )}
+
+        <Actions
+          campaign={campaign}
+          categories={categories}
+          isCampaignActive={isCampaignActive}
+        />
       </div>
     </div>
   );

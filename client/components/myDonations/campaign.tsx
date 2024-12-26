@@ -16,10 +16,10 @@ export const Campaign = ({
   userAddress,
 }: {
   campaign: CampaignType;
-  userAddress: string;
+  userAddress?: string;
 }) => {
   const canGetRefund = useMemo(
-    () => checkIfUserCanGetRefund(campaign, userAddress),
+    () => !!userAddress && checkIfUserCanGetRefund(campaign, userAddress),
     [campaign, userAddress],
   );
 
