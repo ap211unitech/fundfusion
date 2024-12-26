@@ -44,10 +44,13 @@ export const Campaign = async ({
   // It will be rendered when campaign is not active
   const recentUpdates = [
     !isCampaignActive && "This campaign is no more active.",
-    isTargetAmountMet &&
-      campaign.fundWithdrawanByOwner &&
+
+    isTargetAmountMet
+      ? "This campaign has already raised the desired amount of money."
+      : "This campaign could not achieve the desired funding goal. All contributors are eligible to receive a full refund of their contributions.",
+
+    campaign.fundWithdrawanByOwner &&
       "The owner has withdrawn the collected amount.",
-    "This campaign has already raised the desired amount of money.",
   ].filter((e) => typeof e === "string");
 
   return (
@@ -137,7 +140,9 @@ export const Campaign = async ({
             <AlertDescription className="flex flex-col gap-2 px-2">
               {recentUpdates.map((update) => (
                 <div key={update} className="flex items-center text-foreground">
-                  <Circle className="mr-2 h-2 w-2 rounded-full fill-foreground" />
+                  <div>
+                    <Circle className="mr-2.5 h-2 w-2 rounded-full fill-foreground" />
+                  </div>
                   <div>{update}</div>
                 </div>
               ))}
