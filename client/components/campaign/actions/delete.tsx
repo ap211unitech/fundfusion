@@ -38,8 +38,8 @@ export const DeleteCampaign = ({ campaign }: { campaign: Campaign }) => {
             Are you sure you want to delete this campaign? This action cannot be
             undone.
             <br />
-            However, the campaign will still be accessible but it will marked as{" "}
-            <span className="text-destructive">DELETED</span>.
+            However, the campaign will still be accessible but it will marked as
+            DELETED.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
