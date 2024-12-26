@@ -1,5 +1,5 @@
 import { BrowserProvider, Contract, Eip1193Provider, ethers } from "ethers";
-import { useAppKitProvider } from "@reown/appkit/react";
+import { useAppKitAccount, useAppKitProvider } from "@reown/appkit/react";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -19,6 +19,7 @@ type Props = {
 
 export const useCreateCampaign = () => {
   const router = useRouter();
+  const { address } = useAppKitAccount();
   const { walletProvider } = useAppKitProvider("eip155");
 
   return useMutation({
@@ -31,10 +32,14 @@ export const useCreateCampaign = () => {
       targetTimestamp,
       cb,
     }: Props) => {
+      if (!address || !walletProvider)
+        throw new Error("Please connect your wallet");
+
       const ethersProvider = new BrowserProvider(
         walletProvider as Eip1193Provider,
       );
-      const signer = await ethersProvider.getSigner();
+
+      const signer = await ethersProvider.getSigner(address);
 
       const fundfusionContract = new Contract(
         CONFIG.FUNDFUSION_CONTRACT,

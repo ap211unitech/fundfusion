@@ -1,12 +1,15 @@
 "use client";
 
-import { useTheme } from "next-themes";
 import { ReactNode, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useTheme } from "next-themes";
+
 import {
-  createAppKit,
   Metadata,
   ThemeMode,
+  createAppKit,
   useAppKitTheme,
+  useAppKitAccount,
 } from "@reown/appkit/react";
 import { EthersAdapter } from "@reown/appkit-adapter-ethers";
 import { AppKitNetwork, hardhat, sepolia } from "@reown/appkit/networks";
@@ -25,7 +28,7 @@ const metadata: Metadata = {
   name: "FundFusion",
   description: "Decentralized Crowdfunding Application",
   url: "http://localhost:3000", // origin must match your domain & subdomain
-  icons: ["http://localhost:3000"],
+  icons: ["http://localhost:3000/favicon.ico"],
 };
 
 createAppKit({
@@ -50,7 +53,10 @@ export const WalletConnectProvider = ({
 }: {
   children: ReactNode;
 }) => {
+  const router = useRouter();
+
   const { theme } = useTheme();
+  const { address } = useAppKitAccount();
   const { setThemeMode, setThemeVariables } = useAppKitTheme();
 
   useEffect(() => {
@@ -60,6 +66,10 @@ export const WalletConnectProvider = ({
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [theme]);
+
+  // Refresh server components on account change
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => router.refresh(), [address]);
 
   return <>{children}</>;
 };
