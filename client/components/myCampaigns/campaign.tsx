@@ -1,6 +1,6 @@
 "use client";
 
-import { Clock3, PartyPopper, Users } from "lucide-react";
+import { PartyPopper, Users } from "lucide-react";
 import { useAppKitAccount } from "@reown/appkit/react";
 import { useMemo } from "react";
 import Link from "next/link";
@@ -8,11 +8,11 @@ import Link from "next/link";
 import {
   Alert,
   Badge,
+  DurationLeft,
   ImageComponent,
   AlertDescription,
 } from "@/components/ui";
 import {
-  durationLeft,
   checkIfOwnerCanWithdraw,
   checkIfOwnerAlreadyWithdrawnFunds,
 } from "@/lib/utils";
@@ -47,10 +47,7 @@ export const Campaign = ({ campaign }: { campaign: CampaignType }) => {
           {campaign.title}
         </h2>
         <div className="flex items-center justify-between text-sm text-muted-foreground">
-          <p className="flex items-center gap-2">
-            <Clock3 className="h-4 w-4" />
-            {durationLeft(campaign.targetTimestamp)}
-          </p>
+          <DurationLeft campaign={campaign} />
           <p className="flex items-center gap-2">
             <Users className="h-4 w-4" />
             {campaign.contributors.size || 0} contributors

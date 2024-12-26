@@ -1,9 +1,8 @@
-import { Clock3, Users } from "lucide-react";
+import { Users } from "lucide-react";
 import Link from "next/link";
 
-import { durationLeft } from "@/lib/utils";
 import { Campaign as CampaignType } from "@/types";
-import { Badge, ImageComponent } from "@/components/ui";
+import { Badge, DurationLeft, ImageComponent } from "@/components/ui";
 
 export const Campaign = ({ campaign }: { campaign: CampaignType }) => {
   return (
@@ -22,10 +21,7 @@ export const Campaign = ({ campaign }: { campaign: CampaignType }) => {
           {campaign.title}
         </h2>
         <div className="flex items-center justify-between text-sm text-muted-foreground">
-          <p className="flex items-center gap-2">
-            <Clock3 className="h-4 w-4" />
-            {durationLeft(campaign.targetTimestamp)}
-          </p>
+          <DurationLeft campaign={campaign} />
           <p className="flex items-center gap-2">
             <Users className="h-4 w-4" />
             {campaign.contributors.size || 0} contributors

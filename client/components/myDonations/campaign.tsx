@@ -1,15 +1,16 @@
-import { Clock3, ShieldAlert, Users } from "lucide-react";
+import { ShieldAlert, Users } from "lucide-react";
 import { useMemo } from "react";
 import Link from "next/link";
 
 import {
   Alert,
   Badge,
+  DurationLeft,
   ImageComponent,
   AlertDescription,
 } from "@/components/ui";
 import { Campaign as CampaignType } from "@/types";
-import { checkIfUserCanGetRefund, durationLeft } from "@/lib/utils";
+import { checkIfUserCanGetRefund } from "@/lib/utils";
 
 export const Campaign = ({
   campaign,
@@ -39,10 +40,7 @@ export const Campaign = ({
           {campaign.title}
         </h2>
         <div className="flex items-center justify-between text-sm text-muted-foreground">
-          <p className="flex items-center gap-2">
-            <Clock3 className="h-4 w-4" />
-            {durationLeft(campaign.targetTimestamp)}
-          </p>
+          <DurationLeft campaign={campaign} />
           <p className="flex items-center gap-2">
             <Users className="h-4 w-4" />
             {campaign.contributors.size || 0} contributors
