@@ -38,6 +38,8 @@ export const Campaign = async ({
 
   const isCampaignActive = checkIfCampaignActive(campaign);
 
+  const isTargetAmountMet = campaign.totalRaisedAmount >= campaign.targetAmount;
+
   return (
     <div
       className={classNames(
@@ -121,6 +123,17 @@ export const Campaign = async ({
             </div>
             <AlertDescription>
               The owner has already withdrawn the collected amount.
+            </AlertDescription>
+          </Alert>
+        )}
+
+        {isTargetAmountMet && (
+          <Alert variant="info" className="flex items-center">
+            <div>
+              <Info className="mr-2 h-4 w-4" />
+            </div>
+            <AlertDescription>
+              This campaign has already raised the desired amount of money.
             </AlertDescription>
           </Alert>
         )}
