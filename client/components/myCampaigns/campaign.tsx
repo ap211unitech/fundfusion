@@ -1,11 +1,27 @@
-import { Clock3, Users } from "lucide-react";
+"use client";
+
+import { Clock3, PartyPopper, Users } from "lucide-react";
+import { useAppKitAccount } from "@reown/appkit/react";
+import { useMemo } from "react";
 import Link from "next/link";
 
-import { Badge, ImageComponent } from "@/components/ui";
+import {
+  Alert,
+  Badge,
+  ImageComponent,
+  AlertDescription,
+} from "@/components/ui";
 import { Campaign as CampaignType } from "@/types";
-import { durationLeft } from "@/lib/utils";
+import { checkIfOwnerCanWithdraw, durationLeft } from "@/lib/utils";
 
 export const Campaign = ({ campaign }: { campaign: CampaignType }) => {
+  const { address: ownerAddress } = useAppKitAccount();
+
+  const canWithdraw = useMemo(
+    () => checkIfOwnerCanWithdraw(campaign, ownerAddress as string),
+    [campaign, ownerAddress],
+  );
+
   return (
     <Link
       href={`/campaign?id=${campaign.address}`}
@@ -31,6 +47,19 @@ export const Campaign = ({ campaign }: { campaign: CampaignType }) => {
             {campaign.contributors.size || 0} contributors
           </p>
         </div>
+        {canWithdraw && (
+          <Alert
+            variant="warning"
+            className="flex items-center border-none bg-transparent p-0"
+          >
+            <div>
+              <PartyPopper className="mr-2 h-4 w-4" />
+            </div>
+            <AlertDescription>
+              You can withdraw the collected amount.
+            </AlertDescription>
+          </Alert>
+        )}
       </div>
     </Link>
   );
