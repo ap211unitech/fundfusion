@@ -51,7 +51,7 @@ describe("Campaign Contract", function () {
     });
 
     it("Should not withdraw if target amount not met", async () => {
-      await sleep(30);
+      await sleep(20);
       const tx = contract.withdraw();
       await expect(tx).to.be.rejectedWith("Target amount not met !!");
     });

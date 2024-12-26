@@ -19,7 +19,7 @@ contract Campaign {
 
     enum CAMPAIGN_STATUS {
         ACTIVE,
-        DELETED
+        INACTIVE
     }
 
     mapping(address => uint256) public contributors;
@@ -136,7 +136,7 @@ contract Campaign {
             image,
             targetAmount,
             targetTimestamp,
-            status == CAMPAIGN_STATUS.ACTIVE ? "ACTIVE" : "DELETED"
+            status == CAMPAIGN_STATUS.ACTIVE ? "ACTIVE" : "INACTIVE"
         );
     }
 
@@ -165,6 +165,10 @@ contract Campaign {
         uint256 amount = msg.value;
         contributors[msg.sender] += amount;
         totalRaisedAmount += amount;
+
+        if (totalRaisedAmount >= targetAmount) {
+            status = CAMPAIGN_STATUS.INACTIVE;
+        }
 
         emit FundDonated(address(this), msg.sender, amount, block.timestamp);
     }
@@ -256,7 +260,7 @@ contract Campaign {
             "Campaign is no longer valid. Deadline passed now !!"
         );
 
-        status = CAMPAIGN_STATUS.DELETED;
+        status = CAMPAIGN_STATUS.INACTIVE;
 
         emit CampaignDeleted(
             address(this),
