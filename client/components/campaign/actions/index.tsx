@@ -56,7 +56,7 @@ export const Actions = ({ categories, campaign, isCampaignActive }: Props) => {
         <EditCampaign campaign={campaign} categories={categories} />
       )}
       {isDeletable && <DeleteCampaign campaign={campaign} />}
-      {isWithdrawable && <Withdraw campaign={campaign} userAddress={address} />}
+      {isWithdrawable && <Withdraw campaign={campaign} />}
     </div>
   );
 };
