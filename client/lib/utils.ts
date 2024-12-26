@@ -45,4 +45,20 @@ export const durationLeft = (endDate: number) => {
 export const checkIfCampaignActive = (campaign: Campaign) =>
   !campaign.fundWithdrawanByOwner &&
   campaign.status === CampaignStatus.ACTIVE &&
-  campaign.targetTimestamp > new Date().getTime();
+  campaign.targetTimestamp >= new Date().getTime();
+
+export const checkIfUserCanGetRefund = (
+  campaign: Campaign,
+  userAddress: string,
+) =>
+  !checkIfCampaignActive(campaign) &&
+  campaign.contributors.has(userAddress.toLowerCase()) &&
+  campaign.totalRaisedAmount < campaign.targetAmount;
+
+export const checkIfOwnerCanWithdraw = (
+  campaign: Campaign,
+  ownerAddress: string,
+) =>
+  !checkIfCampaignActive(campaign) &&
+  campaign.owner.toLowerCase() === ownerAddress.toLowerCase() &&
+  campaign.totalRaisedAmount >= campaign.targetAmount;

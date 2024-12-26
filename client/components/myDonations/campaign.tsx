@@ -1,11 +1,28 @@
-import { Clock3, Users } from "lucide-react";
+import { Clock3, ShieldAlert, Users } from "lucide-react";
+import { useMemo } from "react";
 import Link from "next/link";
 
-import { Badge, ImageComponent } from "@/components/ui";
+import {
+  Alert,
+  Badge,
+  ImageComponent,
+  AlertDescription,
+} from "@/components/ui";
 import { Campaign as CampaignType } from "@/types";
-import { durationLeft } from "@/lib/utils";
+import { checkIfUserCanGetRefund, durationLeft } from "@/lib/utils";
 
-export const Campaign = ({ campaign }: { campaign: CampaignType }) => {
+export const Campaign = ({
+  campaign,
+  userAddress,
+}: {
+  campaign: CampaignType;
+  userAddress: string;
+}) => {
+  const canGetRefund = useMemo(
+    () => checkIfUserCanGetRefund(campaign, userAddress),
+    [campaign, userAddress],
+  );
+
   return (
     <Link
       href={`/campaign?id=${campaign.address}`}
@@ -31,6 +48,17 @@ export const Campaign = ({ campaign }: { campaign: CampaignType }) => {
             {campaign.contributors.size || 0} contributors
           </p>
         </div>
+        {canGetRefund && (
+          <Alert
+            variant="warning"
+            className="flex items-center border-none bg-transparent p-0"
+          >
+            <div>
+              <ShieldAlert className="mr-2 h-4 w-4" />
+            </div>
+            <AlertDescription>You can get your refund.</AlertDescription>
+          </Alert>
+        )}
       </div>
     </Link>
   );
