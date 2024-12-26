@@ -174,9 +174,10 @@ contract Campaign {
     }
 
     function withdraw() public onlyOwner {
-        // Check if deadline passed
+        // Check if deadline passed or status is INACTIVE
         require(
-            targetTimestamp < block.timestamp,
+            targetTimestamp < block.timestamp ||
+                status == CAMPAIGN_STATUS.INACTIVE,
             "Can not withdraw Funds from active campaigns !!"
         );
 
