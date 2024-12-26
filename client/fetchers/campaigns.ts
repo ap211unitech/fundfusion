@@ -41,7 +41,7 @@ export const getCampaignData = async (
     );
 
     const totalRaisedAmount = +ethers.formatEther(
-      await provider.getBalance(campaignContractAddress),
+      await campaignContract.totalRaisedAmount(),
     );
 
     const fundWithdrawanByOwner =
