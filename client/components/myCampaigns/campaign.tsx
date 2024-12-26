@@ -11,14 +11,23 @@ import {
   ImageComponent,
   AlertDescription,
 } from "@/components/ui";
+import {
+  durationLeft,
+  checkIfOwnerCanWithdraw,
+  checkIfOwnerAlreadyWithdrawnFunds,
+} from "@/lib/utils";
 import { Campaign as CampaignType } from "@/types";
-import { checkIfOwnerCanWithdraw, durationLeft } from "@/lib/utils";
 
 export const Campaign = ({ campaign }: { campaign: CampaignType }) => {
   const { address: ownerAddress } = useAppKitAccount();
 
   const canWithdraw = useMemo(
     () => checkIfOwnerCanWithdraw(campaign, ownerAddress as string),
+    [campaign, ownerAddress],
+  );
+
+  const fundsAlreadyWithdrawn = useMemo(
+    () => checkIfOwnerAlreadyWithdrawnFunds(campaign, ownerAddress as string),
     [campaign, ownerAddress],
   );
 
@@ -57,6 +66,19 @@ export const Campaign = ({ campaign }: { campaign: CampaignType }) => {
             </div>
             <AlertDescription>
               You can withdraw the collected amount.
+            </AlertDescription>
+          </Alert>
+        )}
+        {fundsAlreadyWithdrawn && (
+          <Alert
+            variant="success"
+            className="flex items-center border-none bg-transparent p-0"
+          >
+            <div>
+              <PartyPopper className="mr-2 h-4 w-4" />
+            </div>
+            <AlertDescription>
+              You&apos;ve already received the funds.
             </AlertDescription>
           </Alert>
         )}
