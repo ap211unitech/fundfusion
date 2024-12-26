@@ -56,7 +56,7 @@ export const DonateToCampaign = ({ campaign }: { campaign: Campaign }) => {
           <Info className="mr-2 h-4 w-4" />
         </div>
         <AlertDescription>
-          This campaign has raised the desired amount of money.
+          This campaign has already raised the desired amount of money.
         </AlertDescription>
       </Alert>
     );
