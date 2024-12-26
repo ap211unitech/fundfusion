@@ -1,4 +1,4 @@
-import { Coins, Info, MoveUpRight, TriangleAlert, Users } from "lucide-react";
+import { Circle, Coins, MoveUpRight, TriangleAlert, Users } from "lucide-react";
 import { redirect } from "next/navigation";
 import classNames from "classnames";
 import Link from "next/link";
@@ -7,6 +7,7 @@ import moment from "moment";
 import {
   Badge,
   Alert,
+  AlertTitle,
   Description,
   ImageComponent,
   AlertDescription,
@@ -39,6 +40,15 @@ export const Campaign = async ({
   const isCampaignActive = checkIfCampaignActive(campaign);
 
   const isTargetAmountMet = campaign.totalRaisedAmount >= campaign.targetAmount;
+
+  // It will be rendered when campaign is not active
+  const recentUpdates = [
+    !isCampaignActive && "This campaign is no more active.",
+    isTargetAmountMet &&
+      campaign.fundWithdrawanByOwner &&
+      "The owner has withdrawn the collected amount.",
+    "This campaign has already raised the desired amount of money.",
+  ].filter((e) => typeof e === "string");
 
   return (
     <div
@@ -116,35 +126,21 @@ export const Campaign = async ({
           </div>
         </div>
 
-        {campaign.fundWithdrawanByOwner && (
-          <Alert variant="warning" className="flex items-center">
-            <div>
-              <TriangleAlert className="mr-2 h-4 w-4" />
-            </div>
-            <AlertDescription>
-              The owner has withdrawn the collected amount.
-            </AlertDescription>
-          </Alert>
-        )}
-
-        {isTargetAmountMet && (
-          <Alert variant="info" className="flex items-center">
-            <div>
-              <Info className="mr-2 h-4 w-4" />
-            </div>
-            <AlertDescription>
-              This campaign has already raised the desired amount of money.
-            </AlertDescription>
-          </Alert>
-        )}
-
         {!isCampaignActive && (
-          <Alert variant="destructive" className="flex items-center">
-            <div>
-              <Info className="mr-2 h-4 w-4" />
-            </div>
-            <AlertDescription>
-              This campaign is no more active.
+          <Alert variant="warning" className="space-y-3">
+            <AlertTitle>
+              <div className="flex items-center text-base">
+                <TriangleAlert className="mr-2 h-4 w-4" />
+                Recent updates
+              </div>
+            </AlertTitle>
+            <AlertDescription className="flex flex-col gap-2 px-2 text-foreground [&>div]:flex [&>div]:items-center">
+              {recentUpdates.map((update) => (
+                <div key={update}>
+                  <Circle className="mr-3 h-2 w-2 rounded-full fill-foreground" />
+                  <div>{update}</div>
+                </div>
+              ))}
             </AlertDescription>
           </Alert>
         )}
