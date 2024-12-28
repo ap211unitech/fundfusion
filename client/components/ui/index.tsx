@@ -20,6 +20,7 @@ export * from "./calendar";
 export * from "./identicon";
 export * from "./uploadImage";
 export * from "./description";
+export * from "./scroll-area";
 export * from "./durationLeft";
 export * from "./dropdown-menu";
 export * from "./connectWallet";
