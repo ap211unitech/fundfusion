@@ -33,12 +33,12 @@ export const NoCampaignsFound = () => {
               <li className="flex items-center gap-2">
                 <Circle className="h-2 w-2 fill-primary stroke-primary" />
                 <div>
-                  Check out all{" "}
+                  Check out{" "}
                   <Link
                     href="/"
                     className="text-primary underline-offset-2 hover:underline"
                   >
-                    Active Campaigns
+                    All Campaigns
                   </Link>
                 </div>
               </li>

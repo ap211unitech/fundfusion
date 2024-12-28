@@ -46,7 +46,7 @@ export const Campaign = async ({
     !isCampaignActive && "This campaign is no more active.",
 
     isTargetAmountMet
-      ? "This campaign has already raised the desired amount of money."
+      ? "This campaign has raised the desired amount of money."
       : "This campaign could not achieve the desired funding goal. All contributors are eligible to receive a full refund of their contributions.",
 
     campaign.fundWithdrawanByOwner &&

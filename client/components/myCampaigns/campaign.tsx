@@ -75,7 +75,7 @@ export const Campaign = ({ campaign }: { campaign: CampaignType }) => {
               <PartyPopper className="mr-2 h-4 w-4" />
             </div>
             <AlertDescription>
-              You&apos;ve already received the funds.
+              You&apos;ve withdrawn the collected amount.
             </AlertDescription>
           </Alert>
         )}
