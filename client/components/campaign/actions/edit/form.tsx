@@ -29,7 +29,10 @@ import { getIpfsHashFromUrl } from "@/lib/utils";
 import { Campaign } from "@/types";
 
 const formSchema = z.object({
-  title: z.string().nonempty("Required"),
+  title: z
+    .string()
+    .nonempty("Required")
+    .min(50, "Title must be at least 50 character long"),
   category: z.string().nonempty("Required"),
   description: z.string().nonempty("Required"),
   targetAmount: z.string().nonempty("Required"),
