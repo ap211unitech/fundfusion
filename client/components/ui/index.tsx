@@ -17,6 +17,7 @@ export * from "./loading";
 export * from "./popover";
 export * from "./textarea";
 export * from "./calendar";
+export * from "./identicon";
 export * from "./uploadImage";
 export * from "./description";
 export * from "./durationLeft";

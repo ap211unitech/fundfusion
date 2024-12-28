@@ -12,15 +12,16 @@ import {
   ImageComponent,
   AlertDescription,
 } from "@/components/ui";
-import { getAllCategories, getCampaignData } from "@/fetchers";
-import { SearchParams } from "@/types";
 import {
   trimString,
   getIpfsHashFromUrl,
   checkIfCampaignActive,
 } from "@/lib/utils";
+import { SearchParams } from "@/types";
+import { getAllCategories, getCampaignData } from "@/fetchers";
 
 import { Actions } from "./actions";
+import { RecentContributions } from "./recentContributions";
 
 export const Campaign = async ({
   searchParams,
@@ -128,6 +129,8 @@ export const Campaign = async ({
             <div>{campaign.totalRaisedAmount} ETH</div>
           </div>
         </div>
+
+        <RecentContributions />
 
         {!isCampaignActive && (
           <Alert variant="warning" className="space-y-3">

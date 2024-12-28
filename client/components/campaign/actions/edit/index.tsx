@@ -35,7 +35,7 @@ export const EditCampaign = ({
         </Button>
       </DrawerTrigger>
       <DrawerContent>
-        <div className="mx-auto max-h-[80vh] w-full overflow-auto px-4 pb-10 pt-8 xl:container sm:px-10">
+        <div className="mx-auto max-h-[80vh] w-full overflow-auto px-4 pb-10 pt-8 xl:container sm:px-10 md:max-h-[90vh]">
           <DrawerHeader className="p-0">
             <DrawerTitle className="flex items-center gap-2 text-2xl text-primary">
               <Edit className="h-5 w-5 stroke-[3px]" />
