@@ -139,7 +139,10 @@ export const Campaign = async ({
             </AlertTitle>
             <AlertDescription className="flex flex-col gap-2 px-2">
               {recentUpdates.map((update) => (
-                <div key={update} className="flex items-center text-foreground">
+                <div
+                  key={update}
+                  className="flex items-center text-foreground opacity-80 dark:opacity-100"
+                >
                   <div>
                     <Circle className="mr-2.5 h-2 w-2 rounded-full fill-foreground" />
                   </div>

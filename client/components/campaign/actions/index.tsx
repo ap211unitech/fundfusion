@@ -3,11 +3,12 @@
 import { useAppKitAccount } from "@reown/appkit/react";
 import { useMemo } from "react";
 
-import { checkIfOwnerCanWithdraw } from "@/lib/utils";
+import { checkIfOwnerCanWithdraw, checkIfUserCanGetRefund } from "@/lib/utils";
 import { Campaign } from "@/types";
 
 import { DonateToCampaign } from "./donate";
 import { DeleteCampaign } from "./delete";
+import { ProcessRefund } from "./refund";
 import { EditCampaign } from "./edit";
 import { Withdraw } from "./withdraw";
 
@@ -49,6 +50,11 @@ export const Actions = ({ categories, campaign, isCampaignActive }: Props) => {
     [address, campaign],
   );
 
+  const isRefundable = useMemo(
+    () => !!address && checkIfUserCanGetRefund(campaign, address),
+    [address, campaign],
+  );
+
   return (
     <div className="flex items-center gap-3">
       {isDonatable && <DonateToCampaign campaign={campaign} />}
@@ -57,6 +63,9 @@ export const Actions = ({ categories, campaign, isCampaignActive }: Props) => {
       )}
       {isDeletable && <DeleteCampaign campaign={campaign} />}
       {isWithdrawable && <Withdraw campaign={campaign} />}
+      {isRefundable && (
+        <ProcessRefund campaign={campaign} userAddress={address as string} />
+      )}
     </div>
   );
 };
