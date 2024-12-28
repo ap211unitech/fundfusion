@@ -178,14 +178,11 @@ contract Campaign {
         require(
             targetTimestamp < block.timestamp ||
                 status == CAMPAIGN_STATUS.INACTIVE,
-            "Can not withdraw Funds from active campaigns !!"
+            "Can not withdraw funds from active campaigns !!"
         );
 
-        // Check if funds are not withdrawan already
-        require(
-            !fundWithdrawanByOwner,
-            "Can not withdraw from this campaign as funds are already withdrawan !!"
-        );
+        // Check if funds are not withdrawn already
+        require(!fundWithdrawanByOwner, "Funds already withdrawn !!");
 
         // Check if contract received targetAmount
         require(
@@ -272,12 +269,22 @@ contract Campaign {
     }
 
     function getRefund() public {
-        // Check if deadline passed & targetAmount not met
-        require(
-            block.timestamp > targetTimestamp &&
+        if (status == CAMPAIGN_STATUS.INACTIVE) {
+            // If campaign status is INACTIVE, then refund is possible when target amount not met.
+            require(
                 totalRaisedAmount < targetAmount,
-            "You are not eligible to get refund !!"
-        );
+                "You are not eligible to get refund as campaign has raised the target amount !!"
+            );
+        }
+
+        if (status == CAMPAIGN_STATUS.ACTIVE) {
+            // If campaign status is ACTIVE, then refund is possible when deadline passed but target amount not met.
+            require(
+                block.timestamp > targetTimestamp &&
+                    totalRaisedAmount < targetAmount,
+                "You cannot claim refund from active campaigns !!"
+            );
+        }
 
         uint256 amount = contributors[msg.sender];
 

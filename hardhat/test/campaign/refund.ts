@@ -51,7 +51,7 @@ describe("Campaign Contract", function () {
     it("Should not refund if campaign is not over", async () => {
       const tx = contract.connect(donator).getRefund();
       await expect(tx).to.be.rejectedWith(
-        "You are not eligible to get refund !!"
+        "You cannot claim refund from active campaigns !!"
       );
     });
 
@@ -62,12 +62,12 @@ describe("Campaign Contract", function () {
 
       const tx = contract.connect(donator).getRefund();
       await expect(tx).to.be.rejectedWith(
-        "You are not eligible to get refund !!"
+        "You are not eligible to get refund as campaign has raised the target amount !!"
       );
     });
 
     it("Should not refund if not donated", async () => {
-      await sleep(20);
+      await sleep(5);
       const tx = contract.getRefund();
       await expect(tx).to.be.rejectedWith(
         "Either you have claimed your refund or you haven't donated to this campaign !!"
