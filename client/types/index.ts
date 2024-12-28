@@ -20,8 +20,13 @@ export type Campaign = CampaignMetadata & {
   address: string;
   fundWithdrawanByOwner: boolean;
   totalRaisedAmount: number;
-  contributors: Map<string, number>;
+  contributors: Contributors;
 };
+
+export type Contributors = Map<
+  string,
+  { amount: number; hasClaimedRefund: boolean }
+>;
 
 export type IpfsResponse = {
   status: number;

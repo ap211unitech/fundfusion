@@ -53,7 +53,8 @@ export const checkIfUserCanGetRefund = (
 ) =>
   !checkIfCampaignActive(campaign) &&
   campaign.contributors.has(userAddress.toLowerCase()) &&
-  campaign.totalRaisedAmount < campaign.targetAmount;
+  campaign.totalRaisedAmount < campaign.targetAmount &&
+  !campaign.contributors.get(userAddress.toLowerCase())?.hasClaimedRefund;
 
 export const checkIfOwnerCanWithdraw = (
   campaign: Campaign,

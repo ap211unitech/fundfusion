@@ -1,9 +1,9 @@
 import { ethers } from "ethers";
 
-import { campaignabi, fundfusionabi } from "@/constants";
-import { getIpfsUrl, getProvider } from "@/lib/utils";
-import { Campaign, CampaignMetadata } from "@/types";
 import { CONFIG } from "@/config";
+import { getIpfsUrl, getProvider } from "@/lib/utils";
+import { campaignabi, fundfusionabi } from "@/constants";
+import { Campaign, CampaignMetadata, Contributors } from "@/types";
 
 export const getAllDeployedCampaigns = async (): Promise<Campaign[]> => {
   const provider = getProvider();
@@ -51,7 +51,13 @@ export const getCampaignData = async (
 
     const contributorEvents = await campaignContract.queryFilter("FundDonated");
 
-    const contributors = new Map<string, number>();
+    const refundedAccounts = (
+      await campaignContract.queryFilter("RefundClaimed")
+    )
+      // @ts-ignore
+      .map((e) => e.args.at(1)?.toLowerCase());
+
+    const contributors: Contributors = new Map();
 
     contributorEvents.forEach((c) => {
       const [donatorAddress, donatedAmount] = [
@@ -62,10 +68,15 @@ export const getCampaignData = async (
       ];
 
       if (!!donatorAddress) {
-        contributors.set(
-          donatorAddress.toLowerCase(),
-          (contributors.get(donatorAddress) || 0) + donatedAmount,
-        );
+        const key = donatorAddress.toLowerCase();
+
+        const value = {
+          amount:
+            (contributors.get(donatorAddress)?.amount || 0) + donatedAmount,
+          hasClaimedRefund: refundedAccounts.includes(key),
+        };
+
+        contributors.set(key, value);
       }
     });
 

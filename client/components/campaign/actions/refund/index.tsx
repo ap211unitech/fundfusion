@@ -32,8 +32,8 @@ export const ProcessRefund = ({ campaign, userAddress }: Props) => {
       <CardContent className="-mt-2 text-sm">
         Unfortunately, this campaign is no longer active due to unforeseen
         circumstances. We sincerely appreciate your generous contribution of{" "}
-        {campaign.contributors.get(userAddress)} ETH. Don&apos;t worry—you can
-        easily recover your funds with just a few clicks!
+        {campaign.contributors.get(userAddress)?.amount} ETH. Don&apos;t
+        worry—you can easily recover your funds with just a few clicks!
       </CardContent>
       <CardFooter>
         <Button
