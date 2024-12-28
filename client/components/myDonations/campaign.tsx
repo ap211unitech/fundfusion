@@ -1,4 +1,4 @@
-import { ShieldAlert, Users } from "lucide-react";
+import { PartyPopper, ShieldAlert, Users } from "lucide-react";
 import { useMemo } from "react";
 import Link from "next/link";
 
@@ -22,6 +22,13 @@ export const Campaign = ({
   const canGetRefund = useMemo(
     () => !!userAddress && checkIfUserCanGetRefund(campaign, userAddress),
     [campaign, userAddress],
+  );
+
+  const alreadyClaimedRefund = useMemo(
+    () =>
+      !!userAddress &&
+      !!campaign.contributors.get(userAddress)?.hasClaimedRefund,
+    [campaign.contributors, userAddress],
   );
 
   return (
@@ -55,6 +62,17 @@ export const Campaign = ({
               <ShieldAlert className="mr-2 h-4 w-4" />
             </div>
             <AlertDescription>You can get your refund.</AlertDescription>
+          </Alert>
+        )}
+        {alreadyClaimedRefund && (
+          <Alert
+            variant="success"
+            className="flex items-center border-none bg-transparent p-0"
+          >
+            <div>
+              <PartyPopper className="mr-2 h-4 w-4" />
+            </div>
+            <AlertDescription>Your refund has been credited!</AlertDescription>
           </Alert>
         )}
       </div>
