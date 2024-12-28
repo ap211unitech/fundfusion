@@ -61,7 +61,7 @@ export const Campaign = ({
             <div>
               <ShieldAlert className="mr-2 h-4 w-4" />
             </div>
-            <AlertDescription>You can get your refund.</AlertDescription>
+            <AlertDescription>You can claim your refund.</AlertDescription>
           </Alert>
         )}
         {alreadyClaimedRefund && (
