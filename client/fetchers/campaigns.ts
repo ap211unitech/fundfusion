@@ -3,7 +3,12 @@ import { ethers } from "ethers";
 import { CONFIG } from "@/config";
 import { getIpfsUrl, getProvider } from "@/lib/utils";
 import { campaignabi, fundfusionabi } from "@/constants";
-import { Campaign, CampaignMetadata, Contributors } from "@/types";
+import {
+  Campaign,
+  Contributors,
+  CampaignMetadata,
+  ContributionEvent,
+} from "@/types";
 
 export const getAllDeployedCampaigns = async (): Promise<Campaign[]> => {
   const provider = getProvider();
@@ -57,6 +62,21 @@ export const getCampaignData = async (
       // @ts-ignore
       .map((e) => e.args.at(1)?.toLowerCase());
 
+    const allContributionEvents: ContributionEvent[] = contributorEvents.map(
+      (c) => {
+        const [donatorAddress, donatedAmount, timestamp] = [
+          // @ts-ignore
+          c.args.at(1) as string,
+          // @ts-ignore
+          +ethers.formatUnits(c.args.at(2) || 0),
+          // @ts-ignore
+          (Number(c.args.at(3)) || 0) * 1000,
+        ];
+
+        return { donatorAddress, donatedAmount, timestamp };
+      },
+    );
+
     const contributors: Contributors = new Map();
 
     contributorEvents.forEach((c) => {
@@ -97,6 +117,7 @@ export const getCampaignData = async (
       owner,
       fundWithdrawanByOwner,
       totalRaisedAmount,
+      allContributionEvents,
       contributors,
       ...formattedMetaData,
     };

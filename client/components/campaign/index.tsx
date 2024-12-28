@@ -78,9 +78,7 @@ export const Campaign = async ({
           </div>
           <div className="grid grid-cols-2">
             <span className="text-lg text-primary">Campaign ending on</span>
-            {moment(campaign.targetTimestamp).format(
-              "dddd, MMMM Do YYYY, h:mm:ss a",
-            )}
+            {moment(campaign.targetTimestamp).format("MMM Do YYYY, hh:mm:ss a")}
           </div>
           <div className="grid grid-cols-2">
             <span className="text-lg text-primary">Created by</span>
@@ -130,7 +128,7 @@ export const Campaign = async ({
           </div>
         </div>
 
-        <RecentContributions />
+        <RecentContributions contributions={campaign.allContributionEvents} />
 
         {!isCampaignActive && (
           <Alert variant="warning" className="space-y-3">
