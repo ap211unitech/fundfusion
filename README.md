@@ -1,8 +1,8 @@
 # FundFusion
 
-FundFusion is a decentralized crowdfunding platform that empowers users to create, manage, and contribute to campaigns transparently. Campaign owners can withdraw funds from the smart contract, and contributors can claim refunds under specific conditions. Admins can manage categories for better campaign organization.
+FundFusion is a decentralized crowdfunding platform that empowers users to create, manage, and contribute to campaigns transparently. Campaign owners can withdraw funds from the smart contract, and contributors can claim refunds under specific conditions. Admin can manage categories for better campaign organization.
 
-Built with a robust tech stack, FundFusion ensures a secure and seamless user experience with features like user-friendly forms, real-time updates, and blockchain transparency.
+Built with a robust tech stack, FundFusion ensures a secure and seamless user experience with features like user-friendly forms, managing and storing images on IPFS, real-time updates, and blockchain transparency.
 
 Check out the FundFusion Demo [here]().
 
@@ -112,11 +112,11 @@ Make sure you have the following installed:
 
 8. Open your browser and navigate to `http://localhost:3000`.
 
-### Smart Contracts
+## Smart Contracts
 
 The smart contracts for FundFusion are written in Solidity and handle the core logic of the platform, including campaign publishing, edit/delete them, handling withdraw & refunds and transaction management. The contracts are deployed on the Sepolia Testnet Ethereum network.
 
-### Contributing
+## Contributing
 
 Contributions are welcome! Please fork the repository and submit a pull request.
 
