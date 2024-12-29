@@ -28,7 +28,7 @@ const main = async () => {
   for (let i = 0; i < campaigns.length; i++) {
     const {
       title,
-      category,
+      categoryId,
       description,
       image,
       targetAmount,
@@ -41,7 +41,7 @@ const main = async () => {
       .connect(signer)
       .createCampaign(
         title,
-        category,
+        categoryId,
         description,
         image,
         targetAmount,
