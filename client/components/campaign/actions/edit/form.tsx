@@ -101,6 +101,8 @@ export const EditCampaignForm = ({
 
     let IpfsHash: string;
 
+    // Image type will be string if image not changed while editing
+    // If new image is uploaded, it will be of File type
     if (typeof image === "string") {
       IpfsHash = getIpfsHashFromUrl(image) as string;
     } else {

@@ -17,6 +17,7 @@ export const Campaigns = async ({
   const category = searchParams?.category as string;
   if (!category) return redirect("/");
 
+  // Fetch campaigns for selected category
   const campaignsForCategory = (await getCampaignsForCategory(category)).filter(
     (campaign) => checkIfCampaignActive(campaign),
   );

@@ -12,6 +12,7 @@ import {
 
 import { getAllCategories } from "./categories";
 
+// Get all deployed campaigns and it's metadata
 export const getAllDeployedCampaigns = async (): Promise<Campaign[]> => {
   const provider = getProvider();
   const fundfusionContract = new ethers.Contract(
@@ -29,6 +30,7 @@ export const getAllDeployedCampaigns = async (): Promise<Campaign[]> => {
   return Promise.all(response);
 };
 
+// Get all campaigns for a particular and it's metadata
 export const getCampaignsForCategory = async (
   category: string,
 ): Promise<Campaign[]> => {
@@ -36,6 +38,7 @@ export const getCampaignsForCategory = async (
   return allDeployedCampaigns.filter((c) => c.category === category);
 };
 
+// Get metadata for a campaign
 export const getCampaignData = async (
   campaignContractAddress: string,
 ): Promise<Campaign> => {
@@ -130,6 +133,7 @@ export const getCampaignData = async (
   }
 };
 
+// Get all campaigns which any user created
 export const getDeployedCampaignsForUser = async (
   address: string,
 ): Promise<Campaign[]> => {

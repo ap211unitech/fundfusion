@@ -19,7 +19,7 @@ export const Campaign = ({
   campaign: CampaignType;
   userAddress?: string;
 }) => {
-  const canGetRefund = useMemo(
+  const canClaimRefund = useMemo(
     () => !!userAddress && checkIfUserCanGetRefund(campaign, userAddress),
     [campaign, userAddress],
   );
@@ -53,7 +53,7 @@ export const Campaign = ({
             {campaign.contributors.size || 0} contributors
           </p>
         </div>
-        {canGetRefund && (
+        {canClaimRefund && (
           <Alert
             variant="warning"
             className="flex items-center border-none bg-transparent p-0"

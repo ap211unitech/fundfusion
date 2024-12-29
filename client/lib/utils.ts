@@ -21,7 +21,7 @@ export const trimString = (account?: string, chars: number = 8): string => {
 };
 
 export const getProvider = () => {
-  const provider = new ethers.JsonRpcProvider("http://localhost:8545");
+  const provider = new ethers.JsonRpcProvider(CONFIG.RPC_URL);
   return provider;
 };
 
