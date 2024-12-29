@@ -98,7 +98,6 @@ describe("Campaign Contract", function () {
     // Get Deployer balance before
     balanceBefore = await ethers.provider.getBalance(deployer.address);
 
-    await sleep(60);
     // Withdraw
     tx = await contract.withdraw();
     await tx.wait();
@@ -126,7 +125,7 @@ describe("Campaign Contract", function () {
 
   it("Should throw error if try to withdraw again", async () => {
     await expect(contract.withdraw()).to.be.rejectedWith(
-      "Can not withdraw from this campaign as funds are already withdrawan !!"
+      "Funds already withdrawn !!"
     );
   });
 });
