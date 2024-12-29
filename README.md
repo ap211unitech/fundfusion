@@ -1,6 +1,8 @@
 # FundFusion
 
-FundFusion is a Decentralized crowdfunding platform built on the blockchain, leveraging Next.js for the frontend and Solidity for smart contract development. This project enables users to create new campaigns, edit/delete it, donate to any active campaign, get refund (if campaign didn't met the target amount)
+FundFusion is a decentralized crowdfunding platform that empowers users to create, manage, and contribute to campaigns transparently. Campaign owners can withdraw funds from the smart contract, and contributors can claim refunds under specific conditions. Admins can manage categories for better campaign organization.
+
+Built with a robust tech stack, FundFusion ensures a secure and seamless user experience with features like user-friendly forms, real-time updates, and blockchain transparency.
 
 Check out the FundFusion Demo [here]().
 
@@ -10,23 +12,33 @@ Check out the FundFusion Demo [here]().
 - [Tech Stack](#tech-stack)
 - [Getting Started](#getting-started)
 - [Installation](#installation)
-- [Usage](#usage)
 - [Smart Contracts](#smart-contracts)
 - [Contributing](#contributing)
 
 ## Features
 
-- Decentralized platform for buying and selling goods.
-- Secure transactions using cryptocurrency.
-- User-friendly interface with a responsive design.
-- Product listing with detailed descriptions and pricing.
-- Integration with blockchain for transparent and tamper-proof transactions.
-- Admin can track orders, create new products & Withdraw funds from Smart Contract.
+- **Campaign Management**:
+
+  - Users can create, edit, and delete campaigns.
+  - Campaigns deactivates under certain conditions, such as meeting their target or being deleted by the owner etc.
+
+- **Contributor Features**:
+
+  - Contributors can securely fund campaigns using cryptocurrency.
+  - Refunds are available for contributors if
+    - Campaign is deactivated before completion
+    - Campaign did not met target amount after completion
+
+- Campaign owners can withdraw funds from the smart contract when specific conditions are met.
+- Admin can create new categories and edit existing ones for better organization.
+- Leveraging blockchain technology for tamper-proof and transparent transactions.
+- Intuitive and responsive design for seamless interaction across devices.
 
 ## Tech Stack
 
-- **Frontend:** Next.js, Tailwind CSS, Typescript, Server-Side fetching
+- **Frontend:** Next.js, Server-Side fetching, Tailwind CSS, Typescript, React Hook Form & Zod Validation, Pinata SDK for managing and storing images on IPFS, Reown Wallet Kit, Ethers.js etc
 - **Backend:** Hardhat, Solidity (Smart Contracts)
+- **Testing:** Thorough testing using TypeScript and Ethers.js for robust smart contract.
 - **Blockchain:** Sepolia Testnet (Ethereum)
 - **Tools:** Hardhat, Ethers.js
 
@@ -40,7 +52,7 @@ Make sure you have the following installed:
 
 - Node.js
 - npm or yarn
-- MetaMask or any Ethereum wallet
+- MetaMask or any EVM wallet
 
 ### Installation
 
@@ -67,45 +79,42 @@ Make sure you have the following installed:
    cd hardhat && yarn hardhat compile
    ```
 
-4. Deploy the smart contract:
+4. Run Hardhat node:
 
    ```bash
-   npx hardhat vars set ETHERSCAN_API_KEY
+   cd hardhat && yarn hardhat node
    ```
+
+5. Deploy the smart contract in a different terminal window:
 
    ```bash
-   npx hardhat vars set ALCHEMY_KEY
+   cd hardhat && yarn hardhat run ./scripts/deploy.ts --network localhost
    ```
+
+6. Create `.env.local` file in `client` folder & put appropriate environment variables:
 
    ```bash
-   npx hardhat vars set SEPOLIA_ACCOUNT_PRIVATE_KEY
+   NEXT_PUBLIC_REOWN_PROJECT_ID=
+   NEXT_PUBLIC_CATEGORY_CONTRACT=
+   NEXT_PUBLIC_FUNDFUSION_CONTRACT=
+   NEXT_PUBLIC_PINATA_GATEWAY=
+   NEXT_PUBLIC_RPC_URL=http://localhost:8545
+
+   PINATA_JWT_TOKEN=
    ```
 
-   ```bash
-   cd hardhat && yarn hardhat run ./scripts/deploy.js --network sepolia
-   ```
-
-5. Start the build server:
+7. Start the dev server:
 
    ```bash
    cd client
-   yarn build
-   yarn start
+   yarn dev
    ```
 
-6. Open your browser and navigate to `http://localhost:3000`.
-
-### Usage
-
-1. Connect your Ethereum wallet using MetaMask.
-2. Browse through the product listings.
-3. Purchase any product
-4. Proceed to checkout and confirm the transaction using your cryptocurrency.
-5. Wait for the transaction to be confirmed on the blockchain.
+8. Open your browser and navigate to `http://localhost:3000`.
 
 ### Smart Contracts
 
-The smart contracts for CryptoCart are written in Solidity and handle the core logic of the platform, including product listing, purchasing, and transaction management. The contracts are deployed on the Sepolia Testnet Ethereum network.
+The smart contracts for FundFusion are written in Solidity and handle the core logic of the platform, including campaign publishing, edit/delete them, handling withdraw & refunds and transaction management. The contracts are deployed on the Sepolia Testnet Ethereum network.
 
 ### Contributing
 
