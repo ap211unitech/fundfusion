@@ -37,9 +37,9 @@ export const fundfusionabi = [
         type: "string",
       },
       {
-        internalType: "string",
-        name: "_category",
-        type: "string",
+        internalType: "uint256",
+        name: "_categoryId",
+        type: "uint256",
       },
       {
         internalType: "string",

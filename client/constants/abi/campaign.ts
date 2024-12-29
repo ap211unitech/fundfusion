@@ -12,9 +12,9 @@ export const campaignabi = [
         type: "string",
       },
       {
-        internalType: "string",
-        name: "_category",
-        type: "string",
+        internalType: "uint256",
+        name: "_categoryId",
+        type: "uint256",
       },
       {
         internalType: "string",
@@ -99,9 +99,9 @@ export const campaignabi = [
       },
       {
         indexed: false,
-        internalType: "string",
-        name: "category",
-        type: "string",
+        internalType: "uint256",
+        name: "categoryId",
+        type: "uint256",
       },
       {
         indexed: false,
@@ -232,12 +232,12 @@ export const campaignabi = [
   },
   {
     inputs: [],
-    name: "category",
+    name: "categoryId",
     outputs: [
       {
-        internalType: "string",
+        internalType: "uint256",
         name: "",
-        type: "string",
+        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -297,9 +297,9 @@ export const campaignabi = [
         type: "string",
       },
       {
-        internalType: "string",
-        name: "_category",
-        type: "string",
+        internalType: "uint256",
+        name: "_categoryId",
+        type: "uint256",
       },
       {
         internalType: "string",
@@ -345,9 +345,9 @@ export const campaignabi = [
         type: "string",
       },
       {
-        internalType: "string",
+        internalType: "uint256",
         name: "",
-        type: "string",
+        type: "uint256",
       },
       {
         internalType: "string",
