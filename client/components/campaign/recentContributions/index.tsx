@@ -36,13 +36,22 @@ export const RecentContributions = ({
                       <Link
                         target="_blank"
                         href={`https://sepolia.etherscan.io/address/${donatorAddress}`}
-                        className="flex items-center gap-1 hover:text-primary"
+                        className="group flex items-center"
                       >
-                        {trimString(donatorAddress, 12)}
-                        <MoveUpRight className="h-4 w-4" />
+                        <div className="flex flex-col">
+                          <div className="flex items-center gap-1 group-hover:text-primary">
+                            {trimString(donatorAddress, 12)}
+                            <MoveUpRight className="h-4 w-4" />
+                          </div>
+                          <p className="text-xs opacity-60 2xl:hidden">
+                            {moment(timestamp).format("MMM Do YYYY")}
+                          </p>
+                        </div>
                       </Link>
                     </div>
-                    <p>{moment(timestamp).format("MMM Do YYYY, hh:mm:ss a")}</p>
+                    <p className="hidden 2xl:block">
+                      {moment(timestamp).format("MMM Do YYYY, hh:mm:ss a")}
+                    </p>
                   </div>
                   <div className="flex items-center">
                     <div className="flex items-center gap-2 text-lg text-foreground dark:text-secondary">
