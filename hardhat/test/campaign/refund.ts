@@ -7,7 +7,7 @@ import { Campaign } from "../../typechain-types";
 import { HardhatEthersSigner } from "@nomicfoundation/hardhat-ethers/signers";
 
 const TITLE = "Test Campaign";
-const CATEGORY = "Test Category";
+const CATEGORY_ID = 0;
 const DESCRIPTION = "Test Description";
 const IMAGE = "https://test-image.jpg";
 const TARGET_AMOUNT = tokens(10);
@@ -33,7 +33,7 @@ describe("Campaign Contract", function () {
     contract = await campaignContract.deploy(
       deployer.address,
       TITLE,
-      CATEGORY,
+      CATEGORY_ID,
       DESCRIPTION,
       IMAGE,
       TARGET_AMOUNT,
@@ -98,7 +98,7 @@ describe("Campaign Contract", function () {
     contract = await campaignContract.deploy(
       deployer.address,
       TITLE,
-      CATEGORY,
+      CATEGORY_ID,
       DESCRIPTION,
       IMAGE,
       TARGET_AMOUNT,

@@ -6,7 +6,7 @@ import { ContractTransactionResponse } from "ethers";
 import { Campaign } from "../../typechain-types";
 
 const TITLE = "Test Campaign";
-const CATEGORY = "Test Category";
+const CATEGORY_ID = 0;
 const DESCRIPTION = "Test Description";
 const IMAGE = "https://test-image.jpg";
 const TARGET_AMOUNT = tokens(10);
@@ -23,11 +23,11 @@ describe("Campaign Contract", function () {
     const categoryContractAddress = await categoryContractHandler(true);
 
     const campaignContract = await ethers.getContractFactory("Campaign");
-    const TARGET_TIMESTAMP = Math.floor(new Date().getTime() / 1000) + 60;
+    const TARGET_TIMESTAMP = Math.floor(new Date().getTime() / 1000) + 30;
     contract = await campaignContract.deploy(
       (await ethers.getSigners()).at(0)?.address as string,
       TITLE,
-      CATEGORY,
+      CATEGORY_ID,
       DESCRIPTION,
       IMAGE,
       TARGET_AMOUNT,
@@ -55,7 +55,7 @@ describe("Campaign Contract", function () {
     });
 
     it("Should not delete if deadline passed", async () => {
-      await sleep(50);
+      await sleep(20);
       let tx = contract.deleteCampaign();
       await expect(tx).to.be.rejectedWith(
         "Campaign is no longer valid. Deadline passed now !!"

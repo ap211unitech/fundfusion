@@ -6,7 +6,7 @@ import { ContractTransactionResponse } from "ethers";
 import { Campaign } from "../../typechain-types";
 
 const TITLE = "Test Campaign";
-const CATEGORY = "Test Category";
+const CATEGORY_ID = 0;
 const DESCRIPTION = "Test Description";
 const IMAGE = "https://test-image.jpg";
 const TARGET_AMOUNT = tokens(10);
@@ -27,7 +27,7 @@ describe("Campaign Contract", function () {
     contract = await campaignContract.deploy(
       deployer.address,
       TITLE,
-      CATEGORY,
+      CATEGORY_ID,
       DESCRIPTION,
       IMAGE,
       TARGET_AMOUNT,
@@ -37,7 +37,7 @@ describe("Campaign Contract", function () {
   });
 
   const EDIT_TITLE = "Edited Test Campaign";
-  const EDIT_CATEGORY = "Edited Test Category";
+  const EDIT_CATEGORY_ID = 1;
   const EDIT_DESCRIPTION = "Test Description";
   const EDIT_IMAGE = "https://edited-test-image.jpg";
   const EDIT_TARGET_AMOUNT = tokens(5.5);
@@ -48,7 +48,7 @@ describe("Campaign Contract", function () {
         .connect((await ethers.getSigners()).at(2))
         .editCampaign(
           EDIT_TITLE,
-          EDIT_CATEGORY,
+          EDIT_CATEGORY_ID,
           EDIT_DESCRIPTION,
           EDIT_IMAGE,
           EDIT_TARGET_AMOUNT
@@ -62,7 +62,7 @@ describe("Campaign Contract", function () {
 
       tx = contract.editCampaign(
         EDIT_TITLE,
-        EDIT_CATEGORY,
+        EDIT_CATEGORY_ID,
         EDIT_DESCRIPTION,
         EDIT_IMAGE,
         EDIT_TARGET_AMOUNT
@@ -76,7 +76,7 @@ describe("Campaign Contract", function () {
       await sleep(50);
       const tx = contract.editCampaign(
         EDIT_TITLE,
-        EDIT_CATEGORY,
+        EDIT_CATEGORY_ID,
         EDIT_DESCRIPTION,
         EDIT_IMAGE,
         EDIT_TARGET_AMOUNT
@@ -92,7 +92,7 @@ describe("Campaign Contract", function () {
     beforeEach(async () => {
       tx = await contract.editCampaign(
         EDIT_TITLE,
-        EDIT_CATEGORY,
+        EDIT_CATEGORY_ID,
         EDIT_DESCRIPTION,
         EDIT_IMAGE,
         EDIT_TARGET_AMOUNT
@@ -105,7 +105,7 @@ describe("Campaign Contract", function () {
     });
 
     it("Should update category", async () => {
-      expect(await contract.category()).to.equal(EDIT_CATEGORY);
+      expect(await contract.categoryId()).to.equal(EDIT_CATEGORY_ID);
     });
 
     it("Should update description", async () => {

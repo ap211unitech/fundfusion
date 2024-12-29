@@ -6,7 +6,7 @@ import { ContractRunner, ContractTransactionResponse } from "ethers";
 import { Campaign } from "../../typechain-types";
 
 const TITLE = "Test Campaign";
-const CATEGORY = "Test Category";
+const CATEGORY_ID = 1;
 const DESCRIPTION = "Test Description";
 const IMAGE = "https://test-image.jpg";
 const TARGET_AMOUNT = tokens(10);
@@ -27,7 +27,7 @@ describe("Campaign Contract", function () {
     contract = await campaignContract.deploy(
       deployer.address,
       TITLE,
-      CATEGORY,
+      CATEGORY_ID,
       DESCRIPTION,
       IMAGE,
       TARGET_AMOUNT,

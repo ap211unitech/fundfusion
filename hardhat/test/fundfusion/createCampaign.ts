@@ -6,7 +6,7 @@ import { ContractTransactionResponse } from "ethers";
 import { FundFusion } from "../../typechain-types";
 
 const TITLE = "Test Campaign";
-const CATEGORY = "Test Category";
+const CATEGORY_ID = 0;
 const DESCRIPTION = "Test Description";
 const IMAGE = "https://test-image.jpg";
 const TARGET_AMOUNT = tokens(10);
@@ -24,13 +24,33 @@ describe("FundFusion Contract", () => {
     contract = await fundfusionContract.deploy();
   });
 
+  describe("Try campaign creation", () => {
+    let categoryContractAddress: string;
+    beforeEach(async () => {
+      categoryContractAddress = await categoryContractHandler(true);
+    });
+
+    it("Should not create campaign if category doesn't exists", async () => {
+      const tx = contract.createCampaign(
+        TITLE,
+        2,
+        DESCRIPTION,
+        IMAGE,
+        TARGET_AMOUNT,
+        TARGET_TIMESTAMP,
+        categoryContractAddress
+      );
+      await expect(tx).to.be.rejectedWith("Category doesn't exists !!");
+    });
+  });
+
   describe("Create new campaign", () => {
     let tx: ContractTransactionResponse;
     beforeEach(async () => {
       const categoryContractAddress = await categoryContractHandler(true);
       tx = await contract.createCampaign(
         TITLE,
-        CATEGORY,
+        CATEGORY_ID,
         DESCRIPTION,
         IMAGE,
         TARGET_AMOUNT,

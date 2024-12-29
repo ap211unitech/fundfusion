@@ -7,7 +7,7 @@ contract Campaign {
     Category categoryContract;
 
     string public title;
-    string public category;
+    uint256 public categoryId;
     string public description;
     string public image;
     uint256 public targetAmount;
@@ -42,7 +42,7 @@ contract Campaign {
         address indexed campaign,
         address indexed owner,
         string title,
-        string category,
+        uint256 categoryId,
         string description,
         string image,
         uint256 targetAmount,
@@ -65,24 +65,16 @@ contract Campaign {
     );
 
     function checkIfCategoryExists(
-        string memory _category
+        uint256 _categoryId
     ) internal view returns (bool) {
         string[] memory categories = categoryContract.getCategories();
-
-        for (uint256 i = 0; i < categories.length; i++) {
-            if (
-                keccak256(bytes(categories[i])) == keccak256(bytes(_category))
-            ) {
-                return true;
-            }
-        }
-        return false;
+        return _categoryId >= 0 && _categoryId < categories.length;
     }
 
     constructor(
         address _owner,
         string memory _title,
-        string memory _category,
+        uint256 _categoryId,
         string memory _description,
         string memory _image,
         uint256 _targetAmount,
@@ -97,10 +89,13 @@ contract Campaign {
         categoryContract = Category(_categoryContractAddress);
 
         // Check if category exists
-        require(checkIfCategoryExists(_category), "Category doesn't exists !!");
+        require(
+            checkIfCategoryExists(_categoryId),
+            "Category doesn't exists !!"
+        );
 
         title = _title;
-        category = _category;
+        categoryId = _categoryId;
         description = _description;
         image = _image;
         targetAmount = _targetAmount;
@@ -121,7 +116,7 @@ contract Campaign {
         view
         returns (
             string memory,
-            string memory,
+            uint256,
             string memory,
             string memory,
             uint256,
@@ -131,7 +126,7 @@ contract Campaign {
     {
         return (
             title,
-            category,
+            categoryId,
             description,
             image,
             targetAmount,
@@ -206,7 +201,7 @@ contract Campaign {
 
     function editCampaign(
         string memory _title,
-        string memory _category,
+        uint256 _categoryId,
         string memory _description,
         string memory _image,
         uint256 _targetAmount
@@ -224,10 +219,13 @@ contract Campaign {
         );
 
         // Check if category exists
-        require(checkIfCategoryExists(_category), "Category doesn't exists !!");
+        require(
+            checkIfCategoryExists(_categoryId),
+            "Category doesn't exists !!"
+        );
 
         title = _title;
-        category = _category;
+        categoryId = _categoryId;
         description = _description;
         image = _image;
         targetAmount = _targetAmount;
@@ -236,7 +234,7 @@ contract Campaign {
             address(this),
             msg.sender,
             title,
-            category,
+            categoryId,
             description,
             image,
             targetAmount,

@@ -6,7 +6,7 @@ import { ContractTransactionResponse } from "ethers";
 import { Campaign } from "../../typechain-types";
 
 const TITLE = "Test Campaign";
-const CATEGORY = "Test Category";
+const CATEGORY_ID = 0;
 const DESCRIPTION = "Test Description";
 const IMAGE = "https://test-image.jpg";
 const TARGET_AMOUNT = tokens(10);
@@ -22,12 +22,12 @@ describe("Campaign Contract", function () {
 
     const categoryContractAddress = await categoryContractHandler(true);
 
-    const CURRENT_TIMESTAMP = Math.floor(new Date().getTime() / 1000) + 10;
+    const CURRENT_TIMESTAMP = Math.floor(new Date().getTime() / 1000) + 30;
     const campaignContract = await ethers.getContractFactory("Campaign");
     contract = await campaignContract.deploy(
       deployer.address,
       TITLE,
-      CATEGORY,
+      CATEGORY_ID,
       DESCRIPTION,
       IMAGE,
       TARGET_AMOUNT,
@@ -46,7 +46,7 @@ describe("Campaign Contract", function () {
     it("Should not withdraw from active campaign", async () => {
       const tx = contract.withdraw();
       await expect(tx).to.be.rejectedWith(
-        "Can not withdraw Funds from active campaigns !!"
+        "Can not withdraw funds from active campaigns !!"
       );
     });
 
@@ -76,7 +76,7 @@ describe("Campaign Contract", function () {
     contract = await campaignContract.deploy(
       deployer.address,
       TITLE,
-      CATEGORY,
+      CATEGORY_ID,
       DESCRIPTION,
       IMAGE,
       TARGET_AMOUNT,

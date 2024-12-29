@@ -6,7 +6,7 @@ import { ContractTransactionResponse } from "ethers";
 import { Campaign } from "../../typechain-types";
 
 const TITLE = "Test Campaign";
-const CATEGORY = "Test Category";
+const CATEGORY_ID = 0;
 const DESCRIPTION = "Test Description";
 const IMAGE = "https://test-image.jpg";
 const TARGET_AMOUNT = tokens(10);
@@ -27,7 +27,7 @@ describe("Campaign Contract", function () {
     contract = await campaignContract.deploy(
       deployer.address,
       TITLE,
-      CATEGORY,
+      CATEGORY_ID,
       DESCRIPTION,
       IMAGE,
       TARGET_AMOUNT,
@@ -44,7 +44,7 @@ describe("Campaign Contract", function () {
       const contract = campaignContract.deploy(
         deployer.address,
         TITLE,
-        CATEGORY,
+        CATEGORY_ID,
         DESCRIPTION,
         IMAGE,
         TARGET_AMOUNT,
@@ -63,7 +63,7 @@ describe("Campaign Contract", function () {
       const contract = campaignContract.deploy(
         deployer.address,
         TITLE,
-        CATEGORY,
+        CATEGORY_ID,
         DESCRIPTION,
         IMAGE,
         TARGET_AMOUNT,
@@ -86,8 +86,8 @@ describe("Campaign Contract", function () {
     });
 
     it("Should have a category", async () => {
-      const category = await contract.category();
-      expect(category).to.equal(CATEGORY);
+      const category = await contract.categoryId();
+      expect(category).to.equal(CATEGORY_ID);
     });
 
     it("Should have a description", async () => {
@@ -108,7 +108,7 @@ describe("Campaign Contract", function () {
     it("Should get metadata", async () => {
       const metadata = await contract.getMetadata();
       expect(metadata[0]).to.equal(TITLE);
-      expect(metadata[1]).to.equal(CATEGORY);
+      expect(metadata[1]).to.equal(CATEGORY_ID);
       expect(metadata[2]).to.equal(DESCRIPTION);
       expect(metadata[3]).to.equal(IMAGE);
       expect(metadata[4]).to.equal(TARGET_AMOUNT);

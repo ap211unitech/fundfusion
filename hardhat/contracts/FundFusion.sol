@@ -21,7 +21,7 @@ contract FundFusion {
 
     function createCampaign(
         string memory _title,
-        string memory _category,
+        uint256 _categoryId,
         string memory _description,
         string memory _image,
         uint256 _targetAmount,
@@ -31,7 +31,7 @@ contract FundFusion {
         Campaign campaign = new Campaign(
             msg.sender,
             _title,
-            _category,
+            _categoryId,
             _description,
             _image,
             _targetAmount,
