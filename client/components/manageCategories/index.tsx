@@ -1,6 +1,8 @@
-import { Logs, Plus } from "lucide-react";
+import { Eye, Logs, Plus } from "lucide-react";
+import Link from "next/link";
 
 import { getAllCategories } from "@/fetchers";
+import { Button } from "@/components/ui";
 
 import { CreateCategory, EditCategory } from "./actions";
 
@@ -35,16 +37,27 @@ export const ManageCategories = async () => {
               return (
                 <div
                   key={category}
-                  className="flex items-center gap-2 align-middle [&:not(:last-child)]:border-b [&>div]:h-20"
+                  className="flex items-center gap-2 px-5 align-middle [&:not(:last-child)]:border-b [&>div]:h-20"
                 >
-                  <div className="grid w-20 place-items-center border-r font-semibold text-primary">
-                    {index + 1} .
+                  <div className="flex w-[150px] items-center gap-4 border-r sm:w-[200px]">
+                    <span className="font-semibold text-primary">
+                      {index + 1}.
+                    </span>
+                    <span>{category}</span>
                   </div>
-                  <div className="grid basis-[400px] place-items-center border-r">
-                    {category}
-                  </div>
-                  <div className="grid w-40 place-items-center">
+                  <div className="flex items-center gap-4 px-4 [&>button]:max-w-fit">
                     <EditCategory categoryId={index} category={category} />
+                    <Button
+                      asChild
+                      size="sm"
+                      variant="outline"
+                      className="flex items-center gap-1"
+                    >
+                      <Link href={`/campaigns?category=${category}`}>
+                        <Eye className="h-4 w-4" />
+                        View campaigns
+                      </Link>
+                    </Button>
                   </div>
                 </div>
               );
