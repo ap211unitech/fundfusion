@@ -23,7 +23,7 @@ export const Description = ({
 
   if (isLonger) {
     return (
-      <div className={classNames("h-max w-full", className)}>
+      <div className={classNames("h-max w-full break-all", className)}>
         {expanded && value}
         {!expanded && `${value?.substring(0, maxLength)}....`}
         <span
@@ -35,5 +35,9 @@ export const Description = ({
       </div>
     );
   }
-  return <div className={classNames("h-max w-full", className)}>{value}</div>;
+  return (
+    <div className={classNames("h-max w-full break-all", className)}>
+      {value}
+    </div>
+  );
 };

@@ -10,6 +10,8 @@ import {
   ContributionEvent,
 } from "@/types";
 
+import { getAllCategories } from "./categories";
+
 export const getAllDeployedCampaigns = async (): Promise<Campaign[]> => {
   const provider = getProvider();
   const fundfusionContract = new ethers.Contract(
@@ -38,6 +40,8 @@ export const getCampaignData = async (
   campaignContractAddress: string,
 ): Promise<Campaign> => {
   try {
+    const allCategories = await getAllCategories();
+
     const provider = getProvider();
     const campaignContract = new ethers.Contract(
       campaignContractAddress,
@@ -104,7 +108,7 @@ export const getCampaignData = async (
 
     const formattedMetaData: CampaignMetadata = {
       title: metadata[0],
-      category: metadata[1],
+      category: allCategories.at(Number(metadata[1])) as string,
       description: metadata[2],
       image: getIpfsUrl(metadata[3]),
       targetAmount: +ethers.formatEther(metadata[4]),

@@ -9,7 +9,7 @@ import { campaignabi } from "@/constants";
 type Props = {
   campaignAddress: string;
   title: string;
-  category: string;
+  categoryId: number;
   description: string;
   image: string;
   targetAmount: string;
@@ -25,7 +25,7 @@ export const useEditCampaign = () => {
     mutationFn: async ({
       image,
       title,
-      category,
+      categoryId,
       description,
       targetAmount,
       campaignAddress,
@@ -48,7 +48,7 @@ export const useEditCampaign = () => {
 
       const tx = await campaignContract.editCampaign(
         title,
-        category,
+        categoryId,
         description,
         image,
         ethers.parseUnits(targetAmount),

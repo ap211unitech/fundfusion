@@ -9,7 +9,7 @@ import { fundfusionabi } from "@/constants";
 
 type Props = {
   title: string;
-  category: string;
+  categoryId: number;
   description: string;
   image: string;
   targetAmount: string;
@@ -25,7 +25,7 @@ export const useCreateCampaign = () => {
   return useMutation({
     mutationFn: async ({
       title,
-      category,
+      categoryId,
       description,
       image,
       targetAmount,
@@ -49,7 +49,7 @@ export const useCreateCampaign = () => {
 
       const tx = await fundfusionContract.createCampaign(
         title,
-        category,
+        categoryId,
         description,
         image,
         ethers.parseUnits(targetAmount),

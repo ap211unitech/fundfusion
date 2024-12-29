@@ -37,10 +37,20 @@ const formSchema = z.object({
   title: z
     .string()
     .nonempty("Required")
-    .min(50, "Title must be at least 50 character long"),
-  category: z.string().nonempty("Required"),
-  description: z.string().nonempty("Required"),
-  targetAmount: z.string().nonempty("Required"),
+    .min(50, "Title must be at least 50 characters long"),
+  categoryId: z.string().nonempty("Required"),
+  description: z
+    .string()
+    .nonempty("Required")
+    .min(100, "Title must be at least 100 characters long"),
+  targetAmount: z
+    .string()
+    .nonempty("Required")
+    .refine((a) => Number(a) > 0, "Amount must be more than 0")
+    .refine(
+      (a) => (a.split(".").at(1)?.length || 0) <= 4,
+      "Max 4 digits allowed after decimal",
+    ),
   targetTimestamp: z.date({
     required_error: "Required",
   }),
@@ -75,7 +85,7 @@ export const CreateCampaignForm = ({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
-      category: "",
+      categoryId: "",
       description: "",
       targetAmount: "",
     },
@@ -83,7 +93,7 @@ export const CreateCampaignForm = ({
 
   const onSubmit = async ({
     title,
-    category,
+    categoryId,
     description,
     image,
     targetAmount,
@@ -97,7 +107,7 @@ export const CreateCampaignForm = ({
 
     await onCreateCampaign({
       title,
-      category,
+      categoryId: +categoryId,
       description,
       image: IpfsHash,
       targetAmount,
@@ -149,7 +159,7 @@ export const CreateCampaignForm = ({
 
             <FormField
               control={form.control}
-              name="category"
+              name="categoryId"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Choose category</FormLabel>
@@ -161,14 +171,15 @@ export const CreateCampaignForm = ({
                       <SelectTrigger
                         className={classNames(
                           "w-full",
-                          !form.getValues("category") && "[&>span]:opacity-50",
+                          !form.getValues("categoryId") &&
+                            "[&>span]:opacity-50",
                         )}
                       >
                         <SelectValue placeholder="Choose category" />
                       </SelectTrigger>
                       <SelectContent>
-                        {categories.map((c) => (
-                          <SelectItem key={c} value={c}>
+                        {categories.map((c, index) => (
+                          <SelectItem key={c} value={index.toString()}>
                             {c}
                           </SelectItem>
                         ))}
