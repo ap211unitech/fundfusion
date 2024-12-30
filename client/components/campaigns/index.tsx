@@ -2,10 +2,10 @@ import { redirect } from "next/navigation";
 import { Telescope } from "lucide-react";
 
 import { SearchParams } from "@/types";
-import { checkIfCampaignActive } from "@/lib/utils";
 import { getCampaignsForCategory } from "@/fetchers";
 
 import { Campaign } from "./campaign";
+import { NoCampaignsFound } from "./noCampaignsFound";
 
 export const Campaigns = async ({
   searchParams,
@@ -18,9 +18,11 @@ export const Campaigns = async ({
   if (!category) return redirect("/");
 
   // Fetch campaigns for selected category
-  const campaignsForCategory = (await getCampaignsForCategory(category)).filter(
-    (campaign) => checkIfCampaignActive(campaign),
+  const campaignsForCategory = (await getCampaignsForCategory(category)).sort(
+    (a, b) => (a.status > b.status ? 1 : -1),
   );
+
+  if (!campaignsForCategory?.length) return <NoCampaignsFound />;
 
   return (
     <div className="space-y-10 py-12">

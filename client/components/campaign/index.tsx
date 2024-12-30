@@ -127,7 +127,7 @@ export const Campaign = async ({
         </div>
       </div>
       <div className="flex flex-col gap-4">
-        <h1 className="text-2xl text-primary">{campaign.title}</h1>
+        <h1 className="break-all text-2xl text-primary">{campaign.title}</h1>
         <Badge className="w-fit rounded-full">{campaign.category}</Badge>
         <Description
           value={campaign.description}
