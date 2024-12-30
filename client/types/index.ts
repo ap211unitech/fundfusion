@@ -12,7 +12,7 @@ export type CampaignMetadata = {
 
 export enum CampaignStatus {
   ACTIVE = "ACTIVE",
-  DELETED = "DELETED",
+  INACTIVE = "INACTIVE",
 }
 
 export type Campaign = CampaignMetadata & {

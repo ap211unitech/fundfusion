@@ -1,4 +1,11 @@
-import { Circle, Coins, MoveUpRight, TriangleAlert, Users } from "lucide-react";
+import {
+  Users,
+  Coins,
+  Circle,
+  BellRing,
+  MoveUpRight,
+  TriangleAlert,
+} from "lucide-react";
 import { redirect } from "next/navigation";
 import classNames from "classnames";
 import Link from "next/link";
@@ -17,7 +24,7 @@ import {
   getIpfsHashFromUrl,
   checkIfCampaignActive,
 } from "@/lib/utils";
-import { SearchParams } from "@/types";
+import { CampaignStatus, SearchParams } from "@/types";
 import { getAllCategories, getCampaignData } from "@/fetchers";
 
 import { Actions } from "./actions";
@@ -73,6 +80,20 @@ export const Campaign = async ({
           />
         </div>
         <div className="flex flex-col text-secondary [&>div]:gap-4 [&>div]:border-b [&>div]:py-2">
+          <div className="grid grid-cols-2">
+            <span className="text-lg text-primary">Status</span>
+            <div
+              className={classNames(
+                "flex items-center gap-2",
+                campaign.status === CampaignStatus.ACTIVE
+                  ? "text-emerald-600 [&_svg]:fill-emerald-600"
+                  : "text-destructive [&_svg]:fill-destructive",
+              )}
+            >
+              <BellRing className="h-4 w-4" />
+              {campaign.status}
+            </div>
+          </div>
           <div className="grid grid-cols-2">
             <span className="text-lg text-primary">Target amount</span>
             {campaign.targetAmount} ETH
