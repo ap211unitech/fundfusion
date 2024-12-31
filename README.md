@@ -114,7 +114,7 @@ Make sure you have the following installed:
 
 ## Smart Contracts
 
-The smart contracts for FundFusion are written in Solidity and handle the core logic of the platform, including campaign publishing, edit/delete them, handling withdraw & refunds and transaction management. The contracts are deployed on the Sepolia Testnet Ethereum network.
+The smart contracts for FundFusion are written in Solidity which handles the core logic of the platform, including campaign publishing, edit/delete them, handling withdraw, refunds and transaction management. The contracts are deployed on the Sepolia Testnet Ethereum network.
 
 ## Contributing
 
