@@ -4,7 +4,7 @@ FundFusion is a decentralized crowdfunding platform that empowers users to creat
 
 Built with a robust tech stack, FundFusion ensures a secure and seamless user experience with features like user-friendly forms, managing and storing images on IPFS, real-time updates, and blockchain transparency.
 
-Check out the FundFusion Demo [here]().
+Check out the FundFusion demo [here]().
 
 ## Table of Contents
 
