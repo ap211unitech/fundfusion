@@ -1,9 +1,11 @@
-import { ethers } from "hardhat";
+import { ethers, hardhatArguments } from "hardhat";
 
 import { categories, campaigns } from "../constants/items";
 
 const main = async () => {
   let contract, contractAddress;
+
+  const NETWORK = hardhatArguments.network;
 
   // Deploy Category contract
   const categoryContract = await ethers.getContractFactory("Category");
@@ -15,7 +17,9 @@ const main = async () => {
   for (let i = 0; i < categories.length; i++) {
     const tx = await contract.createCategory(categories[i]);
     await tx.wait();
-    // await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    if (NETWORK !== "localhost")
+      await new Promise((resolve) => setTimeout(resolve, 5000));
   }
 
   // Deploy FundFusion contract
@@ -35,21 +39,18 @@ const main = async () => {
       targetTimestamp,
     } = campaigns[i];
 
-    let signer = (await ethers.getSigners()).at(i);
-
-    const tx = await contract
-      .connect(signer)
-      .createCampaign(
-        title,
-        categoryId,
-        description,
-        image,
-        targetAmount,
-        targetTimestamp,
-        categoryContractAddress
-      );
+    const tx = await contract.createCampaign(
+      title,
+      categoryId,
+      description,
+      image,
+      targetAmount,
+      targetTimestamp,
+      categoryContractAddress
+    );
     await tx.wait();
-    // await new Promise((resolve) => setTimeout(resolve, 2000));
+    if (NETWORK !== "localhost")
+      await new Promise((resolve) => setTimeout(resolve, 5000));
   }
 };
 
