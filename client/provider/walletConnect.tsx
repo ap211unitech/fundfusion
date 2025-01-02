@@ -25,8 +25,14 @@ const SUPPORTED_NETWORKS: [AppKitNetwork, ...AppKitNetwork[]] =
 const metadata: Metadata = {
   name: "FundFusion",
   description: "Decentralized Crowdfunding Application",
-  url: "http://localhost:3000", // origin must match your domain & subdomain
-  icons: ["http://localhost:3000/favicon.ico"],
+  url: CONFIG.IN_PRODUCTION
+    ? "https://fundfusiona.vercel.app"
+    : "http://localhost:3000", // origin must match your domain & subdomain
+  icons: [
+    CONFIG.IN_PRODUCTION
+      ? "https://fundfusiona.vercel.app/favicon.ico"
+      : "http://localhost:3000/favicon.ico",
+  ],
 };
 
 createAppKit({

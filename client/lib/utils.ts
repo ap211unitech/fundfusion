@@ -6,6 +6,9 @@ import moment from "moment";
 import { CONFIG } from "@/config";
 import { Campaign, CampaignStatus } from "@/types";
 
+export const sleep = (seconds: number) =>
+  new Promise((resolve) => setTimeout(resolve, seconds * 1000));
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }

@@ -6,11 +6,13 @@ import { getAllDeployedCampaigns } from "@/fetchers";
 import { Campaign } from "./campaign";
 
 export const Landing = async () => {
-  const activecampaigns = (await getAllDeployedCampaigns()).filter((campaign) =>
+  const allDeployedCampaigns = await getAllDeployedCampaigns();
+
+  const activecampaigns = allDeployedCampaigns.filter((campaign) =>
     checkIfCampaignActive(campaign),
   );
 
-  const inactiveCampaigns = (await getAllDeployedCampaigns()).filter(
+  const inactiveCampaigns = allDeployedCampaigns.filter(
     (campaign) => !checkIfCampaignActive(campaign),
   );
 
