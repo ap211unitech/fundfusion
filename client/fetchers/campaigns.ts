@@ -26,7 +26,7 @@ export const getAllDeployedCampaigns = async (): Promise<Campaign[]> => {
     (await fundfusionContract.getAllDeployedCampaigns()) as string[];
 
   const response = campaigns.map(async (campaignAddress): Promise<Campaign> => {
-    if (CONFIG.IN_PRODUCTION) await sleep(0.5); // Cooldown period as I'm using free tier of RPC
+    if (CONFIG.IN_PRODUCTION) await sleep(1); // Cooldown period as I'm using free tier of RPC
     return await getCampaignData(campaignAddress);
   });
 
