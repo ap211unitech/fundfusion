@@ -1,5 +1,6 @@
 import { Telescope } from "lucide-react";
 
+import { Banner } from "@/components/ui";
 import { checkIfCampaignActive } from "@/lib/utils";
 import { getAllDeployedCampaigns } from "@/fetchers";
 
@@ -18,10 +19,14 @@ export const Landing = async () => {
 
   return (
     <div className="space-y-10 py-12">
+      <Banner />
       <h1 className="flex items-center gap-2 text-2xl font-medium text-primary">
         <Telescope /> Discover all campaigns
       </h1>
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div
+        id="discoverCampaigns"
+        className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+      >
         {activecampaigns.map((campaign) => {
           return <Campaign campaign={campaign} key={campaign.address} />;
         })}

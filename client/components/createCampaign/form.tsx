@@ -237,7 +237,10 @@ export const CreateCampaignForm = ({
                         </Button>
                       </FormControl>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
+                    <PopoverContent
+                      align="start"
+                      className="min-h-[325px] w-auto p-0"
+                    >
                       <Calendar
                         mode="single"
                         selected={field.value}
