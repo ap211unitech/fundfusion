@@ -30,7 +30,7 @@ export const getAllDeployedCampaigns = async (): Promise<Campaign[]> => {
     return await getCampaignData(campaignAddress);
   });
 
-  return Promise.all(response);
+  return await Promise.all(response);
 };
 
 // Get all campaigns for a particular and it's metadata
@@ -155,5 +155,5 @@ export const getDeployedCampaignsForUser = async (
     return await getCampaignData(campaignAddress);
   });
 
-  return Promise.all(response);
+  return await Promise.all(response);
 };
