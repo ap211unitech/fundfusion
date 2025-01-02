@@ -12,17 +12,17 @@ const font = Unbounded({
 
 export const Banner = () => {
   return (
-    <div className="flex flex-col gap-8 rounded-lg border bg-primary/20 p-6 dark:bg-primary/5 lg:flex-row lg:items-center lg:px-16 lg:py-10">
-      <div className="flex flex-col gap-2 lg:basis-1/2">
+    <div className="flex flex-col gap-8 rounded-lg border bg-primary/20 p-6 dark:bg-primary/20 lg:flex-row lg:items-center lg:px-16 lg:py-10">
+      <div className="flex flex-col gap-2 lg:basis-2/3">
         <h2
           className={classNames(
-            "text-3xl font-light tracking-wide text-secondary-foreground dark:text-secondary",
+            "text-3xl font-light tracking-wide text-secondary-foreground dark:text-white",
             font.className,
           )}
         >
           FundFusion
         </h2>
-        <div className="space-y-1 text-sm text-muted-foreground">
+        <div className="space-y-1 text-sm text-muted-foreground/70 dark:text-white/60">
           <p>
             A decentralized crowdfunding platform enabling users to create,
             manage, and contribute to campaigns transparently.

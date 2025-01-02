@@ -128,7 +128,7 @@ Contributions are welcome! Please fork the repository and submit a pull request.
 
 ## See Live
 
-https://fundfusion.vercel.app/
+https://fundfusiona.vercel.app/
 
 ## Reach me out
 
