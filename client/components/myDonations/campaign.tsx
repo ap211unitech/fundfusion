@@ -50,7 +50,7 @@ export const Campaign = ({
           <DurationLeft campaign={campaign} />
           <p className="flex items-center gap-2">
             <Users className="h-4 w-4" />
-            {campaign.contributors.size || 0} contributors
+            {campaign.contributors?.size || 0} contributors
           </p>
         </div>
         {canClaimRefund && (

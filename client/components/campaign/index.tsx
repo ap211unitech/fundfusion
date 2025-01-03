@@ -139,7 +139,7 @@ export const Campaign = async ({
               <Users className="h-5 w-5" />
               Contributors
             </div>
-            <div>{campaign.contributors.size}</div>
+            <div>{campaign.contributors?.size || 0}</div>
           </div>
           <div className="space-y-1 px-5 py-3">
             <div className="flex items-center gap-1.5 text-lg text-primary">
