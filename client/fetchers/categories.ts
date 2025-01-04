@@ -2,11 +2,10 @@ import { ethers } from "ethers";
 
 import { CONFIG } from "@/config";
 import { categoryabi } from "@/constants";
-import { getProvider, sleep } from "@/lib/utils";
+import { getProvider } from "@/lib/utils";
 
 // Check if an address can perform action related to Category contract
 export const isCategoryAdmin = async (accountAddress: string) => {
-  if (CONFIG.IN_PRODUCTION) await sleep(1); // Cooldown period as I'm using free tier of RPC
   const provider = getProvider();
   const contract = new ethers.Contract(
     CONFIG.CATEGORY_CONTRACT,
@@ -21,7 +20,6 @@ export const isCategoryAdmin = async (accountAddress: string) => {
 
 // Get all categories from Category contract
 export const getAllCategories = async () => {
-  if (CONFIG.IN_PRODUCTION) await sleep(1); // Cooldown period as I'm using free tier of RPC
   const provider = getProvider();
   const contract = new ethers.Contract(
     CONFIG.CATEGORY_CONTRACT,

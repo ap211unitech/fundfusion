@@ -8,14 +8,12 @@ import {
 } from "@/types";
 import { CONFIG } from "@/config";
 import { campaignabi, fundfusionabi } from "@/constants";
-import { getIpfsUrl, getProvider, sleep } from "@/lib/utils";
+import { getIpfsUrl, getProvider } from "@/lib/utils";
 
 import { getAllCategories } from "./categories";
 
 // Get all deployed campaigns and it's metadata
 export const getAllDeployedCampaigns = async (): Promise<Campaign[]> => {
-  if (CONFIG.IN_PRODUCTION) await sleep(1); // Cooldown period as I'm using free tier of RPC
-
   const provider = getProvider();
   const fundfusionContract = new ethers.Contract(
     CONFIG.FUNDFUSION_CONTRACT,
@@ -26,7 +24,6 @@ export const getAllDeployedCampaigns = async (): Promise<Campaign[]> => {
     (await fundfusionContract.getAllDeployedCampaigns()) as string[];
 
   const response = campaigns.map(async (campaignAddress): Promise<Campaign> => {
-    if (CONFIG.IN_PRODUCTION) await sleep(1); // Cooldown period as I'm using free tier of RPC
     return await getCampaignData(campaignAddress);
   });
 
@@ -140,7 +137,6 @@ export const getCampaignData = async (
 export const getDeployedCampaignsForUser = async (
   address: string,
 ): Promise<Campaign[]> => {
-  if (CONFIG.IN_PRODUCTION) await sleep(1); // Cooldown period as I'm using free tier of RPC
   const provider = getProvider();
   const fundfusionContract = new ethers.Contract(
     CONFIG.FUNDFUSION_CONTRACT,
