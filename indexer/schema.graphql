@@ -3,5 +3,12 @@ type Category @entity {
   owner: Bytes! # address
   categoryId: BigInt! # uint256
   name: String! # string
-  updatedAt: BigInt!
+  updatedAt: BigInt! # uint256
+}
+
+type DeployedCampaign @entity(immutable: true) {
+  id: String!
+  owner: Bytes! # address
+  campaign: Bytes! # address
+  createdAt: BigInt! # # uint256
 }

@@ -26,3 +26,24 @@ dataSources:
         - event: EditCategory(address,uint256,string)
           handler: handleEditCategory
       file: ./src/category.ts
+
+  - kind: ethereum
+    name: FundFusion
+    network: sepolia
+    source:
+      address: "0x8C0CB8A0bbe1d0d6824c4A27eC9E087b84436531"
+      abi: FundFusion
+      startBlock: 7404665
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      entities:
+        - DeployedCampaigns
+      abis:
+        - name: FundFusion
+          file: ./abis/FundFusion.json
+      eventHandlers:
+        - event: NewCampaignCreated(indexed address,indexed address,uint256)
+          handler: handleNewCampaignCreated
+      file: ./src/fundfusion.ts
