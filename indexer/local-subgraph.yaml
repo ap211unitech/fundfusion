@@ -8,9 +8,9 @@ dataSources:
     name: Category
     network: sepolia
     source:
-      address: "0xBD547130CB23effc187c31E757f00bC269B6A605"
+      address: "0x5FbDB2315678afecb367f032d93F642f64180aa3"
       abi: Category
-      startBlock: 7404659
+      startBlock: 0
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9

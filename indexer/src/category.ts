@@ -1,35 +1,30 @@
 import {
   CreatedCategory as CreatedCategoryEvent,
-  EditCategory as EditCategoryEvent
-} from "../generated/Category/Category"
-import { CreatedCategory, EditCategory } from "../generated/schema"
+  EditCategory as EditCategoryEvent,
+} from "../generated/Category/Category";
+import { Category } from "../generated/schema";
 
 export function handleCreatedCategory(event: CreatedCategoryEvent): void {
-  let entity = new CreatedCategory(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.owner = event.params.owner
-  entity.categoryId = event.params.categoryId
-  entity.name = event.params.name
+  const id = event.params.categoryId.toHex();
+  const categoryEntity = new Category(id); // Create new entity only if not found
 
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
+  categoryEntity.owner = event.params.owner;
+  categoryEntity.categoryId = event.params.categoryId;
+  categoryEntity.name = event.params.name;
+  categoryEntity.updatedAt = event.block.timestamp;
 
-  entity.save()
+  categoryEntity.save();
 }
 
 export function handleEditCategory(event: EditCategoryEvent): void {
-  let entity = new EditCategory(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.owner = event.params.owner
-  entity.categoryId = event.params.categoryId
-  entity.name = event.params.name
+  const id = event.params.categoryId.toHex();
+  const categoryEntity = Category.load(id);
 
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
+  if (categoryEntity !== null) {
+    // Only update if it already exists
+    categoryEntity.owner = event.params.owner;
+    categoryEntity.name = event.params.name;
+    categoryEntity.updatedAt = event.block.timestamp;
+    categoryEntity.save();
+  }
 }
