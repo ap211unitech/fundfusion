@@ -1,0 +1,29 @@
+specVersion: 1.2.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Category
+    network: sepolia
+    source:
+      address: "0xBD547130CB23effc187c31E757f00bC269B6A605"
+      abi: Category
+      startBlock: 7404659
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      entities:
+        - CreatedCategory
+        - EditCategory
+      abis:
+        - name: Category
+          file: ./abis/Category.json
+      eventHandlers:
+        - event: CreatedCategory(address,uint256,string)
+          handler: handleCreatedCategory
+        - event: EditCategory(address,uint256,string)
+          handler: handleEditCategory
+      file: ./src/category.ts

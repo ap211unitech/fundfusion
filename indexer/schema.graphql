@@ -1,0 +1,19 @@
+type CreatedCategory @entity(immutable: true) {
+  id: Bytes!
+  owner: Bytes! # address
+  categoryId: BigInt! # uint256
+  name: String! # string
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type EditCategory @entity(immutable: true) {
+  id: Bytes!
+  owner: Bytes! # address
+  categoryId: BigInt! # uint256
+  name: String! # string
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}

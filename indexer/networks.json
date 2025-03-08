@@ -1,0 +1,8 @@
+{
+  "sepolia": {
+    "Category": {
+      "address": "0xBD547130CB23effc187c31E757f00bC269B6A605",
+      "startBlock": 7404659
+    }
+  }
+}
