@@ -7,7 +7,7 @@ type Category @entity {
 }
 
 type DeployedCampaign @entity(immutable: true) {
-  id: String!
+  id: Bytes!
   owner: Bytes! # address
   campaign: Bytes! # address
   createdAt: BigInt! # # uint256
