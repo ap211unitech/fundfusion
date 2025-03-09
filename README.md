@@ -42,7 +42,7 @@ Built with a robust tech stack, FundFusion ensures a secure and seamless user ex
 
 ## Getting Started
 
-Follow these instructions to set up the project locally.
+Follow these instructions to set up the project locally. This might take a little while to set up, so please hang tight. Additionally, it's crucial to follow these steps in given sequence in order to avoid potential issues.
 
 ### Prerequisites
 
@@ -51,6 +51,7 @@ Make sure you have the following installed:
 - Node.js
 - npm or yarn
 - MetaMask or any EVM wallet
+- Docker Desktop
 
 ### Installation
 
@@ -65,10 +66,8 @@ Make sure you have the following installed:
 
    ```bash
    cd client && yarn install
-   ```
-
-   ```bash
    cd hardhat && yarn install
+   cd indexer && yarn install
    ```
 
 3. Compile the smart contracts:
@@ -89,26 +88,51 @@ Make sure you have the following installed:
    cd hardhat && yarn hardhat run ./scripts/deploy.ts --network localhost
    ```
 
-6. Create `.env.local` file in `client` folder & put appropriate environment variables:
+6. Setup Indexer. This cleans old build files, regenerates necessary code, and compiles the indexer project for a fresh setup:
 
    ```bash
-   NEXT_PUBLIC_REOWN_PROJECT_ID=
-   NEXT_PUBLIC_CATEGORY_CONTRACT=
-   NEXT_PUBLIC_FUNDFUSION_CONTRACT=
-   NEXT_PUBLIC_PINATA_GATEWAY=
-   NEXT_PUBLIC_RPC_URL=http://localhost:8545
-
-   PINATA_JWT_TOKEN=
+      cd indexer
+      yarn clean
+      yarn ready
    ```
 
-7. Start the dev server:
+7. Replace `subgraph.yml` with `local-subgraph.yml` to update the contract address and starting block for the local environment.
+
+8. Start Docker and keep it running in seperate terminal:
 
    ```bash
-   cd client
-   yarn dev
+      cd indexer
+      docker-compose down && docker-compose up
    ```
 
-8. Open your browser and navigate to `http://localhost:3000`.
+9. Create & Deploy Subgraph to local Graph Node and IPFS instance:
+
+   ```bash
+      cd indexer
+      yarn create-local
+      yarn deploy-local
+   ```
+
+10. Create `.env.local` file in `client` folder & put appropriate environment variables:
+
+    ```bash
+    NEXT_PUBLIC_REOWN_PROJECT_ID=
+    NEXT_PUBLIC_CATEGORY_CONTRACT=
+    NEXT_PUBLIC_FUNDFUSION_CONTRACT=
+    NEXT_PUBLIC_PINATA_GATEWAY=
+    NEXT_PUBLIC_RPC_URL=http://localhost:8545
+
+    PINATA_JWT_TOKEN=
+    ```
+
+11. Start the dev server:
+
+    ```bash
+    cd client
+    yarn dev
+    ```
+
+12. Open your browser and navigate to `http://localhost:3000`.
 
 ## Smart Contracts
 
