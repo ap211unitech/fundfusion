@@ -36,6 +36,7 @@ Built with a robust tech stack, FundFusion ensures a secure and seamless user ex
 
 - **Frontend:** Next.js, Server-Side fetching, Tailwind CSS, Typescript, React Hook Form & Zod Validation, Pinata SDK for managing and storing images on IPFS, Reown Wallet Kit, Ethers.js etc
 - **Backend:** Hardhat, Solidity (Smart Contracts)
+- **Indexer:** TheGraph, GraphQL, Docker
 - **Testing:** Thorough testing using TypeScript and Ethers.js for robust smart contract.
 - **Blockchain:** Sepolia Testnet (Ethereum)
 - **Tools:** Hardhat, Ethers.js
@@ -51,7 +52,6 @@ Make sure you have the following installed:
 - Node.js
 - npm or yarn
 - MetaMask or any EVM wallet
-- Docker Desktop
 
 ### Installation
 
@@ -65,9 +65,9 @@ Make sure you have the following installed:
 2. Install the dependencies:
 
    ```bash
-   cd client && yarn install
-   cd hardhat && yarn install
-   cd indexer && yarn install
+   cd client && yarn
+   cd hardhat && yarn
+   cd indexer && yarn
    ```
 
 3. Compile the smart contracts:
@@ -96,43 +96,33 @@ Make sure you have the following installed:
       yarn ready
    ```
 
-7. Replace `subgraph.yml` with `local-subgraph.yml` to update the contract address and starting block for the local environment.
-
-8. Start Docker and keep it running in seperate terminal:
+7. Deploy Subgraph:
 
    ```bash
       cd indexer
-      docker-compose down && docker-compose up
+      yarn deploy
    ```
 
-9. Create & Deploy Subgraph to local Graph Node and IPFS instance:
+8. Create `.env.local` file in `client` folder & put appropriate environment variables:
 
    ```bash
-      cd indexer
-      yarn create-local
-      yarn deploy-local
+   NEXT_PUBLIC_REOWN_PROJECT_ID=
+   NEXT_PUBLIC_CATEGORY_CONTRACT=
+   NEXT_PUBLIC_FUNDFUSION_CONTRACT=
+   NEXT_PUBLIC_PINATA_GATEWAY=
+   NEXT_PUBLIC_RPC_URL=http://localhost:8545
+
+   PINATA_JWT_TOKEN=
    ```
 
-10. Create `.env.local` file in `client` folder & put appropriate environment variables:
+9. Start the dev server:
 
-    ```bash
-    NEXT_PUBLIC_REOWN_PROJECT_ID=
-    NEXT_PUBLIC_CATEGORY_CONTRACT=
-    NEXT_PUBLIC_FUNDFUSION_CONTRACT=
-    NEXT_PUBLIC_PINATA_GATEWAY=
-    NEXT_PUBLIC_RPC_URL=http://localhost:8545
+   ```bash
+   cd client
+   yarn dev
+   ```
 
-    PINATA_JWT_TOKEN=
-    ```
-
-11. Start the dev server:
-
-    ```bash
-    cd client
-    yarn dev
-    ```
-
-12. Open your browser and navigate to `http://localhost:3000`.
+10. Open your browser and navigate to `http://localhost:3000`.
 
 ## Smart Contracts
 
