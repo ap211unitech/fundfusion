@@ -28,12 +28,13 @@ export function handleCreateCampaignCall(call: CreateCampaignCall): void {
   // so doing this HACK to get `campaignAddress` from CampaignFactory entity
   // because I can build the same ID here.
   const campaignFactory = CampaignFactory.load(id);
+  const campaignAddress = campaignFactory ? campaignFactory.campaign : null;
 
-  if (campaignFactory) {
-    const transaction = new CampaignInfo(id);
+  if (campaignAddress) {
+    const transaction = new CampaignInfo(campaignAddress);
 
     transaction.owner = call.from;
-    transaction.address = campaignFactory.campaign;
+    transaction.address = campaignAddress;
     transaction.title = call.inputs._title;
     transaction.categoryId = call.inputs._categoryId;
     transaction.description = call.inputs._description;
