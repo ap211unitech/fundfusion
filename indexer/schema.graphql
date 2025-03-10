@@ -30,9 +30,10 @@ type CampaignInfo @entity {
 }
 
 type Contributor @entity {
-  id: String!
+  id: Bytes!
   contributor: Bytes! # address
   campaign: CampaignInfo! # Campaign
   amount: BigInt! # uint256
+  timestamp: BigInt! # uint256
   hasClaimedRefund: Boolean! # boolean
 }
