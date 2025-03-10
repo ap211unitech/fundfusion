@@ -40,10 +40,34 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - DeployedCampaigns
+        - CampaignInfo
       abis:
         - name: FundFusion
           file: ./abis/FundFusion.json
       eventHandlers:
         - event: NewCampaignCreated(indexed address,indexed address,uint256)
           handler: handleNewCampaignCreated
+      callHandlers:
+        - function: createCampaign(string,uint256,string,string,uint256,uint256,address)
+          handler: handleCreateCampaignCall
       file: ./src/fundfusion.ts
+
+templates:
+  - kind: ethereum
+    name: Campaign
+    network: sepolia
+    source:
+      abi: Campaign
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      entities:
+        - Contributor
+      abis:
+        - name: Campaign
+          file: ./abis/Campaign.json
+      eventHandlers:
+        - event: FundDonated(indexed address,indexed address,uint256,uint256)
+          handler: handleFundDonated
+      file: ./src/campaign.ts
