@@ -74,4 +74,6 @@ templates:
           handler: handleFundWithdrawanByOwner
         - event: CampaignEdited(indexed address,indexed address,string,uint256,string,string,uint256,uint256,uint256)
           handler: handleCampaignEdited
+        - event: CampaignDeleted(indexed address,indexed address,uint8,uint256)
+          handler: handleCampaignDeleted
       file: ./src/campaign.ts

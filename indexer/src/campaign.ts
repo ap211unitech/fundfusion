@@ -1,6 +1,7 @@
 import {
   FundDonated as FundDonatedEvent,
   CampaignEdited as CampaignEditedEvent,
+  CampaignDeleted as CampaignDeletedEvent,
   FundWithdrawanByOwner as FundWithdrawanByOwnerEvent,
 } from "../generated/templates/Campaign/Campaign";
 
@@ -47,6 +48,14 @@ export function handleCampaignEdited(event: CampaignEditedEvent): void {
     campaignInfo.image = event.params.image;
     campaignInfo.targetAmount = event.params.targetAmount;
 
+    campaignInfo.save();
+  }
+}
+
+export function handleCampaignDeleted(event: CampaignDeletedEvent): void {
+  const campaignInfo = CampaignInfo.load(event.params.campaign);
+  if (campaignInfo) {
+    campaignInfo.status = "INACTIVE";
     campaignInfo.save();
   }
 }
