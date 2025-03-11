@@ -111,6 +111,7 @@ Make sure you have the following installed:
    NEXT_PUBLIC_FUNDFUSION_CONTRACT=
    NEXT_PUBLIC_PINATA_GATEWAY=
    NEXT_PUBLIC_RPC_URL=http://localhost:8545
+   NEXT_PUBLIC_GRAPHQL_ENDPOINT=https://api.studio.thegraph.com/query/<your user id>/fundfusion/version/latest
 
    PINATA_JWT_TOKEN=
    ```
