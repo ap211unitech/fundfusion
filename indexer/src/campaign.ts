@@ -1,20 +1,9 @@
-import { Bytes } from "@graphprotocol/graph-ts";
-
 import {
   FundDonated as FundDonatedEvent,
   FundWithdrawanByOwner as FundWithdrawanByOwnerEvent,
 } from "../generated/templates/Campaign/Campaign";
 
-import {
-  Contributor,
-  CampaignInfo,
-  CampaignInfoMapping,
-} from "../generated/schema";
-
-function getCamaignInfoId(campaignAddress: Bytes): Bytes | null {
-  const campaignInfoMapping = CampaignInfoMapping.load(campaignAddress);
-  return campaignInfoMapping ? campaignInfoMapping.campaignInfoId : null;
-}
+import { Contributor, CampaignInfo } from "../generated/schema";
 
 export function handleFundDonated(event: FundDonatedEvent): void {
   const id = event.transaction.hash.concatI32(event.logIndex.toI32());
@@ -32,12 +21,9 @@ export function handleFundDonated(event: FundDonatedEvent): void {
 export function handleFundWithdrawanByOwner(
   event: FundWithdrawanByOwnerEvent
 ): void {
-  const campaignInfoId = getCamaignInfoId(event.transaction.from);
-  if (campaignInfoId) {
-    const campaignInfo = CampaignInfo.load(campaignInfoId);
-    if (campaignInfo) {
-      campaignInfo.fundWithdrawanByOwner = true;
-      campaignInfo.save();
-    }
+  const campaignInfo = CampaignInfo.load(event.transaction.from);
+  if (campaignInfo) {
+    campaignInfo.fundWithdrawanByOwner = true;
+    campaignInfo.save();
   }
 }
