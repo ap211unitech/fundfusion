@@ -1,17 +1,11 @@
 import { GET_ALL_CATEGORIES_QUERY } from "@/constants";
 import { executeGraphQLQuery } from "@/lib/utils";
 
-type Category = {
-  id: string;
-  owner: string;
-  categoryId: string;
-  name: string;
-  updatedAt: string;
-};
+import { Category_Response } from "./types";
 
 // Check if an address can perform action related to Category contract
 export const isCategoryAdmin = async (accountAddress: string) => {
-  const data = await executeGraphQLQuery<Category[]>(
+  const data = await executeGraphQLQuery<Category_Response[]>(
     "categories",
     GET_ALL_CATEGORIES_QUERY,
   );
@@ -20,7 +14,7 @@ export const isCategoryAdmin = async (accountAddress: string) => {
 
 // Get all categories from Category contract
 export const getAllCategories = async () => {
-  const data = await executeGraphQLQuery<Category[]>(
+  const data = await executeGraphQLQuery<Category_Response[]>(
     "categories",
     GET_ALL_CATEGORIES_QUERY,
   );

@@ -7,10 +7,11 @@ import {
   ContributionEvent,
 } from "@/types";
 import { CONFIG } from "@/config";
-import { campaignabi, fundfusionabi } from "@/constants";
-import { getIpfsUrl, getProvider } from "@/lib/utils";
+import { fundfusionabi, GET_CAMPAIGN_METADATA } from "@/constants";
+import { executeGraphQLQuery, getIpfsUrl, getProvider } from "@/lib/utils";
 
 import { getAllCategories } from "./categories";
+import { CampaignInfo_Response } from "./types";
 
 // Get all deployed campaigns and it's metadata
 export const getAllDeployedCampaigns = async (): Promise<Campaign[]> => {
@@ -45,85 +46,54 @@ export const getCampaignData = async (
   try {
     const allCategories = await getAllCategories();
 
-    const provider = getProvider();
-    const campaignContract = new ethers.Contract(
-      campaignContractAddress,
-      campaignabi,
-      provider,
+    const campaignInfo = await executeGraphQLQuery<CampaignInfo_Response>(
+      "campaignInfo",
+      GET_CAMPAIGN_METADATA(campaignContractAddress),
     );
 
-    const totalRaisedAmount = +ethers.formatEther(
-      await campaignContract.totalRaisedAmount(),
-    );
-
-    const fundWithdrawanByOwner =
-      (await campaignContract.fundWithdrawanByOwner()) as boolean;
-
-    const owner = ((await campaignContract.owner()) as string).toLowerCase();
-
-    const contributorEvents = await campaignContract.queryFilter("FundDonated");
-
-    const refundedAccounts = (
-      await campaignContract.queryFilter("RefundClaimed")
-    )
-      // @ts-ignore
-      .map((e) => e.args.at(1)?.toLowerCase());
-
-    const allContributionEvents: ContributionEvent[] = contributorEvents.map(
-      (c) => {
-        const [donatorAddress, donatedAmount, timestamp] = [
-          // @ts-ignore
-          c.args.at(1) as string,
-          // @ts-ignore
-          +ethers.formatUnits(c.args.at(2) || 0),
-          // @ts-ignore
-          (Number(c.args.at(3)) || 0) * 1000,
-        ];
-
-        return { donatorAddress, donatedAmount, timestamp };
-      },
-    );
+    const allContributionEvents: ContributionEvent[] =
+      campaignInfo.contributors.map(({ contributor, amount, timestamp }) => {
+        return {
+          donatorAddress: contributor,
+          donatedAmount: +ethers.formatUnits(amount),
+          timestamp: timestamp * 1000,
+        };
+      });
 
     const contributors: Contributors = new Map();
 
-    contributorEvents.forEach((c) => {
-      const [donatorAddress, donatedAmount] = [
-        // @ts-ignore
-        c.args.at(1) as string,
-        // @ts-ignore
-        +ethers.formatUnits(c.args.at(2) || 0),
-      ];
+    campaignInfo.contributors.forEach(
+      ({ contributor, amount, hasClaimedRefund }) => {
+        if (!!contributor) {
+          const key = contributor.toLowerCase();
 
-      if (!!donatorAddress) {
-        const key = donatorAddress.toLowerCase();
+          const value = {
+            amount: (contributors.get(contributor)?.amount || 0) + amount,
+            hasClaimedRefund:
+              contributors.get(contributor)?.hasClaimedRefund ||
+              hasClaimedRefund,
+          };
 
-        const value = {
-          amount:
-            (contributors.get(donatorAddress)?.amount || 0) + donatedAmount,
-          hasClaimedRefund: refundedAccounts.includes(key),
-        };
-
-        contributors.set(key, value);
-      }
-    });
-
-    const metadata = await campaignContract.getMetadata();
+          contributors.set(key, value);
+        }
+      },
+    );
 
     const formattedMetaData: CampaignMetadata = {
-      title: metadata[0],
-      category: allCategories.at(Number(metadata[1])) as string,
-      description: metadata[2],
-      image: getIpfsUrl(metadata[3]),
-      targetAmount: +ethers.formatEther(metadata[4]),
-      targetTimestamp: Number(metadata[5]) * 1000,
-      status: metadata[6],
+      title: campaignInfo.title,
+      category: allCategories.at(Number(campaignInfo.categoryId)) as string,
+      description: campaignInfo.description,
+      image: getIpfsUrl(campaignInfo.image),
+      targetAmount: +ethers.formatEther(campaignInfo.targetAmount),
+      targetTimestamp: Number(campaignInfo.targetTimestamp) * 1000,
+      status: campaignInfo.status,
     };
 
     return {
       address: campaignContractAddress,
-      owner,
-      fundWithdrawanByOwner,
-      totalRaisedAmount,
+      owner: campaignInfo.owner.toLowerCase(),
+      fundWithdrawanByOwner: campaignInfo.fundWithdrawanByOwner,
+      totalRaisedAmount: +ethers.formatEther(campaignInfo.totalRaisedAmount),
       allContributionEvents,
       contributors,
       ...formattedMetaData,

@@ -7,3 +7,27 @@ export const GET_ALL_CATEGORIES_QUERY = `{
     updatedAt
   }
 }`;
+
+export const GET_CAMPAIGN_METADATA = (campaignAddress: string) => `{
+  campaignInfo(id: "${campaignAddress}") {
+    id
+    owner
+    address
+    title
+    categoryId
+    description
+    image
+    targetAmount
+    targetTimestamp
+    status
+    fundWithdrawanByOwner
+    totalRaisedAmount
+    contributors {
+      id
+      contributor
+      amount
+      timestamp
+      hasClaimedRefund
+    }
+  }
+}`;
