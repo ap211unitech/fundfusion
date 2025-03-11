@@ -96,7 +96,7 @@ Make sure you have the following installed:
       yarn ready
    ```
 
-7. Deploy Subgraph:
+7. Deploy Subgraph to [The Graph Studio](https://thegraph.com/studio/):
 
    ```bash
       cd indexer
