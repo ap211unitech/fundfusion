@@ -23,6 +23,23 @@ export const trimString = (account?: string, chars: number = 8): string => {
   return account.slice(0, keepChars) + "...." + account.slice(-keepChars);
 };
 
+export const executeGraphQLQuery = async <T>(
+  key: string,
+  query: string,
+): Promise<T> => {
+  const res = await fetch(CONFIG.GRAPHQL_ENDPOINT, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ query }),
+  });
+
+  if (!res.ok) throw new Error("GraphQL request failed!");
+
+  return (await res.json()).data[key];
+};
+
 export const getProvider = () => {
   const provider = new ethers.JsonRpcProvider(CONFIG.RPC_URL);
   return provider;

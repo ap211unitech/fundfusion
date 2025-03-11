@@ -1,6 +1,7 @@
 export const CONFIG = {
   REOWN_PROJECT_ID: process.env.NEXT_PUBLIC_REOWN_PROJECT_ID as string,
   RPC_URL: process.env.NEXT_PUBLIC_RPC_URL as string,
+  GRAPHQL_ENDPOINT: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT as string,
   IN_PRODUCTION: process.env.NODE_ENV === "production",
   CATEGORY_CONTRACT: process.env.NEXT_PUBLIC_CATEGORY_CONTRACT as string,
   FUNDFUSION_CONTRACT: process.env.NEXT_PUBLIC_FUNDFUSION_CONTRACT as string,
