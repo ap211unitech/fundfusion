@@ -1,5 +1,6 @@
 import {
   FundDonated as FundDonatedEvent,
+  CampaignEdited as CampaignEditedEvent,
   FundWithdrawanByOwner as FundWithdrawanByOwnerEvent,
 } from "../generated/templates/Campaign/Campaign";
 
@@ -16,14 +17,36 @@ export function handleFundDonated(event: FundDonatedEvent): void {
   entity.hasClaimedRefund = false;
 
   entity.save();
+
+  // Update `totalRaisedAmount` value
+  const campaignInfo = CampaignInfo.load(event.params.campaign);
+  if (campaignInfo) {
+    campaignInfo.totalRaisedAmount = campaignInfo.totalRaisedAmount.plus(
+      event.params.amount
+    );
+    campaignInfo.save();
+  }
 }
 
 export function handleFundWithdrawanByOwner(
   event: FundWithdrawanByOwnerEvent
 ): void {
-  const campaignInfo = CampaignInfo.load(event.transaction.from);
+  const campaignInfo = CampaignInfo.load(event.params.campaign);
   if (campaignInfo) {
     campaignInfo.fundWithdrawanByOwner = true;
+    campaignInfo.save();
+  }
+}
+
+export function handleCampaignEdited(event: CampaignEditedEvent): void {
+  const campaignInfo = CampaignInfo.load(event.params.campaign);
+  if (campaignInfo) {
+    campaignInfo.title = event.params.title;
+    campaignInfo.categoryId = event.params.categoryId;
+    campaignInfo.description = event.params.description;
+    campaignInfo.image = event.params.image;
+    campaignInfo.targetAmount = event.params.targetAmount;
+
     campaignInfo.save();
   }
 }

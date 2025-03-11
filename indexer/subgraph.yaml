@@ -72,4 +72,6 @@ templates:
           handler: handleFundDonated
         - event: FundWithdrawanByOwner(indexed address,indexed address,uint256,uint256)
           handler: handleFundWithdrawanByOwner
+        - event: CampaignEdited(indexed address,indexed address,string,uint256,string,string,uint256,uint256,uint256)
+          handler: handleCampaignEdited
       file: ./src/campaign.ts
