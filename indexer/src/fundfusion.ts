@@ -4,7 +4,11 @@ import {
   CreateCampaignCall,
   NewCampaignCreated as NewCampaignCreatedEvent,
 } from "../generated/FundFusion/FundFusion";
-import { CampaignFactory, CampaignInfo } from "../generated/schema";
+import {
+  CampaignInfo,
+  CampaignFactory,
+  CampaignInfoMapping,
+} from "../generated/schema";
 import { Campaign as CampaignTemplate } from "../generated/templates";
 
 export function handleNewCampaignCreated(event: NewCampaignCreatedEvent): void {
@@ -19,6 +23,14 @@ export function handleNewCampaignCreated(event: NewCampaignCreatedEvent): void {
 
   // Start indexing the campaign; `event.params.campaign` is the address of the new Campaign contract
   CampaignTemplate.create(event.params.campaign);
+
+  // Creating a mapping campaignAddress -> campaignInfo entity id
+  // With this, we can easily find Id of CampaignInfo entity, if campaign address is given
+  const campaignInfoMappingEntity = new CampaignInfoMapping(
+    event.params.campaign
+  );
+  campaignInfoMappingEntity.campaignInfoId = id;
+  campaignInfoMappingEntity.save();
 }
 
 export function handleCreateCampaignCall(call: CreateCampaignCall): void {

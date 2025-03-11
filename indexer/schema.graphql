@@ -6,6 +6,11 @@ type Category @entity {
   updatedAt: BigInt! # uint256
 }
 
+type CampaignInfoMapping @entity(immutable: true){
+  id: Bytes!
+  campaignInfoId: Bytes!
+}
+
 type CampaignFactory @entity(immutable: true) {
   id: Bytes!
   owner: Bytes! # address
