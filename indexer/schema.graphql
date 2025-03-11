@@ -1,0 +1,39 @@
+type Category @entity {
+  id: String!
+  owner: Bytes! # address
+  categoryId: BigInt! # uint256
+  name: String! # string
+  updatedAt: BigInt! # uint256
+}
+
+type CampaignFactory @entity(immutable: true) {
+  id: Bytes!
+  owner: Bytes! # address
+  campaign: Bytes! # address
+  createdAt: BigInt! # uint256
+}
+
+type CampaignInfo @entity {
+  id: Bytes!
+  owner: Bytes! # address
+  address: Bytes! # address
+  title: String! # string
+  categoryId: BigInt! # uint256
+  description: String! # string
+  image: String! # string
+  targetAmount: BigInt! # uint256
+  targetTimestamp: BigInt! # uint256
+  status: String! # string
+  fundWithdrawanByOwner: Boolean! # boolean
+  totalRaisedAmount: BigInt! # uint256
+  contributors: [Contributor!]! @derivedFrom(field: "campaign") # array
+}
+
+type Contributor @entity {
+  id: Bytes!
+  contributor: Bytes! # address
+  campaign: CampaignInfo! # Campaign
+  amount: BigInt! # uint256
+  timestamp: BigInt! # uint256
+  hasClaimedRefund: Boolean! # boolean
+}

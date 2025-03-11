@@ -36,13 +36,14 @@ Built with a robust tech stack, FundFusion ensures a secure and seamless user ex
 
 - **Frontend:** Next.js, Server-Side fetching, Tailwind CSS, Typescript, React Hook Form & Zod Validation, Pinata SDK for managing and storing images on IPFS, Reown Wallet Kit, Ethers.js etc
 - **Backend:** Hardhat, Solidity (Smart Contracts)
+- **Indexer:** TheGraph, GraphQL, Docker
 - **Testing:** Thorough testing using TypeScript and Ethers.js for robust smart contract.
 - **Blockchain:** Sepolia Testnet (Ethereum)
 - **Tools:** Hardhat, Ethers.js
 
 ## Getting Started
 
-Follow these instructions to set up the project locally.
+Follow these instructions to set up the project locally. This might take a little while to set up, so please hang tight. Additionally, it's crucial to follow these steps in given sequence in order to avoid potential issues.
 
 ### Prerequisites
 
@@ -64,11 +65,9 @@ Make sure you have the following installed:
 2. Install the dependencies:
 
    ```bash
-   cd client && yarn install
-   ```
-
-   ```bash
-   cd hardhat && yarn install
+   cd client && yarn
+   cd hardhat && yarn
+   cd indexer && yarn
    ```
 
 3. Compile the smart contracts:
@@ -89,7 +88,22 @@ Make sure you have the following installed:
    cd hardhat && yarn hardhat run ./scripts/deploy.ts --network localhost
    ```
 
-6. Create `.env.local` file in `client` folder & put appropriate environment variables:
+6. Setup Indexer. This cleans old build files, regenerates necessary code, and compiles the indexer project for a fresh setup:
+
+   ```bash
+      cd indexer
+      yarn clean
+      yarn ready
+   ```
+
+7. Deploy Subgraph to [The Graph Studio](https://thegraph.com/studio/):
+
+   ```bash
+      cd indexer
+      yarn deploy
+   ```
+
+8. Create `.env.local` file in `client` folder & put appropriate environment variables:
 
    ```bash
    NEXT_PUBLIC_REOWN_PROJECT_ID=
@@ -101,14 +115,14 @@ Make sure you have the following installed:
    PINATA_JWT_TOKEN=
    ```
 
-7. Start the dev server:
+9. Start the dev server:
 
    ```bash
    cd client
    yarn dev
    ```
 
-8. Open your browser and navigate to `http://localhost:3000`.
+10. Open your browser and navigate to `http://localhost:3000`.
 
 ## Smart Contracts
 

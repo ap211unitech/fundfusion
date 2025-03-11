@@ -1,0 +1,81 @@
+specVersion: 1.2.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Category
+    network: sepolia
+    source:
+      address: "0xBD547130CB23effc187c31E757f00bC269B6A605"
+      abi: Category
+      startBlock: 7404659
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      entities:
+        - Category
+      abis:
+        - name: Category
+          file: ./abis/Category.json
+      eventHandlers:
+        - event: CreatedCategory(address,uint256,string)
+          handler: handleCreatedCategory
+        - event: EditCategory(address,uint256,string)
+          handler: handleEditCategory
+      file: ./src/category.ts
+
+  - kind: ethereum
+    name: FundFusion
+    network: sepolia
+    source:
+      address: "0x8C0CB8A0bbe1d0d6824c4A27eC9E087b84436531"
+      abi: FundFusion
+      startBlock: 7404665
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      entities:
+        - DeployedCampaigns
+        - CampaignInfo
+      abis:
+        - name: FundFusion
+          file: ./abis/FundFusion.json
+      eventHandlers:
+        - event: NewCampaignCreated(indexed address,indexed address,uint256)
+          handler: handleNewCampaignCreated
+      callHandlers:
+        - function: createCampaign(string,uint256,string,string,uint256,uint256,address)
+          handler: handleCreateCampaignCall
+      file: ./src/fundfusion.ts
+
+templates:
+  - kind: ethereum
+    name: Campaign
+    network: sepolia
+    source:
+      abi: Campaign
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      entities:
+        - Contributor
+      abis:
+        - name: Campaign
+          file: ./abis/Campaign.json
+      eventHandlers:
+        - event: FundDonated(indexed address,indexed address,uint256,uint256)
+          handler: handleFundDonated
+        - event: FundWithdrawanByOwner(indexed address,indexed address,uint256,uint256)
+          handler: handleFundWithdrawanByOwner
+        - event: CampaignEdited(indexed address,indexed address,string,uint256,string,string,uint256,uint256,uint256)
+          handler: handleCampaignEdited
+        - event: CampaignDeleted(indexed address,indexed address,uint8,uint256)
+          handler: handleCampaignDeleted
+        - event: RefundClaimed(indexed address,indexed address,uint256,uint256)
+          handler: handleRefundClaimed
+      file: ./src/campaign.ts
