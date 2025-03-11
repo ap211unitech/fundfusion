@@ -1,5 +1,6 @@
 import {
   FundDonated as FundDonatedEvent,
+  RefundClaimed as RefundClaimedEvent,
   CampaignEdited as CampaignEditedEvent,
   CampaignDeleted as CampaignDeletedEvent,
   FundWithdrawanByOwner as FundWithdrawanByOwnerEvent,
@@ -58,4 +59,17 @@ export function handleCampaignDeleted(event: CampaignDeletedEvent): void {
     campaignInfo.status = "INACTIVE";
     campaignInfo.save();
   }
+}
+
+export function handleRefundClaimed(event: RefundClaimedEvent): void {
+  const id = event.transaction.hash.concatI32(event.logIndex.toI32());
+  const entity = new Contributor(id);
+
+  entity.contributor = event.params.contributor;
+  entity.campaign = event.params.campaign;
+  entity.amount = event.params.amount;
+  entity.timestamp = event.params.timestamp;
+  entity.hasClaimedRefund = true;
+
+  entity.save();
 }
