@@ -1,10 +1,11 @@
 import { parseUnits, BrowserProvider, Contract, Eip1193Provider } from "ethers";
 import { useAppKitAccount, useAppKitProvider } from "@reown/appkit/react";
+import { usePathname, useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import { campaignabi } from "@/constants";
+import { refreshPage } from "@/fetchers";
 
 type Props = {
   amountToDonate: string;
@@ -14,6 +15,7 @@ type Props = {
 
 export const useDonateCampaign = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const { address } = useAppKitAccount();
   const { walletProvider } = useAppKitProvider("eip155");
 
@@ -39,6 +41,7 @@ export const useDonateCampaign = () => {
       });
       await tx.wait();
 
+      refreshPage(pathname);
       router.refresh();
 
       cb?.();

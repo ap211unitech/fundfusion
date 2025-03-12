@@ -52,8 +52,9 @@ export const getCampaignData = async (
       GET_CAMPAIGN_METADATA(campaignContractAddress),
     );
 
-    const allContributionEvents: ContributionEvent[] =
-      campaignInfo.contributors.map(({ contributor, amount, timestamp }) => {
+    const allContributionEvents: ContributionEvent[] = campaignInfo.contributors
+      .filter(({ hasClaimedRefund }) => !hasClaimedRefund)
+      .map(({ contributor, amount, timestamp }) => {
         return {
           donatorAddress: contributor,
           donatedAmount: +ethers.formatUnits(amount),
@@ -69,7 +70,9 @@ export const getCampaignData = async (
           const key = contributor.toLowerCase();
 
           const value = {
-            amount: (contributors.get(contributor)?.amount || 0) + amount,
+            amount:
+              (contributors.get(contributor)?.amount || 0) +
+              (!hasClaimedRefund ? +ethers.formatUnits(amount) : 0),
             hasClaimedRefund:
               contributors.get(contributor)?.hasClaimedRefund ||
               hasClaimedRefund,
