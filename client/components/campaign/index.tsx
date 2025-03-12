@@ -40,11 +40,11 @@ export const Campaign = async ({
   const campaignContractAddress = searchParams.id as string;
   if (!campaignContractAddress) return redirect("/");
 
-  // Fetch campaign info
-  const campaign = await getCampaignData(campaignContractAddress);
-  if (!campaign?.address) return redirect("/");
-
   const categories = await getAllCategories();
+
+  // Fetch campaign info
+  const campaign = await getCampaignData(categories, campaignContractAddress);
+  if (!campaign?.address) return redirect("/");
 
   const isCampaignActive = checkIfCampaignActive(campaign);
 

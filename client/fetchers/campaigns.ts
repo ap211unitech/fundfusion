@@ -24,8 +24,10 @@ export const getAllDeployedCampaigns = async (): Promise<Campaign[]> => {
   const campaigns =
     (await fundfusionContract.getAllDeployedCampaigns()) as string[];
 
+  const allCategories = await getAllCategories();
+
   const response = campaigns.map(async (campaignAddress): Promise<Campaign> => {
-    return await getCampaignData(campaignAddress);
+    return await getCampaignData(allCategories, campaignAddress);
   });
 
   return await Promise.all(response);
@@ -41,11 +43,10 @@ export const getCampaignsForCategory = async (
 
 // Get metadata for a campaign
 export const getCampaignData = async (
+  allCategories: string[],
   campaignContractAddress: string,
 ): Promise<Campaign> => {
   try {
-    const allCategories = await getAllCategories();
-
     const campaignInfo = await executeGraphQLQuery<CampaignInfo_Response>(
       "campaignInfo",
       GET_CAMPAIGN_METADATA(campaignContractAddress),
@@ -117,8 +118,10 @@ export const getDeployedCampaignsForUser = async (
     address,
   )) as string[];
 
+  const allCategories = await getAllCategories();
+
   const response = campaigns.map(async (campaignAddress): Promise<Campaign> => {
-    return await getCampaignData(campaignAddress);
+    return await getCampaignData(allCategories, campaignAddress);
   });
 
   return await Promise.all(response);
