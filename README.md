@@ -31,6 +31,7 @@ Built with a robust tech stack, FundFusion ensures a secure and seamless user ex
 - Admin can create new categories and edit existing ones for better organization.
 - Leveraging blockchain technology for tamper-proof and transparent transactions.
 - Intuitive and responsive design for seamless interaction across devices.
+- Fully functional indexer for the FundFusion using TheGraph, enabling efficient querying of blockchain data, Optimized data retrieval by structuring GraphQL schemas and subgraph mappings to track campaign activity in real-time.
 
 ## Tech Stack
 
@@ -128,6 +129,10 @@ Make sure you have the following installed:
 ## Smart Contracts
 
 The smart contracts for FundFusion are written in Solidity which handles the core logic of the platform, including campaign publishing, edit/delete them, handling withdraw, refunds and transaction management. The contracts are deployed on the Sepolia Testnet Ethereum network.
+
+## Blockchain Indexer
+
+This indexer efficiently tracks and organizes on-chain campaign data, enabling real-time querying of campaign details, contributions, fund withdrawals and more. By leveraging TheGraph's subgraph architecture, FundFusion can now provide instant and reliable access to blockchain data without relying on slow, manual blockchain calls. This enhances the user experience by ensuring seamless interaction with live campaign information while maintaining decentralization.
 
 ## Contributing
 
