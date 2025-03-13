@@ -35,7 +35,7 @@ export const executeGraphQLQuery = async <T>(
     cache: "no-store",
   });
 
-  await sleep(0.5);
+  await sleep(1);
 
   if (!res.ok) throw new Error("GraphQL request failed!");
 
