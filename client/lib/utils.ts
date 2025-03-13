@@ -1,6 +1,5 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { ethers } from "ethers";
 import moment from "moment";
 
 import { CONFIG } from "@/config";
@@ -38,11 +37,6 @@ export const executeGraphQLQuery = async <T>(
   if (!res.ok) throw new Error("GraphQL request failed!");
 
   return (await res.json()).data[key];
-};
-
-export const getProvider = () => {
-  const provider = new ethers.JsonRpcProvider(CONFIG.RPC_URL);
-  return provider;
 };
 
 export const getIpfsUrl = (ipfsHash: string) =>

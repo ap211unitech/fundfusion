@@ -55,3 +55,27 @@ export const GET_CAMPAIGN_METADATA = (campaignAddress: string) => `{
     }
   }
 }`;
+
+export const GET_USER_CAMPAIGNS = (owner: string) => `{
+  campaignInfos(where: {owner: "${owner}"}) {
+    id
+    owner
+    address
+    title
+    categoryId
+    description
+    image
+    targetAmount
+    targetTimestamp
+    status
+    fundWithdrawanByOwner
+    totalRaisedAmount
+    contributors {
+      id
+      contributor
+      amount
+      timestamp
+      hasClaimedRefund
+    }
+  }
+}`;

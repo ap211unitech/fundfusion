@@ -6,13 +6,12 @@ import {
   CampaignMetadata,
   ContributionEvent,
 } from "@/types";
-import { CONFIG } from "@/config";
 import {
-  fundfusionabi,
   GET_ALL_CAMPAIGNS,
   GET_CAMPAIGN_METADATA,
+  GET_USER_CAMPAIGNS,
 } from "@/constants";
-import { executeGraphQLQuery, getIpfsUrl, getProvider } from "@/lib/utils";
+import { executeGraphQLQuery, getIpfsUrl } from "@/lib/utils";
 
 import { getAllCategories } from "./categories";
 import { CampaignInfo_Response } from "./types";
@@ -62,20 +61,16 @@ export const getCampaignData = async (
 export const getDeployedCampaignsForUser = async (
   address: string,
 ): Promise<Campaign[]> => {
-  const provider = getProvider();
-  const fundfusionContract = new ethers.Contract(
-    CONFIG.FUNDFUSION_CONTRACT,
-    fundfusionabi,
-    provider,
-  );
-  const campaigns = (await fundfusionContract.getDeployedCampaigns(
-    address,
-  )) as string[];
+  const [campaigns, allCategories] = await Promise.all([
+    await executeGraphQLQuery<CampaignInfo_Response[]>(
+      "campaignInfos",
+      GET_USER_CAMPAIGNS(address),
+    ),
+    await getAllCategories(),
+  ]);
 
-  const allCategories = await getAllCategories();
-
-  const response = campaigns.map(async (campaignAddress): Promise<Campaign> => {
-    return await getCampaignData(allCategories, campaignAddress);
+  const response = campaigns.map((campaignInfo): Campaign => {
+    return formatCampaignInfo(allCategories, campaignInfo);
   });
 
   return await Promise.all(response);
