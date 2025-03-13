@@ -1,30 +1,22 @@
-import { ethers } from "ethers";
+import { GET_ALL_CATEGORIES_QUERY } from "@/constants";
+import { executeGraphQLQuery } from "@/lib/utils";
 
-import { CONFIG } from "@/config";
-import { categoryabi } from "@/constants";
-import { getProvider } from "@/lib/utils";
+import { Category_Response } from "./types";
 
 // Check if an address can perform action related to Category contract
 export const isCategoryAdmin = async (accountAddress: string) => {
-  const provider = getProvider();
-  const contract = new ethers.Contract(
-    CONFIG.CATEGORY_CONTRACT,
-    categoryabi,
-    provider,
+  const data = await executeGraphQLQuery<Category_Response[]>(
+    "categories",
+    GET_ALL_CATEGORIES_QUERY,
   );
-  return (
-    ((await contract.owner()) as string).toString().toLowerCase() ===
-    accountAddress.toLowerCase()
-  );
+  return data.at(0)?.owner.toLowerCase() === accountAddress.toLowerCase();
 };
 
 // Get all categories from Category contract
 export const getAllCategories = async () => {
-  const provider = getProvider();
-  const contract = new ethers.Contract(
-    CONFIG.CATEGORY_CONTRACT,
-    categoryabi,
-    provider,
+  const data = await executeGraphQLQuery<Category_Response[]>(
+    "categories",
+    GET_ALL_CATEGORIES_QUERY,
   );
-  return (await contract.getCategories()) as string[];
+  return data.map(({ name }) => name);
 };

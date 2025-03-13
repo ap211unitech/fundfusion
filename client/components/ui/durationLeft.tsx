@@ -22,7 +22,7 @@ export const DurationLeft = ({ campaign }: { campaign: Campaign }) => {
   }
 
   return (
-    <p className="flex items-center gap-2">
+    <p className="flex items-center gap-2 text-destructive">
       <AlarmClockCheck className="h-4 w-4" />
       Ended
     </p>

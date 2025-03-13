@@ -1,10 +1,11 @@
 import { BrowserProvider, Contract, Eip1193Provider, ethers } from "ethers";
 import { useAppKitAccount, useAppKitProvider } from "@reown/appkit/react";
+import { usePathname, useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import { CONFIG } from "@/config";
+import { refreshPage } from "@/fetchers";
 import { fundfusionabi } from "@/constants";
 
 type Props = {
@@ -19,6 +20,7 @@ type Props = {
 
 export const useCreateCampaign = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const { address } = useAppKitAccount();
   const { walletProvider } = useAppKitProvider("eip155");
 
@@ -60,6 +62,7 @@ export const useCreateCampaign = () => {
 
       cb?.();
 
+      refreshPage(pathname);
       router.push("/myCampaigns");
     },
     onError: (err) => {

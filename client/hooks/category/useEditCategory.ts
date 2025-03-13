@@ -1,16 +1,18 @@
 import { useAppKitAccount, useAppKitProvider } from "@reown/appkit/react";
 import { BrowserProvider, Contract, Eip1193Provider } from "ethers";
+import { usePathname, useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import { CONFIG } from "@/config";
+import { refreshPage } from "@/fetchers";
 import { categoryabi } from "@/constants";
 
 type Props = { category: string; categoryId: number; cb?: () => void };
 
 export const useEditCategory = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const { address } = useAppKitAccount();
   const { walletProvider } = useAppKitProvider("eip155");
 
@@ -34,6 +36,7 @@ export const useEditCategory = () => {
       const tx = await categoryContract.editCategory(categoryId, category);
       await tx.wait();
 
+      refreshPage(pathname);
       router.refresh();
 
       cb?.();

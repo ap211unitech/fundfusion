@@ -6,25 +6,28 @@ import {
   CampaignMetadata,
   ContributionEvent,
 } from "@/types";
-import { CONFIG } from "@/config";
-import { campaignabi, fundfusionabi } from "@/constants";
-import { getIpfsUrl, getProvider } from "@/lib/utils";
+import {
+  GET_ALL_CAMPAIGNS,
+  GET_CAMPAIGN_METADATA,
+  GET_USER_CAMPAIGNS,
+} from "@/constants";
+import { executeGraphQLQuery, getIpfsUrl } from "@/lib/utils";
 
 import { getAllCategories } from "./categories";
+import { CampaignInfo_Response } from "./types";
 
 // Get all deployed campaigns and it's metadata
 export const getAllDeployedCampaigns = async (): Promise<Campaign[]> => {
-  const provider = getProvider();
-  const fundfusionContract = new ethers.Contract(
-    CONFIG.FUNDFUSION_CONTRACT,
-    fundfusionabi,
-    provider,
-  );
-  const campaigns =
-    (await fundfusionContract.getAllDeployedCampaigns()) as string[];
+  const [campaigns, allCategories] = await Promise.all([
+    await executeGraphQLQuery<CampaignInfo_Response[]>(
+      "campaignInfos",
+      GET_ALL_CAMPAIGNS,
+    ),
+    await getAllCategories(),
+  ]);
 
-  const response = campaigns.map(async (campaignAddress): Promise<Campaign> => {
-    return await getCampaignData(campaignAddress);
+  const response = campaigns.map((campaignInfo): Campaign => {
+    return formatCampaignInfo(allCategories, campaignInfo);
   });
 
   return await Promise.all(response);
@@ -40,94 +43,15 @@ export const getCampaignsForCategory = async (
 
 // Get metadata for a campaign
 export const getCampaignData = async (
+  allCategories: string[],
   campaignContractAddress: string,
 ): Promise<Campaign> => {
   try {
-    const allCategories = await getAllCategories();
-
-    const provider = getProvider();
-    const campaignContract = new ethers.Contract(
-      campaignContractAddress,
-      campaignabi,
-      provider,
+    const campaignInfo = await executeGraphQLQuery<CampaignInfo_Response>(
+      "campaignInfo",
+      GET_CAMPAIGN_METADATA(campaignContractAddress),
     );
-
-    const totalRaisedAmount = +ethers.formatEther(
-      await campaignContract.totalRaisedAmount(),
-    );
-
-    const fundWithdrawanByOwner =
-      (await campaignContract.fundWithdrawanByOwner()) as boolean;
-
-    const owner = ((await campaignContract.owner()) as string).toLowerCase();
-
-    const contributorEvents = await campaignContract.queryFilter("FundDonated");
-
-    const refundedAccounts = (
-      await campaignContract.queryFilter("RefundClaimed")
-    )
-      // @ts-ignore
-      .map((e) => e.args.at(1)?.toLowerCase());
-
-    const allContributionEvents: ContributionEvent[] = contributorEvents.map(
-      (c) => {
-        const [donatorAddress, donatedAmount, timestamp] = [
-          // @ts-ignore
-          c.args.at(1) as string,
-          // @ts-ignore
-          +ethers.formatUnits(c.args.at(2) || 0),
-          // @ts-ignore
-          (Number(c.args.at(3)) || 0) * 1000,
-        ];
-
-        return { donatorAddress, donatedAmount, timestamp };
-      },
-    );
-
-    const contributors: Contributors = new Map();
-
-    contributorEvents.forEach((c) => {
-      const [donatorAddress, donatedAmount] = [
-        // @ts-ignore
-        c.args.at(1) as string,
-        // @ts-ignore
-        +ethers.formatUnits(c.args.at(2) || 0),
-      ];
-
-      if (!!donatorAddress) {
-        const key = donatorAddress.toLowerCase();
-
-        const value = {
-          amount:
-            (contributors.get(donatorAddress)?.amount || 0) + donatedAmount,
-          hasClaimedRefund: refundedAccounts.includes(key),
-        };
-
-        contributors.set(key, value);
-      }
-    });
-
-    const metadata = await campaignContract.getMetadata();
-
-    const formattedMetaData: CampaignMetadata = {
-      title: metadata[0],
-      category: allCategories.at(Number(metadata[1])) as string,
-      description: metadata[2],
-      image: getIpfsUrl(metadata[3]),
-      targetAmount: +ethers.formatEther(metadata[4]),
-      targetTimestamp: Number(metadata[5]) * 1000,
-      status: metadata[6],
-    };
-
-    return {
-      address: campaignContractAddress,
-      owner,
-      fundWithdrawanByOwner,
-      totalRaisedAmount,
-      allContributionEvents,
-      contributors,
-      ...formattedMetaData,
-    };
+    return formatCampaignInfo(allCategories, campaignInfo);
   } catch (_) {
     return {} as Campaign;
   }
@@ -137,19 +61,73 @@ export const getCampaignData = async (
 export const getDeployedCampaignsForUser = async (
   address: string,
 ): Promise<Campaign[]> => {
-  const provider = getProvider();
-  const fundfusionContract = new ethers.Contract(
-    CONFIG.FUNDFUSION_CONTRACT,
-    fundfusionabi,
-    provider,
-  );
-  const campaigns = (await fundfusionContract.getDeployedCampaigns(
-    address,
-  )) as string[];
+  const [campaigns, allCategories] = await Promise.all([
+    await executeGraphQLQuery<CampaignInfo_Response[]>(
+      "campaignInfos",
+      GET_USER_CAMPAIGNS(address),
+    ),
+    await getAllCategories(),
+  ]);
 
-  const response = campaigns.map(async (campaignAddress): Promise<Campaign> => {
-    return await getCampaignData(campaignAddress);
+  const response = campaigns.map((campaignInfo): Campaign => {
+    return formatCampaignInfo(allCategories, campaignInfo);
   });
 
   return await Promise.all(response);
+};
+
+// Convert GraphQL response to appropriate info
+const formatCampaignInfo = (
+  allCategories: string[],
+  campaignInfo: CampaignInfo_Response,
+): Campaign => {
+  const allContributionEvents: ContributionEvent[] = campaignInfo.contributors
+    .filter(({ hasClaimedRefund }) => !hasClaimedRefund)
+    .map(({ contributor, amount, timestamp }) => {
+      return {
+        donatorAddress: contributor,
+        donatedAmount: +ethers.formatUnits(amount),
+        timestamp: timestamp * 1000,
+      };
+    });
+
+  const contributors: Contributors = new Map();
+
+  campaignInfo.contributors.forEach(
+    ({ contributor, amount, hasClaimedRefund }) => {
+      if (!!contributor) {
+        const key = contributor.toLowerCase();
+
+        const value = {
+          amount:
+            (contributors.get(contributor)?.amount || 0) +
+            (!hasClaimedRefund ? +ethers.formatUnits(amount) : 0),
+          hasClaimedRefund:
+            contributors.get(contributor)?.hasClaimedRefund || hasClaimedRefund,
+        };
+
+        contributors.set(key, value);
+      }
+    },
+  );
+
+  const formattedMetaData: CampaignMetadata = {
+    title: campaignInfo.title,
+    category: allCategories.at(Number(campaignInfo.categoryId)) as string,
+    description: campaignInfo.description,
+    image: getIpfsUrl(campaignInfo.image),
+    targetAmount: +ethers.formatEther(campaignInfo.targetAmount),
+    targetTimestamp: Number(campaignInfo.targetTimestamp) * 1000,
+    status: campaignInfo.status,
+  };
+
+  return {
+    address: campaignInfo.address,
+    owner: campaignInfo.owner.toLowerCase(),
+    fundWithdrawanByOwner: campaignInfo.fundWithdrawanByOwner,
+    totalRaisedAmount: +ethers.formatEther(campaignInfo.totalRaisedAmount),
+    allContributionEvents,
+    contributors,
+    ...formattedMetaData,
+  };
 };
