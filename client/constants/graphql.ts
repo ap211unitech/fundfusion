@@ -8,6 +8,30 @@ export const GET_ALL_CATEGORIES_QUERY = `{
   }
 }`;
 
+export const GET_ALL_CAMPAIGNS = `{
+  campaignInfos {
+    id
+    owner
+    address
+    title
+    categoryId
+    description
+    image
+    targetAmount
+    targetTimestamp
+    status
+    fundWithdrawanByOwner
+    totalRaisedAmount
+    contributors {
+      id
+      contributor
+      amount
+      timestamp
+      hasClaimedRefund
+    }
+  }
+}`;
+
 export const GET_CAMPAIGN_METADATA = (campaignAddress: string) => `{
   campaignInfo(id: "${campaignAddress}") {
     id
