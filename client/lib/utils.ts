@@ -32,7 +32,10 @@ export const executeGraphQLQuery = async <T>(
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ query }),
+    cache: "no-store",
   });
+
+  await sleep(0.5);
 
   if (!res.ok) throw new Error("GraphQL request failed!");
 
